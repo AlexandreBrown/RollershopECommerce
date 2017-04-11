@@ -31,18 +31,23 @@ class ClientController extends Controller
     {
         $message = null;
         if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // <!-- Début modifs infos compte -->
+
+            // Retrouver les informations du client authentifié
             $clientConnecte = $this->getUser();
 
+            // Créer le formulaire avec les informations du client
             $formInfosCompte = $this->createForm(ClientType::class, $clientConnecte);
+
             $formInfosCompte->handleRequest($request);
-            //Modifier infos d'un compte
+
+            // Si le formulaire est soumis et valide
             if($formInfosCompte->isSubmitted() && $formInfosCompte->isValid()) {
-
-                $client = $formInfosCompte->getData();
-
                 try {
+                    $client = $formInfosCompte->getData();
                     $manager = $this->getDoctrine()->getManager();
 
+                    // Sauvegarder les modifications dans la base de données
                     $manager->persist($client);
 
                     $manager->flush();
@@ -53,23 +58,36 @@ class ClientController extends Controller
                 } catch(ORMException $e) {
                     return $this->redirectToRoute('error500');
                 }
+                // Rediriger l’utilisateur vers la page de dossier
+                return $this->render('./dossier/dossier.html.twig', array('formInfosCompte' => $formInfosCompte->createView(),'formMotPasse' => $formMotPasse->createView(),'message' => $message));
             }
+            // <!-- Fin modifs infos compte -->
 
+            // <!-- Début modif mot passe compte -->
+
+            // Créer le formulaire avec les informations du client
             $formMotPasse = $this->createForm(ChangePasswordType::class);
             $formMotPasse->handleRequest($request);
-            //Modifier mot de passe
+            // Si le formulaire est soumis et valide
             if($formMotPasse->isSubmitted() && $formMotPasse->isValid()) {
                 try {
                     $manager = $this->getDoctrine()->getManager();
-                    $newPassword = $this->get('security.password_encoder')->encodePassword($clientConnecte, $formMotPasse["newPassword"]->getData());
+                    $newPassword = $this->get('security.password_encoder')->encodePassword($clientConnecte, $formMotPasse["newPassword"]->getData()); // On encode le nouveau mot de passe
+                    // On vérifie si la valeur pour le mot de passe actuel est valide
                     if($this->get('security.password_encoder')->IsPasswordValid($clientConnecte,$formMotPasse["oldPassword"]->getData(),$clientConnecte->getSalt())){
+                        // On vérifie que le nouveau mot de passe n'est pas identique au mot de passe actuel
                         if ($newPassword !== $clientConnecte->getPassword()) {
+                            // On vérifie que la longueur du mot de passe est bonne
                             if(strlen($formMotPasse["newPassword"]->getData()) > $this->MIN_LENGTH_PWD && strlen($formMotPasse["newPassword"]->getData()) < $this->MAX_LENGTH_PWD ){
+
+                                //On change le mot de passe actuel du compte
                                 $clientConnecte->setMotPasse($newPassword);
 
+                                // On sauvegarde la modification dans la base de données
                                 $manager->persist($clientConnecte);
 
                                 $manager->flush();
+
                                 $message = new Message(MessageType::SUCCESS,"Modification du mot de passe effectuée avec succès!");
                             }else{
                                 $message = new Message(MessageType::WARNING,"Le nouveau mot de passe doit être entre ".($this->MIN_LENGTH_PWD +1)." et ".($this->MAX_LENGTH_PWD-1)." caractères");
@@ -82,16 +100,20 @@ class ClientController extends Controller
                         $message = new Message(MessageType::WARNING,"Mauvaise valeur pour le mot de passe actuel");
                     }
                 }catch(ORMException $e) {
-                    return $this->redirectToRoute('error500');
+                    return $this->redirectToRoute('error500'); // Erreur avec la BD = redirection vers page d'erreur 500
                 }
             }
+            // <!-- Fin modif mot passe compte -->
+
             $session = $request->getSession(); // On récupère la session
             $messages = $session->getFlashBag()->get('messages'); // On récupère la variable de session messages
             if(isset($messages[0])){ // Si notre variable contient un message
                 $message = $messages[0]; // On l'assigne à notre variable message
             }
+            // Rediriger l’utilisateur vers la page de dossier
             return $this->render('./dossier/dossier.html.twig', array('formInfosCompte' => $formInfosCompte->createView(),'formMotPasse' => $formMotPasse->createView(),'message' => $message));
             } else {
+                // Si l'utilisateur n'était pas connecté , on le redirige vers la page de connexion
                 return $this->redirectToRoute ('connexion');
             }
     }
