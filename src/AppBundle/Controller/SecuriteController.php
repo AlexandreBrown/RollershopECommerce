@@ -24,7 +24,8 @@ class SecuriteController extends Controller
     */
     public function connexionAction(Request $request)
     {
-        
+        // On ne doit pas pouvoir accéder à la page de connexion si nous sommes déjà connecté
+        if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') === false) {
         $session = $request->getSession();
         $authentificationUtils = $this->get('security.authentication_utils');
 
@@ -41,6 +42,9 @@ class SecuriteController extends Controller
         $dernierUtilisateur = $authentificationUtils->getLastUsername();
 
         return $this->render("connexion.html.twig", array('dernierUtilisateur' => $dernierUtilisateur, 'message' => $message));
+        }else{
+            return $this->redirectToRoute('dossier');
+        }
     }
 
     /**

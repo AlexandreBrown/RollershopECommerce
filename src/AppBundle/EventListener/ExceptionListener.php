@@ -28,7 +28,8 @@ class ExceptionListener
     {
         $logFile = fopen(__DIR__ . "/Logs/KernelException.log","w");
         $exception = $event->getException();
-        fwrite($logFile,$exception);
+        $sysDate = date("Y-m-j G:i:s");;
+        fwrite($logFile,$sysDate." Last error : ".$exception);
         fclose($logFile);
             $route = 'error500';
             $url = $this->router->generate($route);

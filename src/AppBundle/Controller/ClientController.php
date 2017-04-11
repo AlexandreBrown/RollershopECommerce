@@ -31,16 +31,19 @@ class ClientController extends Controller
     {
         $message = null;
         if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            // <!-- Début modifs infos compte -->
+            
 
             // Retrouver les informations du client authentifié
             $clientConnecte = $this->getUser();
 
             // Créer le formulaire avec les informations du client
             $formInfosCompte = $this->createForm(ClientType::class, $clientConnecte);
-
             $formInfosCompte->handleRequest($request);
+            // Créer le formulaire avec les informations du client
+            $formMotPasse = $this->createForm(ChangePasswordType::class);
+            $formMotPasse->handleRequest($request);
 
+            // <!-- Début modifs infos compte -->
             // Si le formulaire est soumis et valide
             if($formInfosCompte->isSubmitted() && $formInfosCompte->isValid()) {
                 try {
@@ -64,10 +67,6 @@ class ClientController extends Controller
             // <!-- Fin modifs infos compte -->
 
             // <!-- Début modif mot passe compte -->
-
-            // Créer le formulaire avec les informations du client
-            $formMotPasse = $this->createForm(ChangePasswordType::class);
-            $formMotPasse->handleRequest($request);
             // Si le formulaire est soumis et valide
             if($formMotPasse->isSubmitted() && $formMotPasse->isValid()) {
                 try {
