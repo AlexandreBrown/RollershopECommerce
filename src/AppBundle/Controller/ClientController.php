@@ -95,6 +95,7 @@ class ClientController extends Controller
                 return $this->redirectToRoute ('connexion');
             }
     }
+
     /**
     * @Route("/inscription", name="inscription")
     */
@@ -106,34 +107,46 @@ class ClientController extends Controller
             $message = null;
             $client = new Client();
 
+            // On crée le formulaire d'inscription
             $formInfosCompte = $this->createForm(InscriptionType::class, $client);
 
             $formInfosCompte->handleRequest($request);
-                if($formInfosCompte->isSubmitted() && $formInfosCompte->isValid()) {
-                    
+            // Si le formulaire est soumis et valide
+            if($formInfosCompte->isSubmitted() && $formInfosCompte->isValid()) {
+                try {
                     $client = $formInfosCompte->getData();
-                    try {
-                        $manager = $this->getDoctrine()->getManager();
-                        if(strlen($formInfosCompte["motPasse"]->getData()) > $this->MIN_LENGTH_PWD && strlen($formInfosCompte["motPasse"]->getData()) < $this->MAX_LENGTH_PWD){
+                    $manager = $this->getDoctrine()->getManager();
+                    // On vérifie la longueur du mot de passe
+                    if(strlen($formInfosCompte["motPasse"]->getData()) > $this->MIN_LENGTH_PWD && strlen($formInfosCompte["motPasse"]->getData()) < $this->MAX_LENGTH_PWD){
 
-                            $password = $this->get('security.password_encoder')->encodePassword($client, $client->getMotPasse());
-                            $client->setMotPasse($password);
+                        // On encode le mot de passe saisie par l'utilisateur
+                        $password = $this->get('security.password_encoder')->encodePassword($client, $formInfosCompte["motPasse"]->getData());
+                        
+                        // On attribut ce mot de passe au compte
+                        $client->setMotPasse($password);
+                        
+                        // On sauvegarde le compte dans la base de données
+                        $manager->persist($client);
 
-                            $manager->persist($client);
+                        $manager->flush();
 
-                            $manager->flush();
+                        // On authentifie le compte que l'utilisateur vient de créer
+                        $this->authenticateClient($client);
 
-                            $this->authenticateClient($client);
-                            $message = new Message(MessageType::SUCCESS,"Votre compte a été crée avec succès");
-                            $this->addFlash('messages',$message);
-                            return $this->redirectToRoute('dossier');
-                        }else{
-                            $message = new Message(MessageType::WARNING,"Le mot de passe doit être entre ".($this->MIN_LENGTH_PWD +1)." et ".($this->MAX_LENGTH_PWD-1)." caractères");
-                        }
-                    } catch(ORMException $e) {
-                        return $this->redirectToRoute('error500');
+                        // On affiche un message à l'utilisateur sur la prochaine page
+                        $message = new Message(MessageType::SUCCESS,"Votre compte a été crée avec succès");
+                        $this->addFlash('messages',$message);
+                        
+                        // On redirige l'utilisateur à la page de dossier
+                        return $this->redirectToRoute('dossier');
+                    }else{
+                        $message = new Message(MessageType::WARNING,"Le mot de passe doit être entre ".($this->MIN_LENGTH_PWD +1)." et ".($this->MAX_LENGTH_PWD-1)." caractères");
                     }
+                } catch(ORMException $e) {
+                    return $this->redirectToRoute('error500'); // Si une erreur avec la BD est survenue on redirige l'utilisateur vers une page d'erreur 500.
                 }
+            }
+            // On redirige l'utilisateur à la page d'inscription
             return $this->render('inscription.html.twig', array('formInfosCompte' => $formInfosCompte->createView(),'message' => $message));
         }
     }

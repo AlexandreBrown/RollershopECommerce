@@ -19,7 +19,6 @@ class ClientType extends AbstractType
         $builder
             ->add('nom', TextType::class, array('attr' => array('placeholder' => 'Entrez votre nom')))
             ->add('prenom', TextType::class, array('label' => 'Prénom', 'attr' => array('placeholder' => 'Entrez votre prénom')))
-            ->add('courriel', EmailType::class, array('attr' => array('placeholder' => 'Entrez votre adresse courriel')))
             ->add('genre', ChoiceType::class, array(
                     'choices' => array(
                         'Femme' => 'F',    

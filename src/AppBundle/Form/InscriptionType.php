@@ -19,6 +19,7 @@ class InscriptionType extends ClientType
     {
         parent::buildForm($builder,$option);
         $builder
+            ->add('courriel', EmailType::class, array('attr' => array('placeholder' => 'Entrez votre adresse courriel')))
             ->add('motPasse', RepeatedType::class, array(
                 'type' => PasswordType::class,
                 'invalid_message' => "Les mots de passe doivent être identiques",

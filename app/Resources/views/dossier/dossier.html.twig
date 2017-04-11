@@ -44,7 +44,7 @@
                                 {% endif %}
                             <hr>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label text-right" for="client_prenom">
+                                <label class="col-sm-2 control-label text-right" for="client_courriel">
                                     Courriel
                                 </label>
                                 <div class="col-sm-10">
@@ -54,7 +54,6 @@
                             {{ form_start(formInfosCompte, { 'attr': { 'data-toggle':'validator' } }) }}
                                 {{ form_row(formInfosCompte.nom) }}
                                 {{ form_row(formInfosCompte.prenom) }}
-                                {{ form_row(formInfosCompte.courriel) }}
                                 {{ form_row(formInfosCompte.genre, { 'attr': {'class':'genre' }}) }}
                                 {{ form_row(formInfosCompte.adresse) }}
                                 {{ form_row(formInfosCompte.ville) }}

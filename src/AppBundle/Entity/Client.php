@@ -43,7 +43,7 @@ class Client implements UserInterface
     /**
     * @Doctrine\Column(type="string", length=1)
     * @Assert\NotBlank(message="Le genre est obligatoire.")
-    * @Assert\Choice(choices = {"F", "M"}, strict = true, message="Genre:")
+    * @Assert\Choice(choices = {"F", "M"}, strict = true)
     */
     private $genre;
 
@@ -82,10 +82,10 @@ class Client implements UserInterface
 
     /**
     * @Doctrine\Column(name="codePostal", type="string", length=6)
-    * @Assert\Regex("/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1}\d{1}[A-Z]{1}\d{1}$/", message="Le code postal est invalide")
+    * @Assert\Regex("/^[ABCEGHJKLMNPRSTVXY]{1}\d{1}[ABCEGHJKLMNPRSTVWXYZ]{1}\d{1}[ABCEGHJKLMNPRSTVWXYZ]{1}\d{1}$/", message="Le code postal est invalide")
     * @Assert\NotBlank(message="Le code postal est obligatoire.")
     */
-    private $codePostal;
+    private $codePostal; // Source de la REGEX : http://stackoverflow.com/questions/1146202/canadian-postal-code-validation
 
     /**
     * @Doctrine\Column(type="string", length=2)
@@ -127,6 +127,7 @@ class Client implements UserInterface
     public function getUsername() { return $this->getCourriel(); }
     public function eraseCredentials() {  /*$this->setMotPasse("");*/ }
 
+    // Setters
     public function setNom($nom) { $this->nom = $nom; return $this; }
     public function setPrenom($prenom) { $this->prenom = $prenom; return $this; }
     public function setCourriel($courriel) { $this->courriel = $courriel; return $this; }
