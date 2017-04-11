@@ -1,0 +1,16 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 420.cstj.qc.ca
+    database_port: null
+    database_name: 1543177_tp1
+    database_user: 1543177
+    database_password: inF7744
+    mailer_transport: smtp
+    mailer_host: smtp.gmail.com
+    port: 465
+    encryption: ssl
+    spool:
+        type: memory
+    mailer_user: rollershopcanada@gmail.com
+    mailer_password: '44qS0&rD4m92'
+    secret: 8e56c8968d70af9100a53192368cf08d5e919cd0
