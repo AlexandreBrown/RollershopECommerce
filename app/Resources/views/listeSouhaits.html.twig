@@ -1,0 +1,125 @@
+{% extends 'base/base.html.twig' %}
+{% block content %}
+{% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul>
+                    <li><a href="{{ path('homepage' )}}">Accueil</a></li>
+                    <li class="active">Liste de souhaits</li>
+                </ul><!-- end breadcrumb -->
+            </div><!-- end col -->    
+        </div><!-- end row -->
+    </div><!-- end container -->
+</div><!-- end breadcrumbs -->
+
+<!-- start section -->
+<section class="section white-backgorund">
+    <div class="container">
+        <div class="row">
+        {% if app.user %} <!-- On affiche le sidebar seulement si l'utilisateur est connecté à un compte -->
+            <!-- start sidebar -->
+            <div class="col-sm-3">
+                <div class="widget">
+                    <h5 class="subtitle">Navigation</h5>
+
+                    <ul class="list list-unstyled">
+                        <li>
+                            <a href="{{ path('dossier') }}">Mon compte</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ path('error404') }}">Mes commandes</a>
+                        </li>
+                        <li class="active">
+                            <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({{listeSouhaits.compteSouhaits}})</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ path('deconnexion') }}">Déconnexion</a>
+                        </li>
+                    </ul>
+                </div><!-- end widget -->
+            </div><!-- end col -->
+            <!-- end sidebar -->
+        <div class="col-sm-9">
+        {% else %}
+        <div class="col-sm-12">
+        {% endif %}
+                <div class="row">
+                    <div class="col-sm-12 text-left">
+                        <h2 class="title">Ma liste de souhaits ({{listeSouhaits.compteSouhaits}} {% if (listeSouhaits.compteSouhaits > 1) %}items{% else %}item{% endif %})</h2>
+                        {% if message is defined and message is not null %}
+                            <div class="alert {{ message.getType }}">
+                                {{ message.getTexte | raw  }}
+                            </div>
+                        {% endif %}
+                    </div><!-- end col -->
+                </div><!-- end row -->
+                
+                <hr class="spacer-5"><hr class="spacer-20 no-border">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            {% for souhait in listeSouhaits.Souhaits %} <!-- On parcourt la liste de souhaits -->
+                                <tr>
+                                    <td>
+                                        <h6 class="regular">
+                                            <a href="{{ path('produit.popup', {'idProduit' :souhait.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
+                                                <img width="60px" src="{{ asset_if('img/produits/' ~ souhait.Categorie.IdCategorie ~ '/' ~ souhait.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
+                                            </a>
+                                        </h6>
+                                    </td>
+                                    <td>
+                                        <h6 class="regular">
+                                            <a href="{{ path('produit.popup', {'idProduit' :souhait.idProduit }) }}" class="btnPopup" data-toggle="modal" data-target=".productQuickView">
+                                                {{souhait.Nom}}
+                                            </a>
+                                        </h6>
+                                        <a href="{{ path('homepage', {'categorie': souhait.Categorie.IdCategorie}) }}"><small>{{souhait.Categorie.Nom}}</small></a>
+                                    </td>
+                                    <td>
+                                        <span class="text-primary">{{souhait.Prix}}$</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('panier.ajout', {'idProduit':souhait.idProduit}) }}" class="btn btn-default round btn-sm"><i class="fa fa-cart-plus mr-5"></i> Ajouter au panier</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('listeSouhaits.supprimer', {'idProduit':souhait.IdProduit}) }}">
+                                            <button type="button" class="close">×</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody><!-- end tbody -->
+                    </table><!-- end table -->
+                </div><!-- end table div -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="{{ path('homepage') }}" class="btn btn-light semi-circle btn-sm pull-left">
+                            <i class="fa fa-arrow-left mr-5"></i> Continuer à magasiner
+                        </a>
+                    </div>
+                    <form method="post" action="{{ path('listeSouhaits.post') }}">
+                        <div class="col-sm-6">
+                            <button type="submit" name="action" value="vider" {% if (listeSouhaits.compteSouhaits == 0) %}disabled{% endif %} class="btn btn-danger semi-circle btn-sm pull-right">
+                                Vider <i class="fa fa-trash-o  ml-5"></i>
+                            </button>
+                        </div><!-- end col -->
+                    </form><!-- end form -->
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div><!-- end row -->
+        <!-- Modal Product Quick View -->
+        <div class="modal fade productQuickView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div id="modal-content" class="modal-content">
+                </div><!-- end modal-content -->
+            </div><!-- end modal-dialog -->
+        </div><!-- end productRewiew -->             
+    </div><!-- end container -->
+</section>
+<!-- end section -->
+{% endblock %}

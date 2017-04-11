@@ -1,0 +1,98 @@
+<div class="modal-header">
+	<div id="nameQuickView"><h1 class="text-black">{{produit.nom}}</h1> </div><div id="categoryQuickView"><a href="{{ path('homepage', {'categorie': produit.Categorie.idCategorie}) }}">{{produit.Categorie.nom}}</a></div> <!-- Nom et catégorie du produit -->
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div><!-- end modal-header -->
+<div class="modal-body">
+	<div class="row">
+		<div class="col-sm-4">
+			<div class='carousel slide product-slider' data-ride='carousel' data-interval="false">
+				<div class='carousel-inner'>
+					<div class='item active'>
+						<figure>
+							<img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' />
+						</figure>
+					</div><!-- end item -->
+					<div class='item'>
+						<figure>
+							<img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_1.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' />
+						</figure>
+					</div><!-- end item -->
+					<div class='item'>
+						<figure>
+							<img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_2.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' />
+						</figure>
+					</div><!-- end item -->
+					<div class='item'>
+						<figure>
+							<img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_3.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' />
+						</figure>
+					</div><!-- end item -->
+
+					<!-- Arrows -->
+					<a class='left carousel-control' href='.product-slider' data-slide='prev'>
+						<span class='fa fa-angle-left'></span>
+					</a>
+					<a class='right carousel-control' href='.product-slider' data-slide='next'>
+						<span class='fa fa-angle-right'></span>
+					</a>
+				</div><!-- end carousel-inner -->
+
+				<!-- thumbs -->
+				<ol class='carousel-indicators mCustomScrollbar meartlab'>
+					<li data-target='.product-slider' data-slide-to='0' class='active'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
+					<li data-target='.product-slider' data-slide-to='1'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_1.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
+					<li data-target='.product-slider' data-slide-to='2'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_2.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
+					<li data-target='.product-slider' data-slide-to='3'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_3.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
+				</ol><!-- end carousel-indicators -->
+			</div><!-- end carousel -->
+		</div><!-- end col -->
+		<div class="col-sm-8">
+			<p class="text-gray alt-font"></p>
+
+			<i class="fa fa-star text-warning"></i>
+			<i class="fa fa-star text-warning"></i>
+			<i class="fa fa-star text-warning"></i>
+			<i class="fa fa-star text-warning"></i>
+			<i class="fa fa-star-half-o text-warning"></i>
+			<span>({{produit.idProduit}} 
+			{% if produit.idProduit >1 %}
+			critiques)
+			{% else %}
+			critique)
+			{% endif %}</span> <!-- Pour l'instant on donne un nombre de critiques fictif étant équivalent à l'id du produit -->
+			<h4 class="text-primary"><div id="priceQuickView">{{produit.prix}}$</div></h4>
+				<div id="qteStockQuickView">
+					{% if (produit.qteStock > 0) %}
+						<strong class="bg-success "><i class="glyphicon glyphicon-ok"></i> En stock :{{produit.qteStock}}</strong> <!-- Si le produit est en stock en affiche la quantité en stock avec un style bootstrap -->
+					{% else %}
+						<strong class="bg-danger"><i class="glyphicon glyphicon-alert"></i> En rupture de stock</strong> <!-- Sinon on avertis l'utilisateur que le produit est en rupture de stock -->
+					{% endif %}
+				</div>
+				<p><div id="shortDescQuickView">{{produit.descriptionCourte|raw}}</div></p>
+				<p><div id="descQuickView">{{produit.description|raw}}</div></p>
+				<!-- social buttons -->
+				<div id="share-buttons">
+					<!-- Facebook -->
+					<a href="https://www.facebook.com/sharer/sharer.php?u=http://420.cstj.qc.ca/alexandrebrown/tp/?categorie={{produit.Categorie.idCategorie}}" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+						<img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+					</a>
+					<!-- Twitter -->
+					<a href="https://twitter.com/share?url=http://420.cstj.qc.ca/alexandrebrown/tp/?categorie={{produit.Categorie.idCategorie}};text=Wow%20regardez%20ça!{{produit.Categorie.Nom}}:%20{{produit.Nom}}!&amp;hashtags=RollerShop" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+						<img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+					</a>
+					<!--Google + -->
+					<a href="https://plus.google.com/share?url=https://goo.gl/Q0qOfO" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+						<img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google+"/>
+					</a>
+				</div>
+				<!-- end social buttons -->
+			<hr class="spacer-10">
+			<ul class="list list-inline">
+				<li><a href="{{ path('panier.ajout', {'idProduit':produit.idProduit}) }}" class="btn btn-default btn-md round"><i class="fa fa-shopping-basket mr-5"></i>Ajouter au panier</a></li>
+				<li><a href="{{ path('listeSouhaits.ajout', {'idProduit':produit.idProduit}) }}" class="btn btn-gray btn-md round"><i class="fa fa-heart mr-5"></i>Ajouter à ma liste de souhaits</a></li>
+			</ul>
+		</div><!-- end col -->
+	</div><!-- end row -->
+</div><!-- end modal-body -->

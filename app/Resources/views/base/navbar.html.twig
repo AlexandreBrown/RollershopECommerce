@@ -1,0 +1,118 @@
+{% set listeSouhaits = app.session.get('listeSouhaits') %} <!-- On récupère notre variable de session listeSouhaits -->
+{% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
+<!-- start topBar -->
+<div class="topBar inverse">
+    <div class="container">
+        <ul class="list-inline pull-left hidden-sm hidden-xs">
+            <li><span class="text-primary">Vous avez une question?</span> <text class="topLeftTxt">Appelez-nous +1 450 710 2070</text></li>
+        </ul>
+        <ul class="topBarNav pull-right">
+            <li class="linkdown"> <!-- Liste des différentes monnaies -->
+                <a href="#">
+                    <i class="fa fa-usd mr-5"></i>
+                    <text class="notranslate">CAD</text>
+                    <i class="fa ml-5"></i>
+                </a>
+            </li>
+            <li class="linkdown"> <!-- Options de compte -->
+                <a href="#">
+                    <i class="fa fa-user mr-5"></i>
+                    <span class="hidden-xs">
+                        {% if (app.user) %}{{ app.user.prenom }}{% else %}Mon Compte{% endif %} 
+                        <i class="fa fa-angle-down ml-5"></i>
+                    </span>
+                </a>
+                <ul class="w-150">
+                {% if app.user %}
+                    <li><a href="{{path('dossier')}}">Mon compte</a></li>
+                    <li><a href="{{path('deconnexion')}}">Se déconnecter</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ path('listeSouhaits.index') }}">Liste de souhaits</a></li>
+                    <li><a href="{{path('panier.index')}}">Mon panier</a></li>
+                    <li><a href="{{path('error404')}}">Payer</a></li>
+                {% else %}
+                    <li><a href="{{path('connexion')}}">Se connecter</a></li>
+                    <li><a href="{{path('inscription')}}">Créer un compte</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{{ path('listeSouhaits.index') }}">Liste de souhaits</a></li>
+                    <li><a href="{{path('panier.index')}}">Mon panier</a></li>
+                    <li><a href="{{path('error404')}}">Payer</a></li>
+                {% endif %}
+                </ul>
+            </li>
+            <li class="linkdown"> <!-- Pannier -->
+                <a href="{{path('panier.index')}}">
+                    <i class="fa fa-shopping-basket mr-5"></i>
+                    <span class="hidden-xs">
+                        Mon panier<sup class="text-primary">(
+                                                             {% if panier is not null %}
+                                                                {{panier.compteNbProduitsTotal}} {% if (panier.compteNbProduitsTotal > 1) %} items{% else %} item{% endif %}
+                                                             {% else %}
+                                                                0 item
+                                                             {% endif %}
+                                                            )
+                                  </sup>
+                        <i class="fa fa-angle-down ml-5"></i>
+                    </span>    
+                </a>
+                <ul class="cart w-150">
+                    <li>
+                        <a href="{{path('panier.index')}}" class="pull-left"><i class="fa fa-cart-plus mr-5"></i>Voir le panier</a>
+                    </li>
+                    <li>
+                        <a href="{{path('error404')}}" class="pull-left"><i class="fa fa-shopping-basket mr-5"></i>Payer</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div><!-- end container -->
+</div>
+<!-- end topBar -->
+
+<div class="middleBar">
+    <div class="container">
+        <div class="row table">
+            <div class="col-sm-9 vertical-align text-left hidden-xs">
+                <a href="{{path('homepage')}}">
+                    <img width="160" src="{{ asset('img/logo/logo-big.png')}}" alt="Rollershop" /> <!-- LOGO -->
+                </a>
+            </div><!-- end col -->
+            <div class="col-sm-3 vertical-align header-items">
+                <div class="header-item mr-5">
+                    <a href="{{ path('listeSouhaits.index') }}" data-toggle="tooltip" data-placement="top" title="Liste de souhaits">
+                        <i class="fa fa-heart-o"></i>
+                        <sub>{% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %}</sub>
+                    </a>
+                </div>
+            </div><!-- end col -->
+        </div><!-- end  row -->
+    </div><!-- end container -->
+</div><!-- end middleBar -->
+
+<!-- start navbar -->
+<div class="navbar yamm navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" data-toggle="collapse" data-target="#navbar-collapse-3" class="navbar-toggle">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="{{path('homepage')}}" class="navbar-brand visible-xs">
+                <img src="{{ asset('img/logo/logo.png') }}" alt="logo">
+            </a>
+        </div>
+        <div id="navbar-collapse-3" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <!-- Homepage -->
+                <li class="dropdown"><a href="{{path('homepage')}}">Catalogue<i class="fa ml-5"></i></a>
+                </li><!-- end Homepage -->    
+                <!-- Contacts -->
+                <li class="dropdown"><a href="{{path('contacts')}}">Contacts<i class="fa ml-5"></i></a>
+                </li><!-- end Contacts -->  
+                    </ul><!-- end dropdown-menu -->
+                </li><!-- end dropdown -->
+            </ul><!-- end navbar-nav -->
+        </div><!-- end navbar collapse -->
+    </div><!-- end container -->
+</div><!-- end navbar -->

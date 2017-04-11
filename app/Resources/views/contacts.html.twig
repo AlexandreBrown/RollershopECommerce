@@ -1,0 +1,111 @@
+{% extends 'base/base.html.twig' %}
+{% block content %}
+    <div class="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul>
+                            <li><a href="{{path('homepage')}}">Accueil</a></li> <!-- On met à jour la racine -->
+                            <li class="active">Contacts</li> <!-- On met à jour la page active -->
+                        </ul><!-- end breadcrumb -->
+                    </div><!-- end col -->    
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- end breadcrumbs -->        
+        <!-- start section -->
+        <section class="section white-backgorund">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="title-wrap">
+                            {% if message is defined and message is not null %}
+                                <div class="alert {{ message.getType }} text-center">
+                                    {{ message.getTexte | raw  }}
+                                </div>
+                            {% endif %}
+                            <h2 class="title lines">Contactez-nous</h2>
+                        </div>
+                    </div><!-- end col -->    
+                </div><!-- end row -->
+                
+                <div class="row column-3">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="icon-boxes style1">
+                            <div class="icon">
+                                <i class="glyphicon glyphicon-map-marker"></i> <!-- Icone bootstrap -->
+                            </div><!-- end icon -->
+                            <div class="box-content">
+                                <h6 class="thin">Venez nous voir!</h6>
+                                <h5 class="text-warning">2500 Boulevard de l'Université,<br>Sherbrooke,<br>QC J1K 0A5</h5>
+                            </div>
+                        </div><!-- icon-box -->
+                    </div><!-- end col -->   
+                    <div class="col-sm-6 col-md-4">
+                        <div class="icon-boxes style1">
+                            <div class="icon">
+                                <i class="fa fa-phone text-info"></i>
+                            </div><!-- end icon -->
+                            <div class="box-content">
+                                <h6 class="thin">Question rapide?</h6>
+                                <h5 class="text-info">Appelez-nous <br>+1 450 710 2070!</h5>
+                            </div>
+                        </div><!-- icon-box -->
+                    </div><!-- end col -->   
+                    <div class="col-sm-6 col-md-4">
+                        <div class="icon-boxes style1">
+                            <div class="icon">
+                                <i class="fa fa-envelope-o text-success"></i>
+                            </div><!-- end icon -->
+                            <div class="box-content">
+                                <h6 class="thin">Ou envoyez-nous un courriel!</h6>
+                                <h5 class="text-success">rollershopcanada@gmail.com</h5>
+                            </div>
+                        </div><!-- icon-box -->
+                    </div><!-- end col --> 
+                </div><!-- end row -->
+                
+                <hr class="spacer-40 no-border">
+                
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <form name="contactform" method="POST" action="{{path('contacts')}}"> <!-- Les informations sont envoyées dans le POST lorsqu'on clique sur le bouton Envoyer -->
+                            <div class="form-group">
+                                <label for="form_name">Nom</label>
+                                <input type="text" name="form_name" id="form_name" class="form-control input-lg" placeholder="Nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="form_email">Adresse courriel</label>
+                                <input type="text" name="form_email" id="form_email" class="form-control input-lg" placeholder="Adresse courriel">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="form_msg">Message ( caractères restants : <input id="inputContact" readonly size="2" name="countdown" value="1000"> )</label>
+                                <textarea name="form_msg" id="form_msg" rows="6" class="form-control input-lg" placeholder="Message" onKeyDown="limitTextKeDown(this.form.form_msg,this.form.countdown)" onKeyUp="limitTextKeyUp(this.form.form_msg,this.form.countdown);"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" name="submit" id="send" class="btn btn-default round btn-lg" value="Envoyer">
+                            </div>
+                        </form>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+                <hr class="spacer-40 no-border">
+                <!-- Google Map -->
+                <!-- start section -->
+                <section class="light-background">
+                    <div class="container-fluid">
+                        <div class="row grid-space-0">
+                            <div class="col-sm-12">
+                                <div class="map" id="map">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d175.15745921922863!2d-71.92939696870013!3d45.378693456319986!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cb7b34d150f983b%3A0x519ade27e6c220e9!2sUniversit%C3%A9+de+Sherbrooke!5e0!3m2!1sen!2sca!4v1486782507935" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                </div>
+                            </div><!-- end col -->    
+                        </div><!-- end row -->
+                    </div><!-- end container -->
+                </section>
+                <!-- end section -->
+            </div><!-- end container -->
+        </section>
+        <!-- end section -->
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/contacts.js') }}"></script>
+{% endblock %}

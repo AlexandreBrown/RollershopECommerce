@@ -1,0 +1,180 @@
+{% extends 'base/base.html.twig' %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul>
+                {% if app.request.get('categorie') == null %} <!-- Si l'utilisateur n'a pas choisi de catégorie -->
+                    <li class="active">Catalogue</li> <!-- Nous sommes sur le catalogue -->
+                {% else %} <!-- Si l'utilisateur a choisi une catégorie -->
+                    <li><a href="{{ path('homepage') }}">Catalogue</a></li>
+                    {% if categories[app.request.get('categorie')-1] is defined  %}<li class="active">{{categories[app.request.get('categorie')-1].nom}}</li>{% endif %} <!-- Nous sommes sur le chemin Catalogue > nomDeCategorie -->
+                {% endif %}
+                </ul><!-- end breadcrumb -->
+            </div><!-- end col -->    
+        </div><!-- end row -->
+    </div><!-- end container -->
+</div><!-- end breadcrumbs -->
+
+<!-- start section -->
+<section class="section white-backgorund">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 text-left">
+                        <ul class="list list-inline">
+                            <li><a href="javascript:void(0)" data-toggle="collapse" data-target=".sidebarFilter"><i class="fa fa-align-left mr-5"></i> Filtres</a></li> <!-- Liste de filtres -->
+                        </ul>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+                
+                <hr class="spacer-5"><hr class="spacer-20 no-border">
+                
+                <div class="sidebarFilter collapse">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="widget">
+                                <!-- Barre de recherche -->
+                                <form class="navbar-form" roler="search" action="{{ path('homepage') }}" method="POST">
+                                    <div id="custom-search-input"> <!-- Input search bar -->
+                                        <div class="input-group col-md-12">
+                                            <input id="searchBar" type="text" class="form-control input-lg" placeholder="Rechercher" name="recherche" />
+                                            <span class="input-group-btn">
+                                                <button id="searchBarBtn" name="submit" type="submit" value="Submit" class="btn btn-info btn-lg">
+                                                    <i class="glyphicon glyphicon-search black"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- Fin barre de recherche -->
+                            </div><!-- end widget -->
+                        </div><!-- end col -->
+                        <div class="col-sm-3">
+                            <div class="widget">
+                                <!-- Catégories -->
+                                    <h6 class="subtitle thin">Categories</h6>
+                                    <ul class="nav nav-pills nav-stacked category-menu">
+                                        <li {% if app.request.get('categorie') == null %} class="catActive" {% endif %}> <!-- Si l'utilisateur n'a pas choisi de catégorie précise alors la catégorie "Toutes" est sélectionnée -->
+                                            <a href="{{ path('homepage') }}">Toutes</a>
+                                        </li>
+                                        {% for categorie in categories %}
+                                            <li {% if app.request.get('categorie') == categories[loop.index-1].idCategorie %} class="catActive" {% endif %}> <!-- Si l'utilisateur a choisi une catégorie , elle est affichée come étant sélectionnée -->
+                                                <a href="{{ path('homepage', {'categorie': categorie.idCategorie}) }}">{{ categorie.nom }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                <!--Fin des catégories -->
+                            </div><!-- end widget -->
+                        </div><!-- end col -->
+                        <div class="col-sm-3">
+                            <div class="widget">
+                                <!-- Filtre de prix -->
+                                <h6 class="subtitle thin">Prix</h6> 
+                                <form method="POST" class="price-range" action="{{ path('homepage') }}" data-start-min="80" data-start-max="150" data-min="{{minPriceAvailable}}" data-max="{{maxPriceAvailable}}" data-step="5"> <!-- Les données conçernant le prix minimal et maximal sont envoyées dans le POST -->
+                                    <div class="ui-range-values">
+                                        <div class="ui-range-value-min">
+                                            $<span></span>
+                                            <input name="priceMin" type="hidden" id="range-value-min">
+                                        </div> -
+                                        <div class="ui-range-value-max">
+                                            $<span></span>
+                                            <input name="priceMax" name="priceMin" type="hidden" id="range-value-max">
+                                        </div>
+                                    </div>
+                                    <div class="ui-range-slider"></div>
+                                    <button id="filtrerPrix" type="submit" class="btn btn-light btn-block btn-sm">Filtrer</button>
+                                </form>
+                                <!-- Fin filtre de prix -->
+                            </div><!-- end widget -->
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                    
+                    <hr class="spacer-30">
+                    
+                </div><!-- end sidebarFilter -->
+                
+                <div class="row column-4">
+                {% set bonneCategorie = false %} <!-- bool qui indique si la catégorie est valide -->
+                {% for categorie in categories %} <!-- On vérifie que la catégorie dans le GET est valide -->
+                    {% if app.request.get('categorie') == categorie.idCategorie or app.request.get('categorie') == null%}
+                        {% set bonneCategorie = true %} <!-- Si la catégorie est dans la BD ou null , elle est considérée comme étant valide-->
+                    {% endif %}
+                {% endfor %}
+                {% if bonneCategorie == true %} <!-- On vérifie l'existance des produits seulement si la catégorie est valide -->
+                    {% if produits is defined%}
+                        <!-- On vérifie que le produit demandé existe dans notre BD -->
+                        {% if produits | length == 0 %}
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <p class="lead">Aucun produit ne correspond à vos critères de sélection.</p>
+                                </div>
+                            </div>
+                        {% else %} <!-- Si le produit demandé existe -->
+                            {% for produit in produits %}
+                                <!-- On parcours notre tableau de produits pour afficher seulement les produits avec la catégorie correspondante à celle que l'utilisateur a demandé -->
+                                {% if (app.request.get('categorie') == produit.Categorie.idCategorie) or (app.request.get('categorie') == null) %}
+                                {% if (loop.index-1 % 4 == 0) and (loop.index != 0)  %} <!-- Chaque 4 produits , nous changons de rangée dans la page-->
+                                </div>
+                                <div class="row column-4">
+                                {% endif %} <!-- Fin du if *Changement de rangée* -->
+                            <div class="col-sm-6 col-md-3">
+                                <div class="thumbnail store style1">
+                                    <div class="header">
+                                        <figure class="layer">
+                                                <img class="front" src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}">
+                                                <img class="back" src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}">
+                                        </figure>
+                                        <div class="icons">
+                                            <a class="heartQuickView icon semi-circle" href="{{ path('listeSouhaits.ajout', {'idProduit':produit.idProduit}) }}"><i class="fa fa-heart-o"></i></a> <!-- Ajout à la liste de souhaits -->
+                                            <a class="icon semi-circle btnPopup" href="{{ path('produit.popup', {'idProduit' :produit.idProduit }) }}" data-toggle="modal" data-target=".productQuickView"><i class="fa fa-search"></i></a> <!-- Aperçu du produit -->
+                                        </div>
+                                    </div>
+                                    <div class="caption">
+                                        <h6 class="regular"><a class="btnPopup" href="{{ path('produit.popup', {'idProduit' :produit.idProduit }) }}" data-toggle="modal" data-target=".productQuickView">{{produit.nom}}</a></h6> <!-- Nom du produit -->
+                                        <h6 class="regular"><a href="{{ path('homepage', {'categorie': produit.Categorie.idCategorie}) }}">{{produit.Categorie.nom}}</a></h6> <!-- Catégorie associée au produit -->
+                                        <div class="price">
+                                            <span class="amount text-primary">{{produit.prix}}$</span> <!-- Prix du produit -->
+                                        </div>
+                                        <a href="{{ path('panier.ajout', {'idProduit':produit.idProduit}) }}"><i class="fa fa-cart-plus mr-5"></i>Ajouter au panier</a> <!-- Ajout au panier -->
+                                    </div><!-- end caption -->
+                                </div><!-- end thumbnail -->
+                                {% endif %} <!-- endif good id -->
+                                </div><!-- end col -->
+                            {% endfor %} <!-- end for produit in produits -->
+                        {% endif %} <!-- end if len == 0 -->
+                    {% endif %} <!-- end if produits is defined -->
+                {% else %} <!-- Si la catégorie n'existe pas dans la BD -->
+                    <div class="box">
+                        <p class="lead">La catégorie demandée n'existe pas.</p>
+                    </div>
+                {% endif %} <!-- end if bonne catégorie -->
+                <hr class="spacer-10 no-border">
+                <!-- Pages -->
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <nav>
+                            <ul class="pagination">
+                                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                                <li class="active"><a href="{{path('homepage')}}">1</a></li>
+                                <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                            </ul>
+                        </nav>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end col -->   
+        </div><!-- end row -->
+
+        <!-- Modal Product Quick View -->
+        <div class="modal fade productQuickView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div id="modal-content" class="modal-content">
+                </div><!-- end modal-content -->
+            </div><!-- end modal-dialog -->
+        </div><!-- end productRewiew -->
+    </div><!-- end container -->
+</section>
+<!-- end section -->
+{% endblock %}

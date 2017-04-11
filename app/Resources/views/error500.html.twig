@@ -1,0 +1,31 @@
+{% extends 'base/base.html.twig' %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <ul>
+                    <li><a href="{{path('homepage')}}">Accueil</a></li>
+                    <li class="active">Erreur 500</li>
+                </ul><!-- end breadcrumb -->
+            </div><!-- end col -->    
+        </div><!-- end row -->
+    </div><!-- end container -->
+</div><!-- end breadcrumbs -->
+
+<!-- start section -->
+<section class="section white-backgorund fullscreen">
+    <div class="middle">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 text-center">
+                    <h1 class="text-warning alt-font" style="font-size: 10em;">500</h1>
+                    <h2>Erreur du serveur!</h2>
+                    <p class="lead">Nous sommes désolés, un problème est survenu du côté de notre serveur. Veuillez ouvrir la page plus tard.</p>
+                </div><!-- end col -->    
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end middle -->
+</section>
+<!-- end section -->
+{% endblock %}

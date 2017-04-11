@@ -1,0 +1,57 @@
+{% extends 'base/base.html.twig' %}
+{% block content %}
+<!-- start section -->
+<section class="section white-backgorund">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <h2 class="title">Connexion</h2>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+                {% if message is defined and message is not null %}
+                    <div class="alert {{ message.getType }} text-center">
+                        {{ message.getTexte | raw  }}
+                    </div>
+                {% endif %}
+                <hr class="spacer-5"><hr class="spacer-20 no-border">
+                
+                <div class="row">
+                    <div class="col-sm-12 col-md-10 col-lg-8">
+                        <form class="form-horizontal" action="{{ path('connexion') }}" method="post" data-toggle="validator">
+                            <div class="form-group">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <label for="email" class="col-sm-2 control-label">Courriel</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control input-md" id="email" name="_username" value="{{ dernierUtilisateur }}" required placeholder="Courriel">
+                                </div>
+                            </div><!-- end form-group -->
+                            <div class="form-group">
+                                <label for="password" class="col-sm-2 control-label">Mot de passe</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control input-md" id="password" name="_password" required placeholder="Mot de passe">
+                                </div>
+                            </div><!-- end form-group -->
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <label><a href="{{ path('error404') }}">Mot de passe oublié</a></label>
+                                </div>
+                            </div><!-- end form-group -->
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button class="btn btn-default round btn-md"><i class="fa fa-lock mr-5"></i> Se connecter</button>
+                                </div>
+                            </div><!-- end form-group -->
+                        </form>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div><!-- end row -->                
+    </div><!-- end container -->
+</section>
+<!-- end section -->
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js"></script>
+{% endblock %}

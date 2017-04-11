@@ -1,0 +1,78 @@
+//colors
+$primary-color: #0cd4d2; //default:#0cd4d2, blue:#2599e6, green:#7ade20, greenery:#80b543 red:#e63e2d, purple: #a452f8
+$dark-color: #35404f;
+$gray-color: #878c94;
+$light-color: #e5e5e5;
+$white-color: #ffffff;
+
+//bootstrap colors
+$success-color: #5ed35e;
+$info-color: #64d5f6;
+$warning-color: #fcbe66;
+$danger-color: #e55e5a;
+
+//social icons color
+$facebook-color: #3b5998;
+$twitter-color: #1da1f2;
+$dribbble-color: #e14984;
+$linkedin-color: #1b85bd;
+$youtube-color: #cc181e;
+$behance-color: #1769ff;
+$google-plus-color: #d44032;
+$flickr-color: #ff0084;
+$skype-color: #01aef2;
+$tumblr-color: #34465e;
+$vimeo-color: #0491bc;
+$instagram-color: #f4b97a;
+$pinterest-color: #bd081c;
+$soundcloud-color: #fe531b;
+$yahoo-color: #572c73;
+$dropbox-color: #0089d1;
+$joomla-color: #0266bb;
+$wordpress-color: #464646;
+$vine-color: #00a478;
+$xing-color: #126567;
+$stumbleupon-color: #f74425;
+$foursquare-color: #0072b1;
+
+//screens
+$screen-lg: 1200px;
+$screen-md: 991px;
+$screen-sm: 767px;
+$screen-xs: 480px;
+
+@mixin round($radius...) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+    //border-radius: 10px 20px 3px 8px;
+}
+@mixin box-shadow($shadow...) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    -ms-box-shadow: $shadow;
+    box-shadow: $shadow;
+          //box-shadow: 10px 10px 5px #888888;
+}
+@mixin linear-gradient($gradient...) {
+    background: -webkit-linear-gradient($gradient); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient($gradient); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient($gradient); /* For Firefox 3.6 to 15 */
+    background: linear-gradient($gradient); /* Standard syntax */
+    //background: -webkit-linear-gradient(red, yellow, green);
+}
+@mixin transition($transition...) {
+    -webkit-transition: $transition;
+    -moz-transition: $transition;
+    -ms-transition: $transition;
+    -o-transition: $transition;
+    transition: $transition;
+    //transition: all .3s ease-in;
+}
+@mixin transform($transform...) {
+    -ms-transform: $transform; /* IE 9 */
+    -webkit-transform: $transform; /* Chrome, Safari, Opera */
+    transform: $transform;
+    //transform: rotate(7deg);
+}

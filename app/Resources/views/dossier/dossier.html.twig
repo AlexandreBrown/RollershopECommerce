@@ -1,0 +1,91 @@
+{% extends 'base/base.html.twig' %}
+{% form_theme formInfosCompte 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme formMotPasse 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block content %}
+{% set listeSouhaits = app.session.get('listeSouhaits') %} <!-- On récupère notre variable de session listeSouhaits -->
+{% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
+<!-- start section -->
+<section class="section white-backgorund">
+    <div class="container">
+        <div class="row">
+            <!-- start sidebar -->
+            <div class="col-sm-3">
+                <div class="widget">
+                    <h6 class="subtitle">Navigation</h6>
+                    
+                    <ul class="list list-unstyled">
+                        <li class="active">
+                            <a href="#">Mon compte</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ path('error404') }}">Mes commandes</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ path('deconnexion') }}">Déconnexion</a>
+                        </li>
+                    </ul>
+                </div><!-- end widget -->
+            </div><!-- end col -->
+            <!-- end sidebar -->
+                <div class="col-sm-9">
+                    <div class="row">
+                        <div class="box">
+                                <h2 class="title text-center">Mes informations</h2>
+                                {% if message is defined and message is not null %}
+                                    <div class="alert {{ message.getType }} text-center">
+                                        {{ message.getTexte | raw  }}
+                                    </div>
+                                {% endif %}
+                            <hr>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label text-right" for="client_prenom">
+                                    Courriel
+                                </label>
+                                <div class="col-sm-10">
+                                    <p>{{app.user.courriel}}</p>
+                                </div>
+                            </div>
+                            {{ form_start(formInfosCompte, { 'attr': { 'data-toggle':'validator' } }) }}
+                                {{ form_row(formInfosCompte.nom) }}
+                                {{ form_row(formInfosCompte.prenom) }}
+                                {{ form_row(formInfosCompte.courriel) }}
+                                {{ form_row(formInfosCompte.genre, { 'attr': {'class':'genre' }}) }}
+                                {{ form_row(formInfosCompte.adresse) }}
+                                {{ form_row(formInfosCompte.ville) }}
+                                {{ form_row(formInfosCompte.codePostal,{ 'attr': {'class':'codePostal' }})  }}
+                                {{ form_row(formInfosCompte.province) }}
+                                {{ form_row(formInfosCompte.telephone,{ 'attr': {'class':'telephone' }}) }}
+                                {{ form_row(formInfosCompte.btnEnregistrerChangements, {'label':'Enregistrer', 'attr': {'class': 'btn btn-default round btn-md'}}) }}
+                                {{ form_rest(formInfosCompte) }}
+                            {{ form_end(formInfosCompte) }}
+                        </div><!-- end box -->
+                    </div><!-- end row -->
+                    <div class="row">
+                        <div class="box">
+                            <h2 class="title text-center">Changer mon mot de passe</h2>
+                            <hr>
+                            {{ form_start(formMotPasse, { 'attr': { 'data-toggle':'validator' } }) }}
+                                {{ form_row(formMotPasse.oldPassword) }}
+                                {{ form_row(formMotPasse.newPassword) }}
+                                {{ form_row(formMotPasse.btnSendFormChangePwd, {'label':'Enregistrer', 'attr': {'class': 'btn btn-default round btn-md'}}) }}
+                            {{ form_end(formMotPasse) }}
+                        </div><!-- end box -->
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end container -->
+        </div><!-- end row -->     
+</section>
+<!-- end section -->
+<!-- end section -->
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+    <script src="{{ asset('js/dossier.js') }}"></script>
+{% endblock %}

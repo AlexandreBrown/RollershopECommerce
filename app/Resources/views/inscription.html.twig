@@ -1,0 +1,55 @@
+{% extends 'base/base.html.twig' %}
+{% form_theme formInfosCompte 'bootstrap_3_horizontal_layout.html.twig' %}
+{% block content %}
+<!-- start section -->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <h2 class="title">Création d'un compte</h2>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+                
+                <hr class="spacer-5"><hr class="spacer-20 no-border">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box">
+                            {% if message is defined and message is not null %}
+                                <div class="alert {{ message.getType }} text-center">
+                                    {{ message.getTexte | raw  }}
+                                </div>
+                            {% else %}
+                                <p class="lead text-center">Vous n'avez toujours pas de compte?</p>
+                            {% endif %}
+                            <hr>
+                            {{ form_start(formInfosCompte, { 'attr': { 'data-toggle':'validator','id':'formInscription'} }) }}
+                                {{ form_row(formInfosCompte.nom) }}
+                                {{ form_row(formInfosCompte.prenom) }}
+                                {{ form_row(formInfosCompte.courriel) }}
+                                {{ form_row(formInfosCompte.motPasse) }}
+                                {{ form_row(formInfosCompte.genre, { 'attr': {'class':'genre' }}) }}
+                                {{ form_row(formInfosCompte.adresse) }}
+                                {{ form_row(formInfosCompte.ville) }}
+                                {{ form_row(formInfosCompte.codePostal,{ 'attr': {'class':'codePostal' }}) }}
+                                {{ form_row(formInfosCompte.province) }}
+                                {{ form_row(formInfosCompte.telephone,{ 'attr': {'class':'telephone' }}) }}
+                                {{ form_row(formInfosCompte.btnEnregistrerChangements, {'label':'Créer mon compte', 'attr': {'class': 'btn btn-default round btn-md'}}) }}
+                                {{ form_rest(formInfosCompte) }}
+                            {{ form_end(formInfosCompte) }}
+                        </div>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div><!-- end row -->                
+    </div><!-- end container -->
+</section>
+<!-- end section -->
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+    <script src="{{ asset('js/inscription.js') }}"></script>
+{% endblock %}

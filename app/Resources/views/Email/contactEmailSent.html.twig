@@ -1,0 +1,41 @@
+<!-- 100% background wrapper (grey background) -->
+<table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#F0F0F0">
+<tr>
+    <td align="center" valign="top" bgcolor="#F0F0F0" style="background-color: #F0F0F0;">
+    <br>
+                <!-- 600px container (white background) -->
+                <table border="0" width="600" cellpadding="0" cellspacing="0" class="container">
+                    <thead>
+                        <div width="600" style="background-color:#FFFFFF;">
+                            <h1 style="text-align:center;color:#000000">Contact</h1> <!-- L'envoie de page html par courriel ne supporte pas les fichiers css donc on doit faire notre style en in-line -->
+                        </div>
+                    </thead>
+                    <tr>
+                        <td>
+                            <br>
+                            <div>
+                                <h2>Nom : </h2><strong>{{name}}</strong>
+                            </div>
+                            <br>
+                            <div>
+                                <h2>Message : </h2>
+                                    <p>{{msgBody}}</p>
+                                <br><br>
+                                <h2>Email : </h2>
+                                <p>
+                                    {{email}}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><br>
+                            &copy; 2017 Rollershop, Inc.
+                            <br><br>
+                        </td>
+                    </tr>
+                </table><!--/600px container -->
+            </td>
+        </tr>
+</table><!--/100% background wrapper-->
