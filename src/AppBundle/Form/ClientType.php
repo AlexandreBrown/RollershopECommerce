@@ -24,8 +24,7 @@ class ClientType extends AbstractType
                         'Femme' => 'F',    
                         'Homme' => 'M'),
                     'required' => true,
-                    'expanded' => true,
-                    'choices_as_values' => true
+                    'expanded' => true
                 ))
             ->add('adresse', TextType::class, array('attr' => array('placeholder' => 'Entrez votre adresse')))
             ->add('ville', TextType::class, array('attr' => array('placeholder' => 'Entrez votre ville')))
