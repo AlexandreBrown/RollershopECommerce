@@ -9,17 +9,25 @@ use AppBundle\Entity\Message;
 use AppBundle\Entity\MessageType;
 
 /**
-* @Route("/listeSouhaits")
+* @Route("/commande")
 *
 */
 class CommandeController extends Controller
 {
      /**
-     * @Route("/", name="")
+     * @Route("/paiement", name="paiement")
      */
-    public function indexAction(Request $request)
+    public function paiementAction(Request $request)
     {
 
-        return $this->render('.html.twig',array());
+        return $this->render('./commande/paiement.html.twig');
+    }
+         /**
+     * @Route("/revue", name="revue")
+     */
+    public function revueAction(Request $request)
+    {
+
+        return $this->render('./commande/revue.html.twig');
     }
 }

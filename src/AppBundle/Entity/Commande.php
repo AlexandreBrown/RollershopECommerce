@@ -1,14 +1,45 @@
 <?php
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\ORM\Mapping as Doctrine;
+/**
+* @Doctrine\Entity
+* @Doctrine\Table(name="Commandes"
+*/
 class Commande
 {
     // Attributs
+    /**
+    * @Doctrine\Column(name="idCommande", type="integer")
+    * @Doctrine\Id
+    * @Doctrine\GeneratedValue(strategy="AUTO")
+    */
+    private $idCommande;
+
+    /**
+    * @Doctrine\Column(name="dateCommande",type="datetime")
+    */
     private $dateCommande;
+    /**
+    * @Doctrine\Column(name="stripeId",type="string",length=255)
+    */
     private $stripeId;
+    /**
+    * @Doctrine\Column(name="stripeFingerprint",type="string",length=255)
+    */
     private $stripeFingerprint;
+    /**
+    * @Doctrine\Column(name="tauxTPS",type="integer")
+    */
     private $tauxTPS;
+    /**
+    * @Doctrine\Column(name="tauxTVQ",type="integer")
+    */
     private $tauxTVQ;
+    /**
+    * @Doctrine\Column(name="etat",type="string",length=50)
+    */
     private $etat;
     
     // Constructeur
