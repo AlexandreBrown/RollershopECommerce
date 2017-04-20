@@ -56,7 +56,7 @@ class PanierController extends Controller
             $message = new Message(MessageType::INFO,"Panier mis à jour");
             $this->addFlash('messages',$message);
         }else if($action === "payer"){
-            return $this->redirectToRoute('error404');
+            return $this->redirectToRoute('paiement');
         }
         return $this->redirectToRoute('panier.index');
     }

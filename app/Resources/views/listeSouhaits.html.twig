@@ -20,28 +20,28 @@
         <div class="row">
         {% if app.user %} <!-- On affiche le sidebar seulement si l'utilisateur est connecté à un compte -->
             <!-- start sidebar -->
-            <div class="col-sm-3">
-                <div class="widget all-ArroundBorder spacerPad20">
+            <div class="col-sm-2">
+                <div class="widget all-ArroundBorder">
                     <h5 class="subtitle text-center">Navigation</h5>
-
-                    <ul class="list list-unstyled">
-                        <li>
+                    
+                    <ul class="list list-unstyled ">
+                        <li class="spacerPad10-no-top-bottom">
                             <a href="{{ path('dossier') }}">Mon compte</a>
                         </li>
-                        <li>
-                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
+                        <li class="spacerPad10-no-top-bottom">
+                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}})</span></a>
                         </li>
-                        <li>
+                        <li class="spacerPad10-no-top-bottom">
                             <a href="{{ path('error404') }}">Mes commandes</a>
                         </li>
-                        <li class="active">
-                            <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({{listeSouhaits.compteSouhaits}})</span></a>
+                        <li class="active spacerPad10-no-top-bottom">
+                            <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
                         </li>
-                        <li>
+                        <li class="spacerPad10-no-top">
                             <a href="{{ path('deconnexion') }}">Déconnexion</a>
                         </li>
                     </ul>
-                </div><!-- end widget -->
+                </div><!-- end widget -->  
             </div><!-- end col -->
             <!-- end sidebar -->
         <div class="col-sm-9">
