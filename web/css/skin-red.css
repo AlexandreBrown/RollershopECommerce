@@ -2486,7 +2486,7 @@ input[type="radio"] .styled:checked + label::after {
       border: none; }
 
 .tab-content {
-  padding: 40px 0; }
+  /*padding: 40px 0;*/ }
   .tab-content.style2 {
     padding: 20px 20px;
     border: 1px solid rgba(0, 0, 0, 0.08); }
@@ -4167,4 +4167,36 @@ display: inline;
 
 #inputContact{
   text-align: center;
+}
+
+.UBorder {
+  border-style: ridge  ;
+  border-top: none !important;
+}
+
+.all-ArroundBorder{
+  border-style: ridge  ;
+}
+
+.spacerPad20{
+  padding: 20px 20px 20px 20px;
+}
+
+.spacerPad10{
+  padding: 10px 10px 10px 10px;
+}
+
+.spacerPad10-no-top{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.spacerPad10-no-top-bottom{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.spacerPad10-no-top-left-right{
+  padding-bottom: 10px;
 }

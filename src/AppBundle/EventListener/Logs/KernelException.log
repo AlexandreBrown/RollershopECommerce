@@ -1,6 +1,6 @@
-2017-04-20 17:37:29 Last error : exception 'Symfony\Component\Routing\Exception\ResourceNotFoundException' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\appDevDebugProjectContainerUrlMatcher.php:256
+2017-04-20 18:55:39 Last error : exception 'Symfony\Component\Routing\Exception\ResourceNotFoundException' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\appDevDebugProjectContainerUrlMatcher.php:256
 Stack trace:
-#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(2029): appDevDebugProjectContainerUrlMatcher->match('/commande/img/p...')
+#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(2029): appDevDebugProjectContainerUrlMatcher->match('/js/maps/swiper...')
 #1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(1898): Symfony\Component\Routing\Matcher\UrlMatcher->matchRequest(Object(Symfony\Component\HttpFoundation\Request))
 #2 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(3470): Symfony\Component\Routing\Router->matchRequest(Object(Symfony\Component\HttpFoundation\Request))
 #3 [internal function]: Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest(Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher))
@@ -16,7 +16,7 @@ Stack trace:
 #13 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): require('C:\\Users\\alinux...')
 #14 {main}
 
-Next exception 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException' with message 'No route found for "GET /commande/img/products/bags_07.jpg" (from "http://127.0.0.1:8000/commande/revue")' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php:3486
+Next exception 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException' with message 'No route found for "GET /js/maps/swiper.min.js.map"' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php:3486
 Stack trace:
 #0 [internal function]: Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest(Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher))
 #1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\EventDispatcher\Debug\WrappedListener.php(106): call_user_func(Array, Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher))
