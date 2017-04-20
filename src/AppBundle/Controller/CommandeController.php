@@ -22,7 +22,7 @@ class CommandeController extends Controller
 
         return $this->render('./commande/paiement.html.twig');
     }
-         /**
+     /**
      * @Route("/revue", name="revue")
      */
     public function revueAction(Request $request)

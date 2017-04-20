@@ -54,12 +54,19 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#shopping-cart" data-toggle="tab">
+                            	<a href="{{path('revue')}}">
                                     2. Revue de la commande
-									<div class="icon">
+                                    <div class="icon">
                                         <i class="fa fa-check"></i>
                                     </div>
                                 </a>
+                            	<!-- 
+                            	<form method="post" action="{{ path('revue') }}">
+	                                <button type="submit" name="action" value="revue" disabled class="btn btn-disabled btn-sm">
+	                                	2. Revue de la commande <i class="fa fa-check"></i>
+	                                </button>
+                            	</form>
+                            	!-->
                             </li>
                         </ul>
                         <div class="tab-content pills">
@@ -221,140 +228,6 @@
 				                        </div><!-- end table-responsive -->
 				                    </div><!-- end col -->
                                 </div><!-- end row -->
-                            </div><!-- end tab-pane -->
-                            <div class="tab-pane" id="shopping-cart">
-                                <div class="table-responsive col-sm-8">    
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th colspan="2">Products</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
-                                                <th colspan="2">Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="javascript:void(0);">
-                                                        <img width="60px" src="img/products/men_06.jpg" alt="product">
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
-                                                    <p>Sed aliquam tincidunt tempus</p>
-                                                </td>
-                                                <td>
-                                                    <span>$59.99</span>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" name="select">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <span class="text-primary">$59.99</span>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="close">×</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="javascript:void(0);">
-                                                        <img width="60px" src="img/products/shoes_01.jpg" alt="product">
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
-                                                    <p>Sed aliquam tincidunt tempus</p>
-                                                </td>
-                                                <td>
-                                                    <span>$39.99</span>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" name="select">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <span class="text-primary">$39.99</span>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="close">×</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="javascript:void(0);">
-                                                        <img width="60px" src="img/products/bags_07.jpg" alt="product">
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
-                                                    <p>Sed aliquam tincidunt tempus</p>
-                                                </td>
-                                                <td>
-                                                    <span>$29.99</span>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" name="select">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <span class="text-primary">$29.99</span>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="close">×</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table><!-- end table -->
-                                </div><!-- end table-responsive -->
-	                                <div class="col-sm-4">
-				                        	<div class="table-responsive table-bordered"> 
-				                            <table class="table no-border">
-				                                <thead class="summaryCart">
-				                                    <tr>
-				                                        <td colspan="2">
-				                                            <h5>Sommaire de la commande</h5>
-				                                        </td>
-				                                    </tr>
-				                                </thead>
-				                                <tr>
-				                                    <th>Sous-total</th><td class="pull-right">123$</td>
-				                                </tr>
-				                                <tr>
-				                                    <th>Frais de livraison</th><td class="pull-right">123$</td>
-				                                </tr>
-				                                <tr>
-				                                    <th>TPS</th><td class="pull-right">123$</td>
-				                                </tr>
-				                                <tr>
-				                                    <th>TVQ</th><td class="pull-right">123$</td>
-				                                </tr>
-				                                <tr>
-				                                    <tbody></tbody>
-				                                </tr>
-				                                <tr>
-				                                    <th>Total</th><td class="pull-right">123$</td>
-				                                </tr>
-				                            </table><!-- end table -->
-				                        </div><!-- end table-responsive -->
-				                    </div><!-- end col -->
                             </div><!-- end tab-pane -->
                         </div><!-- end pills content -->
                     </div><!-- end col -->

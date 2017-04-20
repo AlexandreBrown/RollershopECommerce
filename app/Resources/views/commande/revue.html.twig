@@ -1,4 +1,208 @@
 {% extends 'base/base.html.twig' %}
 {% block content %}
-	
+<!-- start section -->
+<section class="section white-backgorund">
+    <div class="container">
+        <div class="row">
+        	{% if app.user %}
+            <!-- start sidebar -->
+            <div class="col-sm-3">
+                <div class="widget">
+                    <h6 class="subtitle">Account Navigation</h6>
+                    
+                    <ul class="list list-unstyled">
+                        <li>
+                            <a href="my-account.html">My Account</a>
+                        </li>
+                        <li class="active">
+                            <a href="cart.html">My Cart <span class="text-primary">(3)</span></a>
+                        </li>
+                        <li>
+                            <a href="order-list.html">My Order</a>
+                        </li>
+                        <li>
+                            <a href="wishlist.html">Wishlist <span class="text-primary">(5)</span></a>
+                        </li>
+                        <li>
+                            <a href="user-information.html">Settings</a>
+                        </li>
+                    </ul>
+                </div><!-- end widget -->
+            </div><!-- end col -->
+            <div class="col-sm-9">
+        	{% else %}
+        	<div class="col-sm-12">
+        	{% endif %}
+            <!-- end sidebar -->
+                <div class="row">
+                    <div class="col-sm-12 text-left">
+                        <h2 class="title">Paiement</h2>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+                
+                <hr class="spacer-5"><hr class="spacer-20 no-border">
+                
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="nav nav-pills style2 nav-justified">
+                            <li>
+                                <a href="{{path('paiement')}}">
+                                    1. Méthode de paiement
+                                    <div class="icon">
+                                        <i class="fa fa-credit-card"></i>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="#shopping-cart" data-toggle="tab">
+                                    2. Revue de la commande
+									<div class="icon">
+                                        <i class="fa fa-check"></i>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content pills">
+                            <div class="tab-pane active" id="shopping-cart">
+                                <div class="table-responsive col-sm-8">    
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Products</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th colspan="2">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a href="javascript:void(0);">
+                                                        <img width="60px" src="img/products/men_06.jpg" alt="product">
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
+                                                    <p>Sed aliquam tincidunt tempus</p>
+                                                </td>
+                                                <td>
+                                                    <span>$59.99</span>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="select">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <span class="text-primary">$59.99</span>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="close">×</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a href="javascript:void(0);">
+                                                        <img width="60px" src="img/products/shoes_01.jpg" alt="product">
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
+                                                    <p>Sed aliquam tincidunt tempus</p>
+                                                </td>
+                                                <td>
+                                                    <span>$39.99</span>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="select">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <span class="text-primary">$39.99</span>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="close">×</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a href="javascript:void(0);">
+                                                        <img width="60px" src="img/products/bags_07.jpg" alt="product">
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
+                                                    <p>Sed aliquam tincidunt tempus</p>
+                                                </td>
+                                                <td>
+                                                    <span>$29.99</span>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="select">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <span class="text-primary">$29.99</span>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="close">×</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table><!-- end table -->
+                                </div><!-- end table-responsive -->
+	                                <div class="col-sm-4">
+				                        	<div class="table-responsive table-bordered"> 
+				                            <table class="table no-border">
+				                                <thead class="summaryCart">
+				                                    <tr>
+				                                        <td colspan="2">
+				                                            <h5>Sommaire de la commande</h5>
+				                                        </td>
+				                                    </tr>
+				                                </thead>
+				                                <tr>
+				                                    <th>Sous-total</th><td class="pull-right">123$</td>
+				                                </tr>
+				                                <tr>
+				                                    <th>Frais de livraison</th><td class="pull-right">123$</td>
+				                                </tr>
+				                                <tr>
+				                                    <th>TPS</th><td class="pull-right">123$</td>
+				                                </tr>
+				                                <tr>
+				                                    <th>TVQ</th><td class="pull-right">123$</td>
+				                                </tr>
+				                                <tr>
+				                                    <tbody></tbody>
+				                                </tr>
+				                                <tr>
+				                                    <th>Total</th><td class="pull-right">123$</td>
+				                                </tr>
+				                            </table><!-- end table -->
+				                        </div><!-- end table-responsive -->
+				                    </div><!-- end col -->
+                            </div><!-- end tab-pane -->
+                        </div><!-- end pills content -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end col -->
+        </div><!-- end row -->                
+    </div><!-- end container -->
+</section>
+<!-- end section -->
 {% endblock %}
