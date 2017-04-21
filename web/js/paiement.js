@@ -1,5 +1,5 @@
 // Create a Stripe client
-var stripe = Stripe('pk_test_pMLvpKaS18y86p5E5f4kopsW');
+var stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
 
 // Create an instance of Elements
 var elements = stripe.elements();
@@ -66,4 +66,13 @@ function stripeTokenHandler(token) {
 
   // Submit the form
   form.submit();
+}
+
+function enableButtonIfNotEmpty(){
+  var name = document.getElementById('cc_name');
+  if(name != ""){
+    document.getElementById('btnSubmitMethodePaiement').classList.remove("disabled");
+  }else{
+    document.getElementById('btnSubmitMethodePaiement').classList.add("disabled");
+  }
 }

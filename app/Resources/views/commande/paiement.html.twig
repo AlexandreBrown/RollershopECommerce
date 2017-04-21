@@ -76,26 +76,75 @@
                                     <div class="col-md-8">
                                         <h5 class="thin subtitle">Méthode de paiement</h5>
                                         <div class="panel-group accordion style2" id="accordionPayment" role="tablist" aria-multiselectable="true">
-                                            <form id="payment-form" role="form" data-toggle="validator" method="post" action="{{ path('paiement') }}" novalidate="true">
-                                                <div class="group">
-                                                    <label>
-                                                      <span>Nom sur la carte</span><br>
-                                                      <input name="cardholder-name" class="field" />
-                                                    </label>
-                                                </div>
+                                            <form id="payment-form" role="form" data-toggle="validator" method="post" action="{{ path('revue') }}" novalidate="true">
                                                 <div class="form-row">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Nom sur la carte</label>
+                                                        <input id="cc_name" onKeyUp="enableButtonIfNotEmpty()" type="text" size="20" name="nom" class="form-control" required="">
+                                                    </div>
                                                     <label for="card-element">
                                                       Numéro de carte de crédit
                                                     </label>
-                                                <div id="card-element">
-                                                  <!-- a Stripe Element will be inserted here. -->
-                                                </div>
+                                                    <div id="card-element">
+                                                      <!-- a Stripe Element will be inserted here. -->
+                                                    </div>
 
-                                                <!-- Used to display form errors -->
-                                                <div id="card-errors"></div>
-                                              </div>
-                                            
+                                                    <!-- Used to display form errors -->
+                                                    <div id="card-errors"></div>
+                                                  </div>
                                         </div><!-- end panel-group -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h5 class="thin subtitle">(FAQ) Foire Aux Questions</h5>
+                                                <div class="panel-group accordion style1" id="question" role="tablist" aria-multiselectable="true">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="questionOne">
+                                                            <h4 class="panel-title">
+                                                                <a class="" data-toggle="collapse" data-parent="#question" href="#collapseQuestionOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                    Quel types de paiements sont acceptés?
+                                                                </a>
+                                                            </h4>
+                                                        </div><!-- end panel-heading -->
+                                                        <div id="collapseQuestionOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="questionOne">
+                                                            <div class="panel-body">
+                                                                <p>Nous acceptons la Visa , MasterCard ou American Express </p>
+                                                            </div><!-- end panel-body -->
+                                                        </div><!-- end collapse -->
+                                                    </div><!-- end panel -->
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="questionTwo">
+                                                            <h4 class="panel-title">
+                                                                <a class="collapsed" data-toggle="collapse" data-parent="#question" href="#collapseQuestionTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                    Puis-je utiliser une carte cadeau pour mes achats en ligne?
+                                                                </a>
+                                                            </h4>
+                                                        </div><!-- end panel-heading -->
+                                                        <div id="collapseQuestionTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="questionTwo">
+                                                            <div class="panel-body">
+                                                                <p>Les cartes cadeaux sont uniquement valide en magasin , veuillez vous référer à la section <a href="{{path('contacts')}}" target="_blank">Contacts</a> pour trouver un de nos magasin.</p>
+                                                            </div><!-- end panel-body -->
+                                                        </div><!-- end collapse -->
+                                                    </div><!-- end panel -->
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="questionThree">
+                                                            <h4 class="panel-title">
+                                                                <a class="collapsed" data-toggle="collapse" data-parent="#question" href="#collapseQuestionThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                    Quel est le temps de livraison moyen?
+                                                                </a>
+                                                            </h4>
+                                                        </div><!-- end panel-heading -->
+                                                        <div id="collapseQuestionThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="questionThree">
+                                                            <div class="panel-body">
+                                                                <p>Dépendement de votre emplacement , une commande peut prendre autour de 5 à 10 jours <u>ouvrables</u> avant d'être livrée.</p>
+                                                                <p>*Note:Ceci n'est qu'une approximation du délai général de nos livraisons , cet approximation pourrait changer selon le moment auquel vous faites votre commande. Merci de votre compréhension!*</p>
+                                                            </div><!-- end panel-body -->
+                                                        </div><!-- end collapse -->
+                                                    </div><!-- end panel -->
+                                                </div><!-- end panel-group -->
+                                            </div><!-- end col -->
+                                        </div>
                                     </div><!-- end col -->
                                     <div class="col-sm-4">
                                         <div class="table-responsive table-bordered"> 
@@ -140,7 +189,7 @@
 	        		<a href="{{path('panier.index')}}" class="btn btn-default btn-md round">Retour au panier</a>
 	        	</div>
 	        	<div class="col-sm-6 text-right">
-	        		<button name="action" value="confirmation" type="submit" class="btn btn-default btn-md round">Revoir la commande</button>
+	        		<button id="btnSubmitMethodePaiement" name="action" value="confirmation" type="submit" class="btn btn-default btn-md round disabled ">Revoir la commande</button>
 	        	</div>
                 </form>
 	        </div>  
