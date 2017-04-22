@@ -5,36 +5,6 @@
 <!-- start section -->
 <section class="section white-backgorund">
     <div class="container">
-        <div class="row">
-        	{% if app.user %}
-            <!-- start sidebar -->
-            <div class="col-sm-2">
-                <div class="widget all-ArroundBorder">
-                    <h5 class="subtitle text-center">Navigation</h5>
-                    
-                    <ul class="list list-unstyled ">
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('dossier') }}">Mon compte</a>
-                        </li>
-                        <li class="active spacerPad10-no-top-bottom">
-                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}})</span></a>
-                        </li>
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('error404') }}">Mes commandes</a>
-                        </li>
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
-                        </li>
-                        <li class="spacerPad10-no-top">
-                            <a href="{{ path('deconnexion') }}">Déconnexion</a>
-                        </li>
-                    </ul>
-                </div><!-- end widget --> 
-            </div><!-- end col -->
-            <div class="col-sm-10">
-        	{% else %}
-        	<div class="col-sm-12">
-        	{% endif %}
             <!-- end sidebar -->
                 <div class="row">
                     <div class="col-sm-12 text-left">

@@ -4200,3 +4200,15 @@ display: inline;
 .spacerPad10-no-top-left-right{
   padding-bottom: 10px;
 }
+
+.spacerMarg10{
+  margin: 10px 10px 10px 10px;
+}
+
+.spacerMarg10-no-top{
+  margin: 10px 10px 10px 10px;
+}
+
+.border{
+    border-style: ridge  ;
+}

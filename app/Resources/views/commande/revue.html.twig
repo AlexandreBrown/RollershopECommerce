@@ -5,37 +5,6 @@
 <!-- start section -->
 <section class="section white-backgorund">
     <div class="container">
-        <div class="row">
-            {% if app.user %}
-            <!-- start sidebar -->
-            <div class="col-sm-2">
-                <div class="widget all-ArroundBorder">
-                    <h5 class="subtitle text-center">Navigation</h5>
-                    
-                    <ul class="list list-unstyled ">
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('dossier') }}">Mon compte</a>
-                        </li>
-                        <li class="active spacerPad10-no-top-bottom">
-                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}})</span></a>
-                        </li>
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('error404') }}">Mes commandes</a>
-                        </li>
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
-                        </li>
-                        <li class="spacerPad10-no-top">
-                            <a href="{{ path('deconnexion') }}">Déconnexion</a>
-                        </li>
-                    </ul>
-                </div><!-- end widget --> 
-            </div><!-- end col -->
-            <div class="col-sm-10">
-            {% else %}
-            <div class="col-sm-12">
-            {% endif %}
-
             <!-- end sidebar -->
                 <div class="row">
                     <div class="col-sm-12 text-left">
@@ -44,9 +13,9 @@
                 </div><!-- end row -->
                 
                 <hr class="spacer-5"><hr class="spacer-20 no-border">
-                <div class="UBorder">
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-8">
+                        <div class="UBorder">
                         <ul class="nav nav-pills style2 nav-justified">
                             <li>
                                 <a href="{{path('paiement')}}">
@@ -105,12 +74,45 @@
                                             {% endfor %}<!-- endfor chaque achat -->
                                         </tbody>
                                     </table><!-- end table -->
-                                </div><!-- end table-responsive -->                                    </div><!-- end col -->
+                                </div><!-- end table-responsive -->
                             </div><!-- end tab-pane -->
                         </div><!-- end pills content -->
+                    </div><!-- UBorder -->
+                    </div><!-- end col -->
+                    <div class="col-sm-4">
+                        <div class="table-responsive table-bordered spacerMarg10-no-top"> 
+                            <table class="table no-border">
+                                <thead class="summaryCart">
+                                    <tr>
+                                        <td colspan="2">
+                                            <h5>Sommaire de la commande</h5>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>Sous-total</th><td class="pull-right">{{ panier.calculSousTotal() | number_format(2, ",", " ") }}$</td>
+                                </tr>
+                                <tr>
+                                    <th>Frais de livraison</th><td class="pull-right">{{ panier.calculFraisLivraison() | number_format(2, ",", " ") }}$</td>
+                                </tr>
+                                <tr>
+                                    <th>TPS</th><td class="pull-right">{{ panier.calculTPS() | number_format(2, ",", " ") }}$</td>
+                                </tr>
+                                <tr>
+                                    <th>TVQ</th><td class="pull-right">{{ panier.calculTVQ() | number_format(2, ",", " ") }}$</td>
+                                </tr>
+                                <tr>
+                                    <tbody></tbody>
+                                </tr>
+                                <tr>
+                                    <th>Total</th><td class="pull-right">{{ panier.calculTotal() | number_format(2, ",", " ") }}$</td>
+                                </tr>
+                            </table><!-- end table -->
+                        </div><!-- end table-responsive -->
                     </div><!-- end col -->
                 </div><!-- end row -->
-            <div class="row spacerPad10-no-top">
+            
+            <div class="row">
                 <hr>
                 <div class="col-sm-6 text-left">
                     <a href="{{path('panier.index')}}" class="btn btn-default btn-md round">Retour au panier</a>
@@ -120,7 +122,6 @@
                 </div>
             </div> 
             </div><!-- end col -->
-            </div><!-- end UBorder -->
         </div><!-- end row -->                
     </div><!-- end container -->
 </section>

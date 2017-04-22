@@ -18,7 +18,7 @@
                             <a href="{{ path('dossier') }}">Mon compte</a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}})</span></a>
+                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
                             <a href="{{ path('error404') }}">Mes commandes</a>

@@ -1,4 +1,4 @@
-2017-04-22 4:37:34 Last error : exception 'Symfony\Component\Routing\Exception\ResourceNotFoundException' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\appDevDebugProjectContainerUrlMatcher.php:256
+2017-04-23 1:09:19 Last error : exception 'Symfony\Component\Routing\Exception\ResourceNotFoundException' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\appDevDebugProjectContainerUrlMatcher.php:256
 Stack trace:
 #0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(2029): appDevDebugProjectContainerUrlMatcher->match('/js/maps/swiper...')
 #1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(1898): Symfony\Component\Routing\Matcher\UrlMatcher->matchRequest(Object(Symfony\Component\HttpFoundation\Request))
