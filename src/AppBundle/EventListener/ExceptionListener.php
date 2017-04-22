@@ -28,7 +28,7 @@ class ExceptionListener
     {
         $logFile = fopen(__DIR__ . "/Logs/KernelException.log","w");
         $exception = $event->getException();
-        $sysDate = date("Y-m-j G:i:s");;
+        $sysDate = date("Y-m-j G:i:s");
         fwrite($logFile,$sysDate." Last error : ".$exception);
         fclose($logFile);
             $route = 'error500';

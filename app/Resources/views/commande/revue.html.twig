@@ -67,152 +67,59 @@
                         </ul>
                         <div class="tab-content pills">
                             <div class="tab-pane active" id="shopping-cart">
-                                <div class="table-responsive col-sm-8">    
+                                <div class="table-responsive table-bordered">    
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th colspan="2">Products</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
+                                                <th colspan="2">Produits</th>
+                                                <th>Prix</th>
+                                                <th>Quantité</th>
                                                 <th colspan="2">Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for unAchat in commande.Achats %}
                                             <tr>
-                                                <td>
-                                                    <a href="javascript:void(0);">
-                                                        <img width="60px" src="img/products/men_06.jpg" alt="product">
-                                                    </a>
+                                                <td> <!-- IMG du produit -->
+                                                    <h6 class="regular">
+                                                            <img width="60px" src="{{ asset_if('img/produits/' ~ unAchat.Produit.Categorie.IdCategorie ~ '/' ~ unAchat.Produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
+                                                        </a>
+                                                    </h6>
                                                 </td>
                                                 <td>
-                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
-                                                    <p>Sed aliquam tincidunt tempus</p>
+                                                    <h6 class="regular">
+                                                            {{ unAchat.Produit.nom }}
+                                                        </a>
+                                                    </h6>
                                                 </td>
                                                 <td>
-                                                    <span>$59.99</span>
+                                                    <span>{{unAchat.Produit.Prix}}$</span>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control" name="select">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
+                                                    <p>{{ unAchat.Quantite }}</p>
                                                 </td>
                                                 <td>
-                                                    <span class="text-primary">$59.99</span>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="close">×</button>
+                                                    <span class="text-primary">{{unAchat.getPrixAchat}}$</span>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="javascript:void(0);">
-                                                        <img width="60px" src="img/products/shoes_01.jpg" alt="product">
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
-                                                    <p>Sed aliquam tincidunt tempus</p>
-                                                </td>
-                                                <td>
-                                                    <span>$39.99</span>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" name="select">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <span class="text-primary">$39.99</span>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="close">×</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="javascript:void(0);">
-                                                        <img width="60px" src="img/products/bags_07.jpg" alt="product">
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <h6 class="regular"><a href="javascript:void(0);">Lorem Ipsum</a></h6>
-                                                    <p>Sed aliquam tincidunt tempus</p>
-                                                </td>
-                                                <td>
-                                                    <span>$29.99</span>
-                                                </td>
-                                                <td>
-                                                    <select class="form-control" name="select">
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <span class="text-primary">$29.99</span>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="close">×</button>
-                                                </td>
-                                            </tr>
+                                            {% endfor %}<!-- endfor chaque achat -->
                                         </tbody>
                                     </table><!-- end table -->
-                                </div><!-- end table-responsive -->
-                                    <div class="col-sm-4">
-                                        <div class="table-responsive table-bordered"> 
-                                            <table class="table no-border">
-                                                <thead class="summaryCart">
-                                                    <tr>
-                                                        <td colspan="2">
-                                                            <h5>Sommaire de la commande</h5>
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                                <tr>
-                                                    <th>Sous-total</th><td class="pull-right">{{ panier.calculSousTotal() | number_format(2, ",", " ") }}$</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Frais de livraison</th><td class="pull-right">{{ panier.calculFraisLivraison() | number_format(2, ",", " ") }}$</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>TPS</th><td class="pull-right">{{ panier.calculTPS() | number_format(2, ",", " ") }}$</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>TVQ</th><td class="pull-right">{{ panier.calculTVQ() | number_format(2, ",", " ") }}$</td>
-                                                </tr>
-                                                <tr>
-                                                    <tbody></tbody>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total</th><td class="pull-right">{{ panier.calculTotal() | number_format(2, ",", " ") }}$</td>
-                                                </tr>
-                                            </table><!-- end table -->
-                                        </div><!-- end table-responsive -->
-                                    </div><!-- end col -->
+                                </div><!-- end table-responsive -->                                    </div><!-- end col -->
                             </div><!-- end tab-pane -->
                         </div><!-- end pills content -->
                     </div><!-- end col -->
                 </div><!-- end row -->
-            </div><!-- end col -->
             <div class="row spacerPad10-no-top">
                 <hr>
                 <div class="col-sm-6 text-left">
                     <a href="{{path('panier.index')}}" class="btn btn-default btn-md round">Retour au panier</a>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <button id="btnSubmitCommande" name="action" value="submitCommande" type="submit" class="btn btn-default btn-md round">Placer la commande</button>
+                    <button name="action" value="confirmation" type="submit" class="btn btn-default btn-md round">Placer la commande</button>
                 </div>
-            </div>  
+            </div> 
+            </div><!-- end col -->
             </div><!-- end UBorder -->
         </div><!-- end row -->                
     </div><!-- end container -->

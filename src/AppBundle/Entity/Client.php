@@ -101,9 +101,12 @@ class Client implements UserInterface
     */
     private $telephone;
 
+    private $commandes;
+
     // Constructeur
     public function __construct()
     {
+        $this->commandes = array();
         $this->setSalt(md5(uniqid(null, true)));
     }
 
@@ -119,6 +122,7 @@ class Client implements UserInterface
     public function getCodePostal() { return $this->codePostal; }
     public function getProvince() { return $this->province; }
     public function getTelephone() { return $this->telephone; }
+    public function getCommandes() { return $this->commandes; }
 
     //Méthodes membres de l'interface UserInterface
     public function getRoles() { return array('ROLE_USER'); } //TODO: Sera à modifier lors de l'ES
@@ -139,5 +143,10 @@ class Client implements UserInterface
     public function setTelephone($telephone) { $this->telephone = $telephone; return $this; }
     public function setMotPasse($motPasse) { $this->motPasse = $motPasse; return $this; }
     public function setSalt($salt) { $this->salt = $salt; return $this; }
+
+    public function ajouterCommande($commande)
+    {
+        $this->commandes[] = $commande;
+    }
 
 }
