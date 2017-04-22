@@ -49,4 +49,6 @@ class CommandeController extends Controller
             return $this->redirectToRoute('inscription');
         }
     }
+
+    
 }
