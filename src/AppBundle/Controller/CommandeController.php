@@ -55,6 +55,7 @@ class CommandeController extends Controller
                                 $commande = new Commande($clientConnecte->getIdClient(),$panier->getTPS(),$panier->getTVQ(),$stripeId);
                                 $this->ajouterAchatsCommande($commande,$panier);
                                 $this->createCharge($panier->calculTotal(),$stripeId);
+                                $this->get('session')->remove('stripeId');
                             }
                             else{
                                 return $this->redirectToRoute('error');
@@ -77,15 +78,15 @@ class CommandeController extends Controller
         // Set your secret key: remember to change this to your live secret key in production
         // See your keys here: https://dashboard.stripe.com/account/apikeys
         \Stripe\Stripe::setApiKey("sk_test_sGvHbTfAPF6Cvgp685LuCqrW");
-
-        // Charge the user's card:
-        $charge = \Stripe\Charge::create(array(
-          "amount" => $amount,
-          "currency" => "cad",
-          "description" => "Rollershop",
-          "source" => $token,
-        ));
-        die("charge worked!");
+            $amount = $amount * 100;
+            $amount = round($amount);
+            // Charge the user's card:
+            $charge = \Stripe\Charge::create(array(
+              "amount" => $amount,
+              "currency" => "cad",
+              "description" => "Rollershop",
+              "source" => $token,
+            ));
     }
 
     private function ajouterAchatsCommande($commande,$panier)

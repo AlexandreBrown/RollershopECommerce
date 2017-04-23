@@ -31,7 +31,7 @@ class ExceptionListener
         $sysDate = date("Y-m-j G:i:s");
         fwrite($logFile,$sysDate." Last error : ".$exception);
         fclose($logFile);
-            $route = 'error500';
+            $route = 'error';
             $url = $this->router->generate($route);
             $response = new RedirectResponse($url);
             $event->setResponse($response);
