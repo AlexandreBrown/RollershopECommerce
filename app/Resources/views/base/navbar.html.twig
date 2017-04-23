@@ -29,7 +29,7 @@
                     <li class="divider"></li>
                     <li><a href="{{ path('listeSouhaits.index') }}">Liste de souhaits</a></li>
                     <li><a href="{{path('panier.index')}}">Mon panier</a></li>
-                    <li><a href="{{path('error404')}}">Payer</a></li>
+                    <li><a href="{{path('paiement')}}">Payer</a></li>
                 {% else %}
                     <li><a href="{{path('connexion')}}">Se connecter</a></li>
                     <li><a href="{{path('inscription')}}">Créer un compte</a></li>
@@ -60,7 +60,7 @@
                         <a href="{{path('panier.index')}}" class="pull-left"><i class="fa fa-cart-plus mr-5"></i>Voir le panier</a>
                     </li>
                     <li>
-                        <a href="{{path('error404')}}" class="pull-left"><i class="fa fa-shopping-basket mr-5"></i>Payer</a>
+                        <a href="{{path('paiement')}}" class="pull-left"><i class="fa fa-shopping-basket mr-5"></i>Payer</a>
                     </li>
                 </ul>
             </li>

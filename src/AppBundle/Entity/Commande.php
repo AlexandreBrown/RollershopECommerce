@@ -50,12 +50,11 @@ class Commande
 
     
     // Constructeur
-    public function __construct($idClient,$TPS,$TVQ,$stripeId,$stripeFingerprint)
+    public function __construct($idClient,$TPS,$TVQ,$stripeId)
     {
         $this->idClient = $idClient;
         $this->dateCommande = date("Y-m-d H:i:s");
         $this->stripeId = $stripeId;
-        $this->stripeFingerprint = $stripeFingerprint;
         $this->tauxTPS = $TPS;
         $this->tauxTVQ = $TVQ;
         $this->etat = Etat::PREPARING;

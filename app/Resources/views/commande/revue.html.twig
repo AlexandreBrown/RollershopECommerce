@@ -47,7 +47,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for unAchat in commande.Achats %}
+                                            {% for unAchat in panier.Achats %}
                                             <tr>
                                                 <td> <!-- IMG du produit -->
                                                     <h6 class="regular">
@@ -118,7 +118,10 @@
                     <a href="{{path('panier.index')}}" class="btn btn-default btn-md round">Retour au panier</a>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <button name="action" value="confirmation" type="submit" class="btn btn-default btn-md round">Placer la commande</button>
+                    <form method="POST" action="{{ path('revue') }}">
+                    <input type="text" name="placeOrder" value="true" hidden="true">
+                    <button value="Submit" type="submit" class="btn btn-default btn-md round">Placer la commande</button>
+                    </form>
                 </div>
             </div> 
             </div><!-- end col -->
