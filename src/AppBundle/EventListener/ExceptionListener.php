@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
@@ -31,7 +33,13 @@ class ExceptionListener
         $sysDate = date("Y-m-j G:i:s");
         fwrite($logFile,$sysDate." Last error : ".$exception);
         fclose($logFile);
-            $route = 'error';
+        $exception = $event->getException();
+        $errorCode = 500;
+        if ($exception instanceof HttpExceptionInterface) {
+            $errorCode = ($exception->getStatusCode());
+        }
+
+            $route = ('error'.$errorCode);
             $url = $this->router->generate($route);
             $response = new RedirectResponse($url);
             $event->setResponse($response);
