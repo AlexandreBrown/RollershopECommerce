@@ -45,17 +45,19 @@ class CommandeController extends Controller
                 if($panier->compteAchats() > 0){
                     $clientConnecte = $this->getUser();
                     if(isset($post["stripeToken"])){ // Si nous venons d'être redirigé à partir de la page de paiement
-                        $stripeId = $post["stripeToken"]; // on stock le stripeToken
-                        $this->get('session')->set('stripeId',$stripeId);
+                        $stripeToken = $post["stripeToken"]; // on stock le stripeToken
+                        $this->get('session')->set('stripeToken',$stripeToken);
                         return $this->render('./commande/revue.html.twig');
                     }else{
                         if(isset($post["placeOrder"])){ // Si le client a placé une commande
-                            $stripeId = $this->get('session')->get('stripeId'); // On récupère le stripeId
-                            if($stripeId !== ""){
-                                $commande = new Commande($clientConnecte->getIdClient(),$panier->getTPS(),$panier->getTVQ(),$stripeId);
+                            $stripeToken = $this->get('session')->get('stripeToken'); // On récupère le stripeToken
+                            if($stripeToken !== ""){
+                                $commande = new Commande($clientConnecte->getIdClient(),$panier->getTPS(),$panier->getTVQ());
                                 $this->ajouterAchatsCommande($commande,$panier);
-                                $this->createCharge($panier->calculTotal(),$stripeId);
-                                $this->get('session')->remove('stripeId');
+                                $charge = $this->createCharge($panier->calculTotal(),$stripeToken);
+                                $commande->setStripeId($charge['source']['id']);
+                                $commande->setStripeFingerprint($charge['source']['fingerprint']);
+                                $this->get('session')->remove('stripeToken');
                             }
                             else{
                                 return $this->redirectToRoute('error');
@@ -87,6 +89,7 @@ class CommandeController extends Controller
               "description" => "Rollershop",
               "source" => $token,
             ));
+            return $charge;
     }
 
     private function ajouterAchatsCommande($commande,$panier)

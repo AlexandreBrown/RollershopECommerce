@@ -44,20 +44,19 @@ class Commande
     /**
     * @Doctrine\Column(name="etat",type="string",length=50)
     */
-    private $etat;
+    private $etat; // Length de 50 pour laisser la possibilité de mettre autre chose qu'un seul caractère dans le futur. (Évite les problèmes de truncate)
 
     private $achats;
 
     
     // Constructeur
-    public function __construct($idClient,$TPS,$TVQ,$stripeId)
+    public function __construct($idClient,$TPS,$TVQ)
     {
         $this->idClient = $idClient;
         $this->dateCommande = date("Y-m-d H:i:s");
-        $this->stripeId = $stripeId;
         $this->tauxTPS = $TPS;
         $this->tauxTVQ = $TVQ;
-        $this->etat = Etat::PREPARING;
+        $this->etat = "PREP"; // Par défaut une commande est "PREP" , donc Etat::PREPARING ("En préparation")
         $this->achats = array();
     }
 
@@ -75,8 +74,8 @@ class Commande
     // Setters
     private function setIdClient($newIdClient) { $this->idClient = $newIdClient; return $this; }
     private function setDateCommande($newDateCommande) { $this->dateCommande = $newDateCommande; return $this; }
-    private function setStripeId($newStripeId) {$this->stripeId = $newStripeId; return $this; }
-    private function setStripeFingerprint($newStripeFingerprint) { $this->stripeFingerprint = $newStripeFingerprint; return $this; }
+    public function setStripeId($newStripeId) {$this->stripeId = $newStripeId; return $this; }
+    public function setStripeFingerprint($newStripeFingerprint) { $this->stripeFingerprint = $newStripeFingerprint; return $this; }
     private function setTauxTPS($newTauxTPS) {$this->tauxTPS = $newTauxTPS; return $this; }
     private function setTauxTVQ($newTauxTVQ) {$this->tauxTVQ = $newTauxTVQ; return $this; }
     private function setEtat($newEtat) {$this->etat = $newEtat; return $this; }
@@ -90,8 +89,8 @@ class Commande
 }
 abstract class Etat
 {
-    const PREPARING = "En préparation";
-    const DELIVERY_PENDING = "En attente de livraison";
-    const CANCEL = "Annulée";
-    const DONE = "Terminée";
+    const PREPARING = "En préparation"; // "PREP"
+    const DELIVERY_PENDING = "En attente de livraison"; // "DELI"
+    const CANCEL = "Annulée"; // "CANC"
+    const DONE = "Terminée"; // "DONE"
 }
