@@ -101,10 +101,17 @@ class Client implements UserInterface
     */
     private $telephone;
 
+    /**
+     * Un client a plusieurs commandes
+     * @Doctrine\OneToMany(targetEntity="Commande", mappedBy="Client")
+     */
+    private $commandes;
+
     // Constructeur
     public function __construct()
     {
         $this->setSalt(md5(uniqid(null, true)));
+        $this->commandes = new ArrayCollection();
     }
 
     // Getters

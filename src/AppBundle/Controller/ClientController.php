@@ -189,43 +189,12 @@ class ClientController extends Controller
         if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $clientConnecte = $this->getUser();
             $connexion = $this->getDoctrine()->getManager()->getConnection();
-            $commandes = $this->retrieveCommandesFromUser($connexion,$clientConnecte->getIdClient());
+            $commandes = null;
             return $this->render('./dossier/commandes.html.twig',array('commandes' => $commandes));
         }
             return $this->redirectToRoute('connexion');
     }
 
-    private function retrieveCommandesFromUser($connexion,$idClient)
-    {
-        // Requête SQL
-        $requete = "SELECT C.idCommande,C.idClient,C.dateCommande,C.stripeId,C.stripeFingerprint,C.tauxTPS,C.tauxTVQ,C.etat ";
-        $requete .= "FROM Commandes C INNER JOIN Clients Cl ON Cl.idClient = C.idClient "; // .= -> +=
-        $requete .= "WHERE C.idClient = :idClient";
 
-        $sql = $connexion->prepare($requete);
-        $sql->bindValue('idClient',$idClient);
-        $sql->execute();
-        
-        $commandesTrouvees = $sql->fetchAll();
-        $commandes = [];
-
-        foreach ($commandesTrouvees as $commande) {
-            if($commande !== null){
-                $uneCommande = new Commande($commande['idClient'],
-                                              $commande['dateCommande'],
-                                              $commande['stripeId'],
-                                              $commande['stripeFingerprint'],
-                                              $commande['tauxTPS'],
-                                              $commande['tauxTVQ'],
-                                              $commande['etat']);
-                $uneCommande->setIdCommande($commande['idCommande']);
-               array_push($commandes,$uneCommande);
-            }else{
-                return redirectToRoute('error500');
-            }
-        }
-        return $commandes;
-
-    }
 
 }

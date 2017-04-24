@@ -1,6 +1,13 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as Doctrine;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+* @Doctrine\Entity
+* @Doctrine\Table(name="Achats")
+*/
 class Achat
 {
     // Attributs
@@ -10,20 +17,30 @@ class Achat
     * @Doctrine\GeneratedValue(strategy="AUTO")
     */
     private $idAchat;
-    private $idCommande;
     /**
     * @Doctrine\Column(name="idProduit",type="integer")
     */
     private $idProduit;
+
     private $produit;
     /**
     * @Doctrine\Column(name="quantite",type="integer")
+    * @Assert\NotBlank()
     */
     private $quantite;
     /**
     * @Doctrine\Column(name="prixAchat",type="decimal")
+    * @Assert\NotBlank()
     */
     private $prixAchat;
+
+    /**
+     * Plusieurs achats on une commande
+    * @Doctrine\ManyToOne(targetEntity="Commande", inversedBy="achats")
+    * @Doctrine\JoinColumn(name="idCommande", referencedColumnName="idCommande", nullable=false)
+    */
+    private $commande;
+
     
     // Constructeur
     public function __construct($produit)
@@ -43,6 +60,7 @@ class Achat
     public function getPrixAchat(){ return $this->prixAchat; }
 
     // Setters
+    public function setCommande($commande) { $this->commande = $commande; return $this; }
     public function setQuantite($quantite) 
     { 
         $this->quantite = $quantite; 

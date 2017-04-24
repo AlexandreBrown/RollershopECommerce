@@ -5,8 +5,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Commande;
+use AppBundle\Entity\Etat;
 use AppBundle\Entity\Panier;
 
 /**
@@ -54,14 +55,15 @@ class CommandeController extends Controller
                             $stripeToken = $session->get('stripeToken'); // On récupère le stripeToken
                             if($stripeToken !== ""){
                                 $charge = $this->createCharge($panier->calculTotal(),$stripeToken);
-                                $commande = new Commande($clientConnecte->getIdClient(),
-                                                         date("Y-m-d H:i:s"),
+                                $commande = new Commande(new \DateTime('now'),
                                                          $charge['source']['id'],
                                                          $charge['source']['fingerprint'],
                                                          $panier->getTPS(),
                                                          $panier->getTVQ(),
                                                          Etat::PREPARING);
-                                $this->ajouterAchatsCommande($commande,$panier);
+                                $this->ajouterCommandeEnBD($commande,$clientConnecte);
+                                $this->updateQuantiteStock($panier->getAchats());
+                                $this->ajouterAchatsEnBD($commande,$session);
                                 $session->remove('stripeToken'); // supprime le token
                                 $session->remove('panier'); // vide le panier
                                 $session->set('panier', new Panier()); // On créer un panier vide
@@ -99,11 +101,53 @@ class CommandeController extends Controller
             return $charge;
     }
 
-    private function ajouterAchatsCommande($commande,$panier)
+    private function ajouterCommandeEnBD($commande,$clientConnecte)
     {
-        foreach ($panier->getAchats() as $achat) {
-             $commande->ajouterAchat($achat);
-        }
+      $manager = $this->getDoctrine()->getManager();
+
+      $commande->setClient($clientConnecte);
+      // On sauvegarde la commande dans la base de données
+      $manager->persist($commande);
+
+      $manager->flush();
+
+    }
+
+    private function updateQuantiteStock($achats)
+    {
+      foreach($achats as $achat)
+      {
+        $this->updateQuantiteProduit($achat->getIdProduit(),($achat->getQuantite()*-1));
+      }
+    }
+
+    private function updateQuantiteProduit($idProduit,$newQte)
+    {
+      $manager = $this->getDoctrine()->getManager();
+      $produit = $manager->getRepository('AppBundle:Produit')->find($idProduit);
+
+      if (!$produit) {
+          throw $this->createNotFoundException(
+              'Aucun produit pour id '.$idProduit
+          );
+      }
+
+      $produit->setQteStock($newQte);
+      $manager->persist($produit);
+      $manager->flush();
+    }
+
+    private function ajouterAchatsEnBD($commande,$session){
+      $panier = $session->get('panier');
+      $achats = $panier->getAchats();
+      $manager = $this->getDoctrine()->getManager();
+      foreach($achats as $achat){
+        $achat->setCommande($commande);
+        // On sauvegarde l'achat dans la base de données
+        $manager->persist($achat);
+
+        $manager->flush();
+      }
     }
 
 }
