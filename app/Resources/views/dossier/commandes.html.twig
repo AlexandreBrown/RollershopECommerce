@@ -35,11 +35,9 @@
             {% else %}
             <div class="col-sm-12">
             {% endif %}
-            <!-- end sidebar -->
-            <div class="col-sm-9">
                 <div class="row">
                     <div class="col-sm-12 text-left">
-                        <h2 class="title">My Order</h2>
+                        <h2 class="title">Mes commandes <span class="text-primary">({{commandes|length}})</span></h2>
                     </div><!-- end col -->
                 </div><!-- end row -->
                 
@@ -51,137 +49,39 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th colspan="2">Products</th>
-                                        <th>Price</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
+                                        <th>Commande</th>
+                                        <th colspan="2">Date</th>
+                                        <th>Total</th>
+                                        <th>État</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            #23AS17
-                                        </td>
-                                        <td>
-                                            <a href="shop-single-product-v1.html">
-                                                <img width="60px" src="img/products/men_06.jpg" alt="product">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h6 class="regular"><a href="shop-single-product-v1.html">Lorem Ipsum</a></h6>
-                                            <p>Sed aliquam tincidunt tempus</p>
-                                        </td>
-                                        <td>
-                                            <span>$59.99</span>
-                                        </td>
-                                        <td>
-                                            20 Dec 2016
-                                        </td>
-                                        <td>
-                                            <span class="label label-primary">Pending</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            #2MA269
-                                        </td>
-                                        <td>
-                                            <a href="shop-single-product-v1.html">
-                                                <img width="60px" src="img/products/shoes_01.jpg" alt="product">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h6 class="regular"><a href="shop-single-product-v1.html">Lorem Ipsum</a></h6>
-                                            <p>Sed aliquam tincidunt tempus</p>
-                                        </td>
-                                        <td>
-                                            <span>$39.99</span>
-                                        </td>
-                                        <td>
-                                            09 Nov 2016
-                                        </td>
-                                        <td>
-                                            <span class="label label-danger">Cancel</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            #973C5J
-                                        </td>
-                                        <td>
-                                            <a href="shop-single-product-v1.html">
-                                                <img width="60px" src="img/products/bags_07.jpg" alt="product">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h6 class="regular"><a href="shop-single-product-v1.html">Lorem Ipsum</a></h6>
-                                            <p>Sed aliquam tincidunt tempus</p>
-                                        </td>
-                                        <td>
-                                            <span>$29.99</span>
-                                        </td>
-                                        <td>
-                                            23 Oct 2016
-                                        </td>
-                                        <td>
-                                            <span class="label label-success">Done</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            #113V5G
-                                        </td>
-                                        <td>
-                                            <a href="shop-single-product-v1.html">
-                                                <img width="60px" src="img/products/bags_03.jpg" alt="product">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h6 class="regular"><a href="shop-single-product-v1.html">Lorem Ipsum</a></h6>
-                                            <p>Sed aliquam tincidunt tempus</p>
-                                        </td>
-                                        <td>
-                                            <span>$19.99</span>
-                                        </td>
-                                        <td>
-                                            17 Sep 2016
-                                        </td>
-                                        <td>
-                                            <span class="label label-default">Disable</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            #113V5G
-                                        </td>
-                                        <td>
-                                            <a href="shop-single-product-v1.html">
-                                                <img width="60px" src="img/products/bags_04.jpg" alt="product">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h6 class="regular"><a href="shop-single-product-v1.html">Lorem Ipsum</a></h6>
-                                            <p>Sed aliquam tincidunt tempus</p>
-                                        </td>
-                                        <td>
-                                            <span>$19.99</span>
-                                        </td>
-                                        <td>
-                                            13 Sep 2016
-                                        </td>
-                                        <td>
-                                            <span class="label label-warning">Awaiting</span>
-                                        </td>
-                                    </tr>
+                                    {% if commandes|length > 0 %}
+                                        {% for commande in commandes %}
+                                            <tr>
+                                                <td>
+                                                    #{{commande.IdCommande}}
+                                                </td>
+                                                <td colspan="2">
+                                                    {{commande.DateCommande}}
+                                                </td>
+                                                <td>
+                                                    0$
+                                                </td>
+                                                <td>
+                                                    {{commande.EtatToVerbose}}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
                                 </tbody>
                             </table><!-- end table -->
                         </div><!-- end table-responsive -->
                         
                         <hr class="spacer-10 no-border">
                         
-                        <a href="checkout.html" class="btn btn-light semi-circle btn-sm">
-                            <i class="fa fa-arrow-left mr-5"></i> Shopping
+                        <a href="{{ path('homepage') }}" class="btn btn-light semi-circle btn-sm">
+                            <i class="fa fa-arrow-left mr-5"></i> Retourner au catalogue
                         </a>
                     </div><!-- end col -->
                 </div><!-- end row -->

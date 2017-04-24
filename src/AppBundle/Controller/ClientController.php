@@ -211,18 +211,19 @@ class ClientController extends Controller
 
         foreach ($commandesTrouvees as $commande) {
             if($commande !== null){
-               array_push($commandes,new Commande($commande['idClient'],
-                                                  $commande['dateCommande'],
-                                                  $commande['stripeId'],
-                                                  $commande['stripeFingerprint'],
-                                                  $commande['tauxTPS'],
-                                                  $commande['tauxTVQ'],
-                                                  $commande['etat']));
+                $uneCommande = new Commande($commande['idClient'],
+                                              $commande['dateCommande'],
+                                              $commande['stripeId'],
+                                              $commande['stripeFingerprint'],
+                                              $commande['tauxTPS'],
+                                              $commande['tauxTVQ'],
+                                              $commande['etat']);
+                $uneCommande->setIdCommande($commande['idCommande']);
+               array_push($commandes,$uneCommande);
             }else{
                 return redirectToRoute('error500');
             }
         }
-
         return $commandes;
 
     }

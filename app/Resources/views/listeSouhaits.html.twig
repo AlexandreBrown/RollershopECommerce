@@ -1,6 +1,7 @@
 {% extends 'base/base.html.twig' %}
 {% block content %}
 {% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
+{% set commandes = app.session.get('commandes') %} <!-- On récupère notre variable de session commandes -->
 <div class="breadcrumbs">
     <div class="container">
         <div class="row">
@@ -18,7 +19,7 @@
 <section class="section white-backgorund">
     <div class="container">
         <div class="row">
-        {% if app.user %} <!-- On affiche le sidebar seulement si l'utilisateur est connecté à un compte -->
+        {% if app.user %} <!-- On affiche le sidebar seulement si l'utilisateur est connecté -->
             <!-- start sidebar -->
             <div class="col-sm-2">
                 <div class="widget all-ArroundBorder">
@@ -29,10 +30,10 @@
                             <a href="{{ path('dossier') }}">Mon compte</a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}})</span></a>
+                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('error404') }}">Mes commandes</a>
+                            <a href="{{ path('commandes') }}">Mes commandes <span class="text-primary">({% if commandes is not null %}{{commandes|length}}{% else %}0{% endif %})</span></a>
                         </li>
                         <li class="active spacerPad10-no-top-bottom">
                             <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
@@ -41,16 +42,16 @@
                             <a href="{{ path('deconnexion') }}">Déconnexion</a>
                         </li>
                     </ul>
-                </div><!-- end widget -->  
+                </div><!-- end widget -->                
             </div><!-- end col -->
             <!-- end sidebar -->
-        <div class="col-sm-9">
-        {% else %}
-        <div class="col-sm-12">
-        {% endif %}
+            <div class="col-sm-10">
+            {% else %}
+            <div class="col-sm-12">
+            {% endif %}
                 <div class="row">
                     <div class="col-sm-12 text-left">
-                        <h2 class="title">Ma liste de souhaits ({{listeSouhaits.compteSouhaits}} {% if (listeSouhaits.compteSouhaits > 1) %}items{% else %}item{% endif %})</h2>
+                        <h2 class="title">Ma liste de souhaits <span class="text-primary">({{listeSouhaits.compteSouhaits}} {% if (listeSouhaits.compteSouhaits > 1) %}items{% else %}item{% endif %})</span></h2>
                         {% if message is defined and message is not null %}
                             <div class="alert {{ message.getType }}">
                                 {{ message.getTexte | raw  }}

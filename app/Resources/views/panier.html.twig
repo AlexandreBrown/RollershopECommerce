@@ -1,6 +1,7 @@
 {% extends 'base/base.html.twig' %}
 {% block content %}
 {% set listeSouhaits = app.session.get('listeSouhaits') %} <!-- On récupère notre variable de session listeSouhaits -->
+{% set commandes = app.session.get('commandes') %} <!-- On récupère notre variable de session commandes -->
 <div class="breadcrumbs">
     <div class="container">
         <div class="row">
@@ -29,10 +30,10 @@
                             <a href="{{ path('dossier') }}">Mon compte</a>
                         </li>
                         <li class="active spacerPad10-no-top-bottom">
-                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}})</span></a>
+                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('commandes') }}">Mes commandes</a>
+                            <a href="{{ path('commandes') }}">Mes commandes <span class="text-primary">({% if commandes is not null %}{{commandes|length}}{% else %}0{% endif %})</span></a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
                             <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
@@ -51,7 +52,7 @@
 
                 <div class="row">
                     <div class="col-sm-12 text-left">
-                        <h2 class="title">Mon panier ({{panier.compteNbProduitsTotal}}{% if (panier.compteNbProduitsTotal > 1) %} items{% else %} item{% endif %}) <!-- On vérifie l'orthographe -->
+                        <h2 class="title">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}}{% if (panier.compteNbProduitsTotal > 1) %} items{% else %} item{% endif %})</span> <!-- On vérifie l'orthographe -->
                         </h2>
                         {% if message is defined and message is not null %}
                             <div class="alert {{ message.getType }} text-center">

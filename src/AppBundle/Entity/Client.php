@@ -104,7 +104,6 @@ class Client implements UserInterface
     // Constructeur
     public function __construct()
     {
-        $this->commandes = array();
         $this->setSalt(md5(uniqid(null, true)));
     }
 

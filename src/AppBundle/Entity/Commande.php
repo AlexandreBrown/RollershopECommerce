@@ -60,6 +60,7 @@ class Commande
     }
 
     // Getters
+    public function getIdCommande() { return $this->idCommande; }
     public function getIdClient() { return $this->idClient; }
     public function getDateCommande() { return $this->dateCommande; }
     public function getStripeId() { return $this->stripeId; }
@@ -70,6 +71,7 @@ class Commande
 
 
     // Setters
+    public function setIdCommande($newIdCommande) { $this->idCommande = $newIdCommande; return $this; }
     private function setIdClient($newIdClient) { $this->idClient = $newIdClient; return $this; }
     private function setDateCommande($newDateCommande) { $this->dateCommande = $newDateCommande; return $this; }
     private function setStripeId($newStripeId) {$this->stripeId = $newStripeId; return $this; }
@@ -78,11 +80,38 @@ class Commande
     private function setTauxTVQ($newTauxTVQ) {$this->tauxTVQ = $newTauxTVQ; return $this; }
     private function setEtat($newEtat) {$this->etat = $newEtat; return $this; }
 
+    // Méthodes
+    public function EtatToVerbose()
+    {
+        switch($this->getEtat())
+        {
+            case Etat::PENDING :
+                return "En attente";
+            break;
+            case Etat::PREPARING :
+                return "En préparation";
+            break;
+            case Etat::DELIVERY :
+                return "En livraison";
+            break;
+            case Etat::CANCEL :
+                return "Annulée";
+            break;
+            case Etat::DELIVERED :
+                return "Livrée avec succès";
+            break;
+            default:
+                return "Inconnu"; // Si l'utilisateur de la classe a mal défini l'état
+            break;
+        }
+    }
+
 }
 abstract class Etat
 {
+    const PENDING = "PEND";
     const PREPARING = "PREP";
-    const DELIVERY_PENDING = "DELI"; 
+    const DELIVERY = "DELI";
     const CANCEL = "CANC";
-    const DONE = "DONE";
+    const DELIVERED = "DONE";
 }
