@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Client;
+use AppBundle\Entity\Commande;
 use AppBundle\Form\InscriptionType;
 use AppBundle\Form\ClientType;
 use AppBundle\Form\ChangePasswordType;
@@ -178,6 +179,52 @@ class ClientController extends Controller
         $token = new UsernamePasswordToken($client, null, $firewall, $client->getRoles());
 
         $this->get('security.token_storage')->setToken($token);
+    }
+
+     /**
+     * @Route("/dossier/commandes", name="commandes")
+     */
+    public function commandesAction(Request $request)
+    {
+        if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $clientConnecte = $this->getUser();
+            $connexion = $this->getDoctrine()->getManager()->getConnection();
+            $commandes = $this->retrieveCommandesFromUser($connexion,$clientConnecte->getIdClient());
+            return $this->render('./dossier/commandes.html.twig',array('commandes' => $commandes));
+        }
+            return $this->redirectToRoute('connexion');
+    }
+
+    private function retrieveCommandesFromUser($connexion,$idClient)
+    {
+        // Requête SQL
+        $requete = "SELECT C.idCommande,C.idClient,C.dateCommande,C.stripeId,C.stripeFingerprint,C.tauxTPS,C.tauxTVQ,C.etat ";
+        $requete .= "FROM Commandes C INNER JOIN Clients Cl ON Cl.idClient = C.idClient "; // .= -> +=
+        $requete .= "WHERE C.idClient = :idClient";
+
+        $sql = $connexion->prepare($requete);
+        $sql->bindValue('idClient',$idClient);
+        $sql->execute();
+        
+        $commandesTrouvees = $sql->fetchAll();
+        $commandes = [];
+
+        foreach ($commandesTrouvees as $commande) {
+            if($commande !== null){
+               array_push($commandes,new Commande($commande['idClient'],
+                                                  $commande['dateCommande'],
+                                                  $commande['stripeId'],
+                                                  $commande['stripeFingerprint'],
+                                                  $commande['tauxTPS'],
+                                                  $commande['tauxTVQ'],
+                                                  $commande['etat']));
+            }else{
+                return redirectToRoute('error500');
+            }
+        }
+
+        return $commandes;
+
     }
 
 }

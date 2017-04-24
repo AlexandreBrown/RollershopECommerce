@@ -42,21 +42,23 @@ class Commande
     */
     private $tauxTVQ;
     /**
-    * @Doctrine\Column(name="etat",type="string",length=50)
+    * @Doctrine\Column(name="etat",type="string",length=20)
     */
-    private $etat; // Length de 50 pour laisser la possibilité de mettre autre chose qu'un seul caractère dans le futur. (Évite les problèmes de truncate)
+    private $etat; // Length de 20 pour laisser la possibilitée de mettre autre chose qu'un seul caractère dans le futur. (Évite les problèmes de "truncate")
 
     private $achats;
 
     
     // Constructeur
-    public function __construct($idClient,$TPS,$TVQ)
+    public function __construct($idClient,$date,$stripeId,$stripeFingerprint,$TPS,$TVQ,$etat)
     {
         $this->idClient = $idClient;
-        $this->dateCommande = date("Y-m-d H:i:s");
+        $this->dateCommande = $date;
+        $this->stripeId = $stripeId;
+        $this->stripeFingerprint = $stripeFingerprint;
         $this->tauxTPS = $TPS;
         $this->tauxTVQ = $TVQ;
-        $this->etat = "PREP"; // Par défaut une commande est "PREP" , donc Etat::PREPARING ("En préparation")
+        $this->etat = $etat;
         $this->achats = array();
     }
 
@@ -74,8 +76,8 @@ class Commande
     // Setters
     private function setIdClient($newIdClient) { $this->idClient = $newIdClient; return $this; }
     private function setDateCommande($newDateCommande) { $this->dateCommande = $newDateCommande; return $this; }
-    public function setStripeId($newStripeId) {$this->stripeId = $newStripeId; return $this; }
-    public function setStripeFingerprint($newStripeFingerprint) { $this->stripeFingerprint = $newStripeFingerprint; return $this; }
+    private function setStripeId($newStripeId) {$this->stripeId = $newStripeId; return $this; }
+    private function setStripeFingerprint($newStripeFingerprint) { $this->stripeFingerprint = $newStripeFingerprint; return $this; }
     private function setTauxTPS($newTauxTPS) {$this->tauxTPS = $newTauxTPS; return $this; }
     private function setTauxTVQ($newTauxTVQ) {$this->tauxTVQ = $newTauxTVQ; return $this; }
     private function setEtat($newEtat) {$this->etat = $newEtat; return $this; }
@@ -86,11 +88,16 @@ class Commande
         $this->achats[] = $achat;
     }
 
+    public function compteCommandes()
+    {
+        return count($this->achats);
+    }
+
 }
 abstract class Etat
 {
-    const PREPARING = "En préparation"; // "PREP"
-    const DELIVERY_PENDING = "En attente de livraison"; // "DELI"
-    const CANCEL = "Annulée"; // "CANC"
-    const DONE = "Terminée"; // "DONE"
+    const PREPARING = "PREP";
+    const DELIVERY_PENDING = "DELI"; 
+    const CANCEL = "CANC";
+    const DONE = "DONE";
 }

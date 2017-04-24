@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Commande;
+use AppBundle\Entity\Panier;
 
 /**
 * @Route("/commande")
@@ -27,9 +28,9 @@ class CommandeController extends Controller
                     return $this->render('./commande/paiement.html.twig');
                 }
             }
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('panier.index');
         }
-            return $this->redirectToRoute('inscription');
+            return $this->redirectToRoute('connexion');
     }
      /**
      * @Route("/revue", name="revue")
@@ -50,14 +51,20 @@ class CommandeController extends Controller
                         return $this->render('./commande/revue.html.twig');
                     }else{
                         if(isset($post["placeOrder"])){ // Si le client a placé une commande
-                            $stripeToken = $this->get('session')->get('stripeToken'); // On récupère le stripeToken
+                            $stripeToken = $session->get('stripeToken'); // On récupère le stripeToken
                             if($stripeToken !== ""){
-                                $commande = new Commande($clientConnecte->getIdClient(),$panier->getTPS(),$panier->getTVQ());
-                                $this->ajouterAchatsCommande($commande,$panier);
                                 $charge = $this->createCharge($panier->calculTotal(),$stripeToken);
-                                $commande->setStripeId($charge['source']['id']);
-                                $commande->setStripeFingerprint($charge['source']['fingerprint']);
-                                $this->get('session')->remove('stripeToken');
+                                $commande = new Commande($clientConnecte->getIdClient(),
+                                                         date("Y-m-d H:i:s"),
+                                                         $charge['source']['id'],
+                                                         $charge['source']['fingerprint'],
+                                                         $panier->getTPS(),
+                                                         $panier->getTVQ(),
+                                                         Etat::PREPARING);
+                                $this->ajouterAchatsCommande($commande,$panier);
+                                $session->remove('stripeToken'); // supprime le token
+                                $session->remove('panier'); // vide le panier
+                                $session->set('panier', new Panier()); // On créer un panier vide
                             }
                             else{
                                 return $this->redirectToRoute('error');
@@ -69,9 +76,9 @@ class CommandeController extends Controller
                     
                 }
             }
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('panier.index');
         }else{
-            return $this->redirectToRoute('inscription');
+            return $this->redirectToRoute('connexion');
         }
     }
 

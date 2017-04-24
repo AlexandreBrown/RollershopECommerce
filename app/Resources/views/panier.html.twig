@@ -32,7 +32,7 @@
                             <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({{panier.compteNbProduitsTotal}})</span></a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('error404') }}">Mes commandes</a>
+                            <a href="{{ path('commandes') }}">Mes commandes</a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
                             <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
