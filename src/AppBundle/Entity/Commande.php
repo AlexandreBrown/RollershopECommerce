@@ -46,8 +46,6 @@ class Commande
     */
     private $etat; // Length de 20 pour laisser la possibilitée de mettre autre chose qu'un seul caractère dans le futur. (Évite les problèmes de "truncate")
 
-    private $achats;
-
     
     // Constructeur
     public function __construct($idClient,$date,$stripeId,$stripeFingerprint,$TPS,$TVQ,$etat)
@@ -59,7 +57,6 @@ class Commande
         $this->tauxTPS = $TPS;
         $this->tauxTVQ = $TVQ;
         $this->etat = $etat;
-        $this->achats = array();
     }
 
     // Getters
@@ -70,7 +67,6 @@ class Commande
     public function getTauxTPS() { return $this->tauxTPS; }
     public function getTauxTVQ() { return $this->tauxTVQ; }
     public function getEtat() { return $this->etat; }
-    public function getAchats() { return $this->achats; }
 
 
     // Setters
@@ -81,17 +77,6 @@ class Commande
     private function setTauxTPS($newTauxTPS) {$this->tauxTPS = $newTauxTPS; return $this; }
     private function setTauxTVQ($newTauxTVQ) {$this->tauxTVQ = $newTauxTVQ; return $this; }
     private function setEtat($newEtat) {$this->etat = $newEtat; return $this; }
-
-    // Méthodes
-    public function ajouterAchat($achat)
-    {
-        $this->achats[] = $achat;
-    }
-
-    public function compteCommandes()
-    {
-        return count($this->achats);
-    }
 
 }
 abstract class Etat
