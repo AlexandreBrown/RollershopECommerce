@@ -63,13 +63,30 @@
                                                     #{{commande.IdCommande}}
                                                 </td>
                                                 <td colspan="2">
-                                                    {{commande.DateCommande}}
+                                                    {{commande.DateCommande|date("Y/m/d h:m")}}
                                                 </td>
                                                 <td>
                                                     0$
                                                 </td>
                                                 <td>
-                                                    {{commande.EtatToVerbose}}
+                                                    {% if commande.Etat == constant('AppBundle\\Entity\\Etat::PENDING') %}
+                                                        <span class="label label-warning">{{commande.EtatToVerbose}}</span>
+
+                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::PREPARING') %}
+                                                        <span class="label preparing">{{commande.EtatToVerbose}}</span>
+
+                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERY') %}
+                                                        <span class="label label-default">{{commande.EtatToVerbose}}</span>
+
+                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::CANCEL') %}
+                                                        <span class="label label-danger">{{commande.EtatToVerbose}}</span>
+
+                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERED') %}
+                                                        <span class="label label-success">{{commande.EtatToVerbose}}</span>
+
+                                                    {% else %}
+                                                        <span class="label label-default">{{commande.EtatToVerbose}}</span>
+                                                    {% endif %}
                                                 </td>
                                             </tr>
                                         {% endfor %}

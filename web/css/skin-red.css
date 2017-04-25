@@ -4212,3 +4212,6 @@ display: inline;
 .border{
     border-style: ridge  ;
 }
+.preparing{
+  background-color: #0cd4d2;
+}

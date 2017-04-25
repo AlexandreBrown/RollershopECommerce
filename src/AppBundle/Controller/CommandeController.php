@@ -67,6 +67,7 @@ class CommandeController extends Controller
                                 $session->remove('stripeToken'); // supprime le token
                                 $session->remove('panier'); // vide le panier
                                 $session->set('panier', new Panier()); // On créer un panier vide
+                                return $this->redirectToRoute('commandes');
                             }
                             else{
                                 return $this->redirectToRoute('error');

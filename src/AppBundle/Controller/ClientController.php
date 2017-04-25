@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Commande;
+use AppBundle\Entity\Produit;
 use AppBundle\Form\InscriptionType;
 use AppBundle\Form\ClientType;
 use AppBundle\Form\ChangePasswordType;
@@ -189,10 +190,17 @@ class ClientController extends Controller
         if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $clientConnecte = $this->getUser();
             $connexion = $this->getDoctrine()->getManager()->getConnection();
-            $commandes = null;
+            $commandes = $this->retrieveCommandesClient($clientConnecte);
             return $this->render('./dossier/commandes.html.twig',array('commandes' => $commandes));
         }
             return $this->redirectToRoute('connexion');
+    }
+
+    private function retrieveCommandesClient($client)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $commandes = $manager->getRepository('AppBundle:Commande')->findBy(array('client' => $client));
+        return $commandes;
     }
 
 
