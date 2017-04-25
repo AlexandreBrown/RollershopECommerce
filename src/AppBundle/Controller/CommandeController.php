@@ -87,8 +87,6 @@ class CommandeController extends Controller
 
     private function createCharge($amount,$token)
     {
-        // Set your secret key: remember to change this to your live secret key in production
-        // See your keys here: https://dashboard.stripe.com/account/apikeys
         \Stripe\Stripe::setApiKey("sk_test_sGvHbTfAPF6Cvgp685LuCqrW");
             $amount = $amount * 100;
             $amount = round($amount);
@@ -118,7 +116,7 @@ class CommandeController extends Controller
     {
       foreach($achats as $achat)
       {
-        $this->updateQuantiteProduit($achat->getIdProduit(),($achat->getQuantite()*1));
+        $this->updateQuantiteProduit($achat->getProduit()->getIdProduit(),($achat->getQuantite()*1));
       }
     }
 
@@ -134,8 +132,6 @@ class CommandeController extends Controller
       }
 
       $produit->setQteStock($produit->getQteStock() - $qteCommande);
-      $manager->persist($produit);
-      $manager->flush();
     }
 
     private function ajouterAchatsEnBD($commande,$session){
@@ -144,11 +140,40 @@ class CommandeController extends Controller
       $manager = $this->getDoctrine()->getManager();
       foreach($achats as $achat){
         $achat->setCommande($commande);
+        $this->ajouterProduitAchat($achat);
         // On sauvegarde l'achat dans la base de données
         $manager->persist($achat);
 
         $manager->flush();
       }
+    }
+
+    private function ajouterCategorieProduit($produit)
+    {
+      $manager = $this->getDoctrine()->getManager();
+      $categorie = $manager->getRepository('AppBundle:Categorie')->find($produit->getCategorie()->getIdCategorie());
+
+      if (!$categorie) {
+          throw $this->createException(
+              'Aucune catégorie pour id '.$idProduit
+          );
+      }
+
+      $produit->setCategorie($categorie);
+    }
+
+    private function ajouterProduitAchat($achat)
+    {
+      $manager = $this->getDoctrine()->getManager();
+      $produit = $manager->getRepository('AppBundle:Produit')->find($achat->getProduit()->getIdProduit());
+      $this->ajouterCategorieProduit($produit);
+      if (!$produit) {
+          throw $this->createException(
+              'Aucune produit pour id '.$idProduit
+          );
+      }
+
+      $achat->setProduit($produit);
     }
 
 }

@@ -99,8 +99,8 @@
                                                                     <tr>
                                                                         <td>
                                                                             <h6 class="regular">
-                                                                                <a href="{{ path('produit.popup', {'idProduit' :achat.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
-                                                                                    <img width="60px" >
+                                                                                <a href="{{ path('produit.popup', {'idProduit' :achat.produit.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
+                                                                                    <img width="60px" src="{{ asset_if('img/produits/' ~ achat.produit.categorie.idCategorie ~ '/' ~ achat.produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
                                                                                 </a>
                                                                             </h6>
                                                                         </td>

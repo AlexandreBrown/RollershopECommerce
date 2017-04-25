@@ -17,11 +17,11 @@ class Achat
     * @Doctrine\GeneratedValue(strategy="AUTO")
     */
     private $idAchat;
-    /**
-    * @Doctrine\Column(name="idProduit",type="integer")
-    */
-    private $idProduit;
 
+    /**
+    * @Doctrine\ManyToOne(targetEntity="Produit", inversedBy="achats")
+    * @Doctrine\JoinColumn(name="idProduit", referencedColumnName="idProduit", nullable=false)
+    */
     private $produit;
     /**
     * @Doctrine\Column(name="quantite",type="integer")
@@ -35,7 +35,7 @@ class Achat
     private $prixAchat;
 
     /**
-     * Plusieurs achats on une commande
+    * Plusieurs achats on une commande
     * @Doctrine\ManyToOne(targetEntity="Commande", inversedBy="achats")
     * @Doctrine\JoinColumn(name="idCommande", referencedColumnName="idCommande", nullable=false)
     */
@@ -45,7 +45,7 @@ class Achat
     // Constructeur
     public function __construct($produit)
     {
-        $this->idProduit = $produit->getIdProduit();
+        //$this->idProduit = $produit->getIdProduit();
         $this->produit = $produit;
         $this->quantite = 1;
         $this->prixAchat = $this->getProduit()->getPrix() * $this->getQuantite();
@@ -54,13 +54,14 @@ class Achat
     // Getters
     public function getIdAchat() { return $this->idAchat; }
     public function getIdCommande() { return $this->idCommande; }
-    public function getIdProduit() { return $this->idProduit; }
+    //public function getIdProduit() { return $this->idProduit; }
     public function getProduit() { return $this->produit; }
     public function getQuantite() { return $this->quantite; }
     public function getPrixAchat(){ return $this->prixAchat; }
 
     // Setters
     public function setCommande($commande) { $this->commande = $commande; return $this; }
+    public function setProduit($produit) { $this->produit = $produit; return $this; }
     public function setQuantite($quantite) 
     { 
         $this->quantite = $quantite; 

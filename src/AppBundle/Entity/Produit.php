@@ -15,7 +15,10 @@ class Produit
     * @Doctrine\GeneratedValue(strategy="AUTO")
     */
     private $idProduit;
-
+    /**
+    * @Doctrine\ManyToOne(targetEntity="Categorie", inversedBy="produits")
+    * @Doctrine\JoinColumn(name="idCategorie", referencedColumnName="idCategorie", nullable=false)
+    */
     private $categorie;
     /**
     * @Doctrine\Column(type="string", length=50)
@@ -74,5 +77,6 @@ class Produit
 
     // Setters
     public function setQteStock($newQte) { $this->qteStock = $newQte; return $this; }
+    public function setCategorie($categorie) { $this->categorie = $categorie; return $this; }
     
 }
