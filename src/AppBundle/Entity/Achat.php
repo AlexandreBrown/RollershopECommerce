@@ -29,7 +29,7 @@ class Achat
     */
     private $quantite;
     /**
-    * @Doctrine\Column(name="prixAchat",type="decimal")
+    * @Doctrine\Column(name="prixAchat",type="decimal",precision=10, scale=2)
     * @Assert\NotBlank()
     */
     private $prixAchat;

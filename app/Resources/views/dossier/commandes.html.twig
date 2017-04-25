@@ -19,7 +19,7 @@
                             <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
                         </li>
                         <li class="active spacerPad10-no-top-bottom">
-                            <a href="{{ path('commandes') }}">Mes commandes <span class="text-primary">({{commandes|length}})</span></a>
+                            <a href="{{ path('commandes') }}">Mes commandes</a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
                             <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
@@ -58,7 +58,8 @@
                                 <tbody>
                                     {% if commandes|length > 0 %}
                                         {% for commande in commandes %}
-                                            <tr>
+                                            {% set dataTarget = 'arccodion'~ loop.index %}
+                                            <tr data-toggle="collapse" data-target={{'#'~ dataTarget}} class="clickable">
                                                 <td>
                                                     #{{commande.IdCommande}}
                                                 </td>
@@ -66,7 +67,7 @@
                                                     {{commande.DateCommande|date("Y/m/d h:m")}}
                                                 </td>
                                                 <td>
-                                                    0$
+                                                    {{commande.Total | number_format(2, ",", " ")}}$
                                                 </td>
                                                 <td>
                                                     {% if commande.Etat == constant('AppBundle\\Entity\\Etat::PENDING') %}
@@ -89,6 +90,27 @@
                                                     {% endif %}
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div id={{dataTarget}} class="collapse table-responsive">
+                                                        <table>
+                                                            <tbody>
+                                                                {% for achat in commande.achats %}
+                                                                    <tr>
+                                                                        <td>
+                                                                            <h6 class="regular">
+                                                                                <a href="{{ path('produit.popup', {'idProduit' :achat.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
+                                                                                    <img width="60px" >
+                                                                                </a>
+                                                                            </h6>
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         {% endfor %}
                                     {% endif %}
                                 </tbody>
@@ -103,7 +125,14 @@
                     </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end col -->
-        </div><!-- end row -->                
+        </div><!-- end row -->
+        <!-- Modal Product Quick View -->
+        <div class="modal fade productQuickView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div id="modal-content" class="modal-content">
+                </div><!-- end modal-content -->
+            </div><!-- end modal-dialog -->
+        </div><!-- end productRewiew -->                
     </div><!-- end container -->
 </section>
 <!-- end section -->

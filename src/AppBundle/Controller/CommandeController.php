@@ -118,22 +118,22 @@ class CommandeController extends Controller
     {
       foreach($achats as $achat)
       {
-        $this->updateQuantiteProduit($achat->getIdProduit(),($achat->getQuantite()*-1));
+        $this->updateQuantiteProduit($achat->getIdProduit(),($achat->getQuantite()*1));
       }
     }
 
-    private function updateQuantiteProduit($idProduit,$newQte)
+    private function updateQuantiteProduit($idProduit,$qteCommande)
     {
       $manager = $this->getDoctrine()->getManager();
       $produit = $manager->getRepository('AppBundle:Produit')->find($idProduit);
 
       if (!$produit) {
-          throw $this->createNotFoundException(
+          throw $this->createException(
               'Aucun produit pour id '.$idProduit
           );
       }
 
-      $produit->setQteStock($newQte);
+      $produit->setQteStock($produit->getQteStock() - $qteCommande);
       $manager->persist($produit);
       $manager->flush();
     }

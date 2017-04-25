@@ -4,7 +4,6 @@
 {% block content %}
 {% set listeSouhaits = app.session.get('listeSouhaits') %} <!-- On récupère notre variable de session listeSouhaits -->
 {% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
-{% set commandes = app.session.get('commandes') %} <!-- On récupère notre variable de session commandes -->
 <!-- start section -->
 <section class="section white-backgorund">
     <div class="container">
@@ -22,7 +21,7 @@
                             <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('commandes') }}">Mes commandes <span class="text-primary">({{commandes|length}})</span></a>
+                            <a href="{{ path('commandes') }}">Mes commandes</a>
                         </li>
                         <li class="spacerPad10-no-top-bottom">
                             <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>

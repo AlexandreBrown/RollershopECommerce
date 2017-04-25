@@ -22,7 +22,7 @@ class Produit
     */
     private $nom;
     /**
-    * @Doctrine\Column(type="decimal",precision=2)
+    * @Doctrine\Column(type="decimal",precision=10, scale=2)
     */
     private $prix;
     /**

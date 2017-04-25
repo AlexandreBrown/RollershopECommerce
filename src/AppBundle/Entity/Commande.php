@@ -34,12 +34,12 @@ class Commande
     */
     private $stripeFingerprint;
     /**
-    * @Doctrine\Column(name="tauxTPS",type="integer")
+    * @Doctrine\Column(name="tauxTPS",type="decimal",precision=10, scale=2)
     * @Assert\NotBlank()
     */
     private $tauxTPS;
     /**
-    * @Doctrine\Column(name="tauxTVQ",type="integer")
+    * @Doctrine\Column(name="tauxTVQ",type="decimal",precision=10, scale=5)
     * @Assert\NotBlank()
     */
     private $tauxTVQ;
@@ -129,8 +129,39 @@ class Commande
 
     public function getTotal()
     {
-        $total = 0;
-        return $total;
+        $sousTotal = $this->calculSousTotal();
+        $this->debug_to_console("SOUS TOTAL :".$sousTotal);
+        $coutTPS = $this->calculTaxes($this->getTauxTPS(),$sousTotal);
+        $this->debug_to_console("Taux TPS :".$this->getTauxTPS());
+        $this->debug_to_console("TPS :".$coutTPS);
+
+        $coutTVQ = $this->calculTaxes($this->getTauxTVQ(),$sousTotal);
+        $this->debug_to_console("TVQ :".$coutTVQ);
+        $this->debug_to_console("FRAIS_LIVRAISON :".Panier::FRAIS_LIVRAISON);
+        $this->debug_to_console("TOTAL :".($sousTotal + Panier::FRAIS_LIVRAISON + $coutTPS + $coutTVQ));
+        return $sousTotal + Panier::FRAIS_LIVRAISON + $coutTPS + $coutTVQ;
+    }
+
+    private function calculSousTotal()
+    {
+        $sousTotal = 0;
+        foreach ($this->achats as $achat) {
+            $sousTotal = ($sousTotal + $achat->getPrixAchat());
+        }
+        return $sousTotal;
+    }
+
+    private function calculTaxes($taux,$sousTotal)
+    {
+        return (Panier::FRAIS_LIVRAISON + $sousTotal) * $taux;
+    }
+
+    function debug_to_console( $data ) {
+    $output = $data;
+    if ( is_array( $output ) )
+        $output = implode( ',', $output);
+
+    echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
     }
 
 }

@@ -191,7 +191,8 @@ class ClientController extends Controller
             $clientConnecte = $this->getUser();
             $connexion = $this->getDoctrine()->getManager()->getConnection();
             $commandes = $this->retrieveCommandesClient($clientConnecte);
-            return $this->render('./dossier/commandes.html.twig',array('commandes' => $commandes));
+            $produits = $this->retrieveProduitsPresentCommandes($commandes);
+            return $this->render('./dossier/commandes.html.twig',array('commandes' => $commandes,'produits' => $produits));
         }
             return $this->redirectToRoute('connexion');
     }
@@ -203,6 +204,16 @@ class ClientController extends Controller
         return $commandes;
     }
 
-
+    private function retrieveProduitsPresentCommandes($commandes)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        foreach($commandes as $commande)
+        {
+            foreach ($commande->getAchats() as $achat) {
+                $produits = $manager->getRepository('AppBundle:Produit')->findBy(array('idProduit' => ($achat->getIdProduit())));
+            }
+        }
+        return $produits;
+    }
 
 }
