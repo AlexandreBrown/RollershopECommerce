@@ -5,7 +5,7 @@
 <section class="section white-backgorund">
     <div class="container">
         <div class="row mainPanel well">
-            <div class="col-sm-12">
+            <div class="col-lg-12">
                 <div class="row">
                     <div class="box">
                                 <h2 class="title text-center">Mes commandes</h2>
@@ -19,7 +19,7 @@
                 </div>
             </div>
         {% if app.user %} <!-- On affiche le sidebar seulement si l'utilisateur est connecté -->
-            <div class="col-sm-3 col-md-3 sidebar">
+            <div class="col-lg-3  sidebar">
                 <div class="mini-submenu">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -47,15 +47,15 @@
                 </div>
             </div>
             <!-- end sidebar -->
-            <div class="col-sm-9">
+            <div class="col-lg-9">
             {% else %}
-            <div class="col-sm-12">
+            <div class="col-lg-12">
             {% endif %}
                 
                 <hr class="spacer-5"><hr class="spacer-20 no-border">
                 
                 <div class="row">
-                    <div class="col-sm-12">
+                    <div class="col-lg-12">
                         <div class="table-responsive table-bordered">    
                             <table class="table table-striped table-bordered">
                                 <thead>
@@ -70,9 +70,10 @@
                                     {% if commandes|length > 0 %}
                                         {% for commande in commandes %}
                                             {% set dataTarget = 'arccodion'~ loop.index %}
-                                            <tr data-toggle="collapse" data-target={{'#'~ dataTarget}} class="clickable">
+                                            <tr data-toggle="collapse">
                                                 <td class="text-center">
                                                     #{{commande.IdCommande}}
+                                                    <a class="btn round arrowUpDown fa fa-chevron-up clickable" data-toggle="collapse" data-target={{'#'~ dataTarget}}>Détails</a>
                                                 </td>
                                                 <td colspan="2" class="text-center">
                                                     {{commande.DateCommande|date("Y/m/d h:m")}}
@@ -160,4 +161,7 @@
     </div><!-- end container -->
 </section>
 <!-- end section -->
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/commande.js') }}"></script>
 {% endblock %}

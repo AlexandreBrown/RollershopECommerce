@@ -16,9 +16,9 @@
 
 <!-- start section -->
 <section class="section white-backgorund">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row mainPanel well">
-            <div class="col-sm-12">
+            <div class="col-lg-12">
                 <div class="row">
                     <div class="box">
                                 <h2 class="title text-center">Mon panier</h2>
@@ -32,7 +32,7 @@
                 </div>
             </div>
         {% if app.user %} <!-- On affiche le sidebar seulement si l'utilisateur est connecté -->
-            <div class="col-sm-3 col-md-3 sidebar">
+            <div class="col-lg-3  sidebar">
                 <div class="mini-submenu">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -60,12 +60,12 @@
                 </div>
             </div>
             <!-- end sidebar -->
-            <div class="col-sm-9">
+            <div class="col-lg-9">
             {% else %}
-            <div class="col-sm-12">
+            <div class="col-lg-12">
             {% endif %}            
                 <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-lg-8">
                     <form method="post" action="{{ path('panier.post') }}">
                         <div class="table-responsive table-bordered">    
                             <table class="table table-striped table-bordered">
@@ -82,7 +82,6 @@
                                     <tr>
                                         <td class="text-center"> <!-- IMG du produit -->
                                             <h6 class="regular">
-                                                <a class="close" href="{{ path('panier.supprimer', {'idProduit':unAchat.Produit.IdProduit}) }}">×</a>
                                                 <a href="{{ path('produit.popup', {'idProduit' :unAchat.produit.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
                                                     <img width="60px" src="{{ asset_if('img/produits/' ~ unAchat.Produit.Categorie.IdCategorie ~ '/' ~ unAchat.Produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
                                                 </a>
@@ -101,8 +100,9 @@
                                         <td class="text-center">
                                             <input name="{{ 'qteCommande[' ~ unAchat.Produit.IdProduit ~ ']' }}" type="number" min="0" max="10" value="{{ unAchat.Quantite }}" class="form-control">
                                         </td>
-                                        <td class="text-center">
-                                            <span class="text-primary">{{unAchat.getPrixAchat}}$</span>
+                                        <td>
+                                            <a class="close" href="{{ path('panier.supprimer', {'idProduit':unAchat.Produit.IdProduit}) }}">×</a>
+                                            <span class="text-primary">{{unAchat.getPrixAchat}}$</span>                                         
                                         </td>
                                     </tr>
                                     {% endfor %}<!-- endfor chaque achat -->
@@ -127,8 +127,9 @@
                                 </button>
                             </div>
                         </div>
+                        <hr class="spacer-10 no-border">
                     </div><!-- end col -->
-                    <div class="col-sm-4">
+                    <div class="col-lg-4">
                         <div class="table-responsive table-bordered"> 
                             <table class="table no-border">
                                 <thead class="summaryCart">

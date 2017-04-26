@@ -130,15 +130,8 @@ class Commande
     public function getTotal()
     {
         $sousTotal = $this->calculSousTotal();
-        $this->debug_to_console("SOUS TOTAL :".$sousTotal);
         $coutTPS = $this->calculTaxes($this->getTauxTPS(),$sousTotal);
-        $this->debug_to_console("Taux TPS :".$this->getTauxTPS());
-        $this->debug_to_console("TPS :".$coutTPS);
-
         $coutTVQ = $this->calculTaxes($this->getTauxTVQ(),$sousTotal);
-        $this->debug_to_console("TVQ :".$coutTVQ);
-        $this->debug_to_console("FRAIS_LIVRAISON :".Panier::FRAIS_LIVRAISON);
-        $this->debug_to_console("TOTAL :".($sousTotal + Panier::FRAIS_LIVRAISON + $coutTPS + $coutTVQ));
         return $sousTotal + Panier::FRAIS_LIVRAISON + $coutTPS + $coutTVQ;
     }
 
@@ -156,13 +149,7 @@ class Commande
         return (Panier::FRAIS_LIVRAISON + $sousTotal) * $taux;
     }
 
-    function debug_to_console( $data ) {
-    $output = $data;
-    if ( is_array( $output ) )
-        $output = implode( ',', $output);
 
-    echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
-    }
 
 }
 abstract class Etat

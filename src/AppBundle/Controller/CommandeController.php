@@ -54,6 +54,7 @@ class CommandeController extends Controller
                         if(isset($post["placeOrder"])){ // Si le client a placé une commande
                             $stripeToken = $session->get('stripeToken'); // On récupère le stripeToken
                             if($stripeToken !== ""){
+                              try{
                                 $charge = $this->createCharge($panier->calculTotal(),$stripeToken);
                                 $commande = new Commande(new \DateTime('now'),
                                                          $charge['source']['id'],
@@ -68,6 +69,12 @@ class CommandeController extends Controller
                                 $session->remove('panier'); // vide le panier
                                 $session->set('panier', new Panier()); // On créer un panier vide
                                 return $this->redirectToRoute('commandes');
+                              }catch(\Exception $e){
+                                if($session->has('stripeToken')){ 
+                                  $session->remove('stripeToken'); // supprime le token
+                                }
+                                return $this->redirectToRoute('paiement');
+                              }
                             }
                             else{
                                 return $this->redirectToRoute('error');

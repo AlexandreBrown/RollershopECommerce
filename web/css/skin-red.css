@@ -4260,3 +4260,24 @@ display: inline;
 .well{
   background-color: #ffffff;
 }
+
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 70%; /* or 950px */
+}
+
+.close{
+  position: relative;
+  bottom: 45px;
+  left: 13px;
+  color: #e63e2d;
+}
+
+.noBorderLeft{
+  border-left: none !important;
+}
+
+.noBorderRight{
+  border-right: none !important;
+}
