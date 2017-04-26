@@ -4219,8 +4219,20 @@ display: inline;
   margin-left: 10px;
 }
 
+.spacerMarg20-bottom{
+  margin-bottom: : 20px;
+}
+
+.spacerMarg30-bottom{
+  margin-bottom: : 30px;
+}
+
 .spacerMarg50-bottom{
   margin-bottom: : 50px;
+}
+
+.spacerMarg200-bottom{
+  margin-bottom: : 200px;
 }
 
 .spacerMarg10-top{
@@ -4248,4 +4260,3 @@ display: inline;
 .well{
   background-color: #ffffff;
 }
-

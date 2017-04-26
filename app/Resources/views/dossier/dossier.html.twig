@@ -8,63 +8,70 @@
 <section class="section white-backgorund">
     <div class="container">
         <div class="row mainPanel well">
-            <!-- start sidebar -->
-            <div class="col-sm-2">
-                <div class="widget all-ArroundBorder">
-                    <h5 class="subtitle text-center">Navigation</h5>
-                    
-                    <ul class="list list-unstyled ">
-                        <li class="active spacerPad10-no-top-bottom">
-                            <a href="{{ path('dossier') }}">Mon compte</a>
-                        </li>
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('panier.index') }}">Mon panier <span class="text-primary">({% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %})</span></a>
-                        </li>
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('commandes') }}">Mes commandes</a>
-                        </li>
-                        <li class="spacerPad10-no-top-bottom">
-                            <a href="{{ path('listeSouhaits.index') }}">Liste de souhaits <span class="text-primary">({% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %})</span></a>
-                        </li>
-                        <li class="spacerPad10-no-top">
-                            <a href="{{ path('deconnexion') }}">Déconnexion</a>
-                        </li>
-                    </ul>
-                </div><!-- end widget -->                
-            </div><!-- end col -->
-            <!-- end sidebar -->
-                <div class="col-sm-10">
+            <div class="row">     
+                <div class="col-sm-12">
                     <div class="row">
                         <div class="box">
-                                <h2 class="title text-center">Mes informations</h2>
-                                {% if message is defined and message is not null %}
-                                    <div class="alert {{ message.getType }} text-center">
-                                        {{ message.getTexte | raw  }}
-                                    </div>
-                                {% endif %}
-                            <hr>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label text-right">
-                                    Courriel
-                                </label>
-                                <div class="col-sm-10">
-                                    <p>{{app.user.courriel}}</p>
-                                </div>
+                                    <h2 class="title text-center">Mes informations</h2>
+                                    {% if message is defined and message is not null %}
+                                        <div class="alert {{ message.getType }} text-center">
+                                            {{ message.getTexte | raw  }}
+                                        </div>
+                                    {% endif %}
+                                <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3 sidebar">
+                            <div class="mini-submenu">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
                             </div>
-                            {{ form_start(formInfosCompte, { 'attr': { 'data-toggle':'validator' } }) }}
-                                {{ form_row(formInfosCompte.nom) }}
-                                {{ form_row(formInfosCompte.prenom) }}
-                                {{ form_row(formInfosCompte.genre) }}
-                                {{ form_row(formInfosCompte.adresse) }}
-                                {{ form_row(formInfosCompte.ville) }}
-                                {{ form_row(formInfosCompte.codePostal,{ 'attr': {'class':'codePostal' }})  }}
-                                {{ form_row(formInfosCompte.province) }}
-                                {{ form_row(formInfosCompte.telephone,{ 'attr': {'class':'telephone' }}) }}
-                                {{ form_row(formInfosCompte.btnEnregistrerChangements, {'label':'Enregistrer', 'attr': {'class': 'btn btn-default round btn-md'}}) }}
-                                {{ form_rest(formInfosCompte) }}
-                            {{ form_end(formInfosCompte) }}
-                        </div><!-- end box -->
-                    </div><!-- end row -->
+                            <div class="list-group">
+                                <span class="list-group-item active" style="background-color:#35404f">
+                                    Navigation du compte
+                                </span>
+                                <a href="{{ path('dossier') }}" class="list-group-item active" style="background-color:#D8D8D8;border-style:none;color:black;">
+                                    <i class="fa fa-user"></i> Mon compte
+                                </a>
+                                <a href="{{ path('listeSouhaits.index') }}" class="list-group-item">
+                                    <i class="fa fa-heart"></i> Ma liste de souhaits <span class="badge">{% if listeSouhaits is not null %}{{listeSouhaits.compteSouhaits}}{% else %}0{% endif %}</span>
+                                </a>
+                                <a href="{{ path('panier.index') }}" class="list-group-item">
+                                    <i class="fa fa-cart-plus"></i> Mon panier <span class="badge">{% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %}</span>
+                                </a>
+                                <a href="{{ path('commandes') }}" class="list-group-item">
+                                    <i class="fa fa-list"></i> Mes commandes
+                                </a>
+                                <a href="{{ path('deconnexion') }}" class="list-group-item">
+                                    <i class="fa fa-sign-out"></i> Déconnexion 
+                                </a>
+                            </div>
+                        </div>  
+                        <div class="col-sm-9">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-right">
+                                        Courriel
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <p>{{app.user.courriel}}</p>
+                                    </div>
+                                </div>
+                                {{ form_start(formInfosCompte, { 'attr': { 'data-toggle':'validator' } }) }}
+                                    {{ form_row(formInfosCompte.nom) }}
+                                    {{ form_row(formInfosCompte.prenom) }}
+                                    {{ form_row(formInfosCompte.genre) }}
+                                    {{ form_row(formInfosCompte.adresse) }}
+                                    {{ form_row(formInfosCompte.ville) }}
+                                    {{ form_row(formInfosCompte.codePostal,{ 'attr': {'class':'codePostal' }})  }}
+                                    {{ form_row(formInfosCompte.province) }}
+                                    {{ form_row(formInfosCompte.telephone,{ 'attr': {'class':'telephone' }}) }}
+                                    {{ form_row(formInfosCompte.btnEnregistrerChangements, {'label':'Enregistrer', 'attr': {'class': 'btn btn-default round btn-md'}}) }}
+                                    {{ form_rest(formInfosCompte) }}
+                                {{ form_end(formInfosCompte) }}
+                            </div><!-- end box -->
+                        </div>
                     <div class="row">
                         <div class="box">
                             <h2 class="title text-center">Changer mon mot de passe</h2>
@@ -75,7 +82,8 @@
                                 {{ form_row(formMotPasse.btnSendFormChangePwd, {'label':'Enregistrer', 'attr': {'class': 'btn btn-default round btn-md'}}) }}
                             {{ form_end(formMotPasse) }}
                         </div><!-- end box -->
-                    </div>
+                    </div><!-- end row -->
+                    </div><!-- end row -->
                 </div><!-- end col -->
             </div><!-- end row -->
         </div><!-- end container -->
