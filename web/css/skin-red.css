@@ -1319,7 +1319,7 @@ hr {
   padding: 280px 0; }
 
 .white-backgorund {
-  background-color: #ffffff; }
+  background-color: #F9F9F9; }
 
 .light-backgorund {
   background-color: #e5e5e5; }
@@ -4206,12 +4206,46 @@ display: inline;
 }
 
 .spacerMarg10-no-top{
-  margin: 10px 10px 10px 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 
+.spacerMarg10-right{
+  margin-right: 10px;
+}
+
+.spacerMarg10-left{
+  margin-left: 10px;
+}
+
+.spacerMarg50-bottom{
+  margin-bottom: : 50px;
+}
+
+.spacerMarg10-top{
+  margin-top: 10px;
+}
+
+.spacerMarg25-top{
+  margin-top: 25px;
+}
 .border{
     border-style: ridge  ;
 }
 .preparing{
   background-color: #0cd4d2;
 }
+
+.clickable{
+    cursor: pointer;
+}
+
+.mainPanel{
+  padding: 20px 20px 20px 20px;
+}
+
+.well{
+  background-color: #ffffff;
+}
+

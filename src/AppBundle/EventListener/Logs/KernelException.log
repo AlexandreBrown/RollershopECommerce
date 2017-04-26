@@ -1,13 +1,32 @@
-2017-04-26 1:06:10 Last error : exception 'Symfony\Component\Debug\Exception\UndefinedMethodException' with message 'Attempted to call an undefined method named "getIdProduit" of class "AppBundle\Entity\Achat".
-Did you mean to call e.g. "getProduit" or "setProduit"?' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\CommandeController.php:168
+2017-04-26 3:34:17 Last error : exception 'Symfony\Component\Routing\Exception\ResourceNotFoundException' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\appDevDebugProjectContainerUrlMatcher.php:267
 Stack trace:
-#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\CommandeController.php(143): AppBundle\Controller\CommandeController->ajouterProduitAchat()
-#1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\CommandeController.php(66): AppBundle\Controller\CommandeController->ajouterAchatsEnBD()
-#2 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4217): AppBundle\Controller\CommandeController->revueAction()
-#3 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4217): call_user_func_array:{C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php:4217}()
-#4 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4172): Symfony\Component\HttpKernel\HttpKernel->handleRaw()
-#5 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\HttpKernel\Kernel.php(168): Symfony\Component\HttpKernel\HttpKernel->handle()
-#6 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\web\app_dev.php(28): Symfony\Component\HttpKernel\Kernel->handle()
-#7 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): ()
-#8 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(0): {main}()
-#9 {main}
+#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(2029): appDevDebugProjectContainerUrlMatcher->match('/js/maps/swiper...')
+#1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(1898): Symfony\Component\Routing\Matcher\UrlMatcher->matchRequest(Object(Symfony\Component\HttpFoundation\Request))
+#2 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(3470): Symfony\Component\Routing\Router->matchRequest(Object(Symfony\Component\HttpFoundation\Request))
+#3 [internal function]: Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest(Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher))
+#4 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\EventDispatcher\Debug\WrappedListener.php(106): call_user_func(Array, Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher))
+#5 [internal function]: Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke(Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher))
+#6 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(3273): call_user_func(Object(Symfony\Component\EventDispatcher\Debug\WrappedListener), Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher))
+#7 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(3188): Symfony\Component\EventDispatcher\EventDispatcher->doDispatch(Array, 'kernel.request', Object(Symfony\Component\HttpKernel\Event\GetResponseEvent))
+#8 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher.php(136): Symfony\Component\EventDispatcher\EventDispatcher->dispatch('kernel.request', Object(Symfony\Component\HttpKernel\Event\GetResponseEvent))
+#9 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4202): Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch('kernel.request', Object(Symfony\Component\HttpKernel\Event\GetResponseEvent))
+#10 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4172): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#11 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\HttpKernel\Kernel.php(168): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#12 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\web\app_dev.php(28): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#13 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): require('C:\\Users\\alinux...')
+#14 {main}
+
+Next exception 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException' with message 'No route found for "GET /js/maps/swiper.min.js.map"' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php:3486
+Stack trace:
+#0 [internal function]: Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest(Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher))
+#1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\EventDispatcher\Debug\WrappedListener.php(106): call_user_func(Array, Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher))
+#2 [internal function]: Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke(Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher))
+#3 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(3273): call_user_func(Object(Symfony\Component\EventDispatcher\Debug\WrappedListener), Object(Symfony\Component\HttpKernel\Event\GetResponseEvent), 'kernel.request', Object(Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher))
+#4 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(3188): Symfony\Component\EventDispatcher\EventDispatcher->doDispatch(Array, 'kernel.request', Object(Symfony\Component\HttpKernel\Event\GetResponseEvent))
+#5 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher.php(136): Symfony\Component\EventDispatcher\EventDispatcher->dispatch('kernel.request', Object(Symfony\Component\HttpKernel\Event\GetResponseEvent))
+#6 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4202): Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch('kernel.request', Object(Symfony\Component\HttpKernel\Event\GetResponseEvent))
+#7 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4172): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\HttpKernel\Kernel.php(168): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\web\app_dev.php(28): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): require('C:\\Users\\alinux...')
+#11 {main}

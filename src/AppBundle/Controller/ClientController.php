@@ -191,7 +191,6 @@ class ClientController extends Controller
             $clientConnecte = $this->getUser();
             $connexion = $this->getDoctrine()->getManager()->getConnection();
             $commandes = $this->retrieveCommandesClient($clientConnecte);
-            dump($commandes);
             return $this->render('./dossier/commandes.html.twig',array('commandes' => $commandes));
         }
             return $this->redirectToRoute('connexion');

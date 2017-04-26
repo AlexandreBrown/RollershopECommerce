@@ -14,8 +14,8 @@
         </div><!-- end breadcrumbs -->        
         <!-- start section -->
         <section class="section white-backgorund">
-            <div class="container">
-                <div class="row">
+            <div class="container mainPanel well">
+                <div class="row ">
                     <div class="col-sm-12">
                         <div class="title-wrap">
                             {% if message is defined and message is not null %}
@@ -28,19 +28,21 @@
                     </div><!-- end col -->    
                 </div><!-- end row -->
                 
-                <div class="row column-3">
-                    <div class="col-sm-6 col-md-4">
+                <div class="row column-3 ">
+                    <div class="col-sm-1 col-md-1">
+                    </div>
+                    <div class="col-sm-7 col-md-7">
                         <div class="icon-boxes style1">
-                            <div class="icon">
-                                <i class="glyphicon glyphicon-map-marker"></i> <!-- Icone bootstrap -->
+                            <div class="icon ">
+                                <i class="fa fa-envelope-o text-success"></i>
                             </div><!-- end icon -->
                             <div class="box-content">
-                                <h6 class="thin">Venez nous voir!</h6>
-                                <h5 class="text-warning">2500 Boulevard de l'Université,<br>Sherbrooke,<br>QC J1K 0A5</h5>
+                                <h6 class="thin">Ou envoyez-nous un courriel!</h6>
+                                <h5 class="text-success">rollershopcanada@gmail.com</h5>
                             </div>
                         </div><!-- icon-box -->
-                    </div><!-- end col -->   
-                    <div class="col-sm-6 col-md-4">
+                    </div><!-- end col --> 
+                    <div class="col-sm-3 col-md-3">
                         <div class="icon-boxes style1">
                             <div class="icon">
                                 <i class="fa fa-phone text-info"></i>
@@ -50,22 +52,12 @@
                                 <h5 class="text-info">Appelez-nous <br>+1 450 710 2070!</h5>
                             </div>
                         </div><!-- icon-box -->
-                    </div><!-- end col -->   
-                    <div class="col-sm-6 col-md-4">
-                        <div class="icon-boxes style1">
-                            <div class="icon">
-                                <i class="fa fa-envelope-o text-success"></i>
-                            </div><!-- end icon -->
-                            <div class="box-content">
-                                <h6 class="thin">Ou envoyez-nous un courriel!</h6>
-                                <h5 class="text-success">rollershopcanada@gmail.com</h5>
-                            </div>
-                        </div><!-- icon-box -->
-                    </div><!-- end col --> 
+                    </div><!-- end col -->
+                    <div class="col-sm-1 col-md-1">
+                    </div>   
                 </div><!-- end row -->
                 
                 <hr class="spacer-40 no-border">
-                
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <form name="contactform" method="POST" action="{{path('contacts')}}"> <!-- Les informations sont envoyées dans le POST lorsqu'on clique sur le bouton Envoyer -->
@@ -87,7 +79,22 @@
                         </form>
                     </div><!-- end col -->
                 </div><!-- end row -->
-                <hr class="spacer-40 no-border">
+                <hr class="spacerMarg10-top no-border">
+                <div class="row">
+                    <div class="col-sm-2 col-md-2"></div>
+                    <div class="col-sm-8 col-md-8">
+                        <div class="icon-boxes style1">
+                            <div class="icon">
+                                <i class="glyphicon glyphicon-map-marker"></i> <!-- Icone bootstrap -->
+                            </div><!-- end icon -->
+                            <div class="box-content">
+                                <h6 class="thin">Venez nous voir!</h6>
+                                <h5 class="text-warning">2500 Boulevard de l'Université,Sherbrooke,QC J1K 0A5</h5>
+                            </div>
+                        </div><!-- icon-box -->
+                    </div><!-- end col --> 
+                    <div class="col-sm-2 col-md-2"></div>
+                </div>
                 <!-- Google Map -->
                 <!-- start section -->
                 <section class="light-background">

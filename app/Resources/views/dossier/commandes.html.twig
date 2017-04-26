@@ -4,7 +4,7 @@
 {% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
 <section class="section white-backgorund">
     <div class="container">
-        <div class="row">
+        <div class="row mainPanel well">
         {% if app.user %} <!-- On affiche le sidebar seulement si l'utilisateur est connecté -->
             <!-- start sidebar -->
             <div class="col-sm-2">
@@ -46,13 +46,13 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="table-responsive">    
-                            <table class="table table-striped">
+                            <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Commande</th>
-                                        <th colspan="2">Date</th>
-                                        <th>Total</th>
-                                        <th>État</th>
+                                        <th class="text-center">Commande</th>
+                                        <th colspan="2" class="text-center">Date</th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">État</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,16 +60,16 @@
                                         {% for commande in commandes %}
                                             {% set dataTarget = 'arccodion'~ loop.index %}
                                             <tr data-toggle="collapse" data-target={{'#'~ dataTarget}} class="clickable">
-                                                <td>
+                                                <td class="text-center">
                                                     #{{commande.IdCommande}}
                                                 </td>
-                                                <td colspan="2">
+                                                <td colspan="2" class="text-center">
                                                     {{commande.DateCommande|date("Y/m/d h:m")}}
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     {{commande.Total | number_format(2, ",", " ")}}$
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     {% if commande.Etat == constant('AppBundle\\Entity\\Etat::PENDING') %}
                                                         <span class="label label-warning">{{commande.EtatToVerbose}}</span>
 
@@ -91,18 +91,31 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4">
+                                                <td colspan="6">
                                                     <div id={{dataTarget}} class="collapse table-responsive">
-                                                        <table>
+                                                        <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">Image</th>
+                                                                        <th class="text-center">Nom</th>
+                                                                        <th class="text-center">Quantité</th>
+                                                                    </tr>
+                                                                </thead>
                                                             <tbody>
                                                                 {% for achat in commande.achats %}
                                                                     <tr>
-                                                                        <td>
+                                                                        <td class="text-center">
                                                                             <h6 class="regular">
                                                                                 <a href="{{ path('produit.popup', {'idProduit' :achat.produit.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
                                                                                     <img width="60px" src="{{ asset_if('img/produits/' ~ achat.produit.categorie.idCategorie ~ '/' ~ achat.produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
                                                                                 </a>
                                                                             </h6>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <a href="{{ path('produit.popup', {'idProduit' :achat.produit.idProduit }) }}" class="btnPopup" data-toggle="modal" data-target=".productQuickView">{{achat.produit.nom}}</a>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            {{achat.quantite}}
                                                                         </td>
                                                                     </tr>
                                                                 {% endfor %}

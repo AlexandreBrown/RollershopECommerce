@@ -19,8 +19,8 @@
                 
                 <hr class="spacer-5"><hr class="spacer-20 no-border">
 
-                <div class="UBorder">
-                <div class="row">
+                <div>
+                <div class="row mainPanel well">
                     <div class="col-sm-12">
                         <ul class="nav nav-pills style2 nav-justified">
                             <li class="active">
@@ -147,22 +147,22 @@
                                             </table><!-- end table -->
                                         </div><!-- end table-responsive -->
                                     </div><!-- end col -->
+                                    <div class="row spacerPad10-no-top">
+                                        <hr>
+                                        <div class="col-sm-6 text-left">
+                                            <a href="{{path('panier.index')}}" class="btn btn-default btn-md round">Retour au panier</a>
+                                        </div>
+                                        <div class="col-sm-6 text-right">
+                                            <button id="btnSubmitMethodePaiement" name="action" value="confirmation" type="submit" class="btn btn-default btn-md round disabled ">Revoir la commande</button>
+                                        </div>
+                                        </form>
+                                    </div>  
                                 </div><!-- end row -->
                             </div><!-- end tab-pane -->
                         </div><!-- end pills content -->
                     </div><!-- end col -->
                 </div><!-- end row -->
-            </div><!-- end col -->
-	        <div class="row spacerPad10-no-top">
-	        	<hr>
-	        	<div class="col-sm-6 text-left">
-	        		<a href="{{path('panier.index')}}" class="btn btn-default btn-md round">Retour au panier</a>
-	        	</div>
-	        	<div class="col-sm-6 text-right">
-	        		<button id="btnSubmitMethodePaiement" name="action" value="confirmation" type="submit" class="btn btn-default btn-md round disabled ">Revoir la commande</button>
-	        	</div>
-                </form>
-	        </div>  
+            </div><!-- end col --> 
           </div><!-- end UBorder -->
         </div><!-- end row -->          
     </div><!-- end container -->
