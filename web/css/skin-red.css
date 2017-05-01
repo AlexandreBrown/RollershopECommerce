@@ -4267,7 +4267,7 @@ display: inline;
   max-width: 70%; /* or 950px */
 }
 
-.close{
+.deleteObj{
   position: relative;
   bottom: 45px;
   left: 13px;
@@ -4281,4 +4281,8 @@ display: inline;
 
 .noBorderRight{
   border-right: none !important;
+}
+
+.bgCommande{
+  background-color: #35404f;
 }

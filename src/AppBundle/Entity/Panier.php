@@ -50,7 +50,7 @@ class Panier
     {
         $sousTotal = 0;
         foreach ($this->getAchats() as $achat) {
-            $sousTotal += $achat->getPrixAchat();
+            $sousTotal += $achat->getTotalPrixAchatQuantite();
         }
         return $sousTotal;
     }

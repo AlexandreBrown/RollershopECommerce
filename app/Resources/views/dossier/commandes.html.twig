@@ -68,7 +68,7 @@
                                 </thead>
                                 <tbody>
                                     {% if commandes|length > 0 %}
-                                        {% for commande in commandes %}
+                                        {% for commande in commandes %} <!-- On énumère chacune des commandes reliées au compte connecté -->
                                             {% set dataTarget = 'arccodion'~ loop.index %}
                                             <tr data-toggle="collapse">
                                                 <td class="text-center">
@@ -102,7 +102,8 @@
                                                     {% endif %}
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!-- Détails d'une commande -->
+                                            <tr class="bgCommande">
                                                 <td colspan="6">
                                                     <div id={{dataTarget}} class="collapse table-responsive table-bordered">
                                                         <table class="table table-bordered">
@@ -110,6 +111,8 @@
                                                                     <tr>
                                                                         <th class="text-center" colspan="2">Produit</th>
                                                                         <th class="text-center">Quantité</th>
+                                                                        <th class="text-center">Prix unitaire</th>
+                                                                        <th class="text-center">Total</th>
                                                                     </tr>
                                                                 </thead>
                                                             <tbody>
@@ -129,9 +132,45 @@
                                                                         <td class="text-center">
                                                                             {{achat.quantite}}
                                                                         </td>
+                                                                        <td class="text-center">
+                                                                            {{achat.prixAchat | number_format(2, ",", " ")}}$
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            {{achat.totalPrixAchatQuantite | number_format(2, ",", " ")}}$
+                                                                        </td>
                                                                     </tr>
                                                                 {% endfor %}
                                                             </tbody>
+                                                            <tfoot>
+                                                                <thead>
+                                                                    <th class="text-center">Fraison de livraison</th>
+                                                                    <th class="text-center">TPS</th>
+                                                                    <th class="text-center">TVQ</th>
+                                                                    <th class="text-center" colspan="2">Sous-total</th>
+                                                                </thead>
+                                                                <tr>
+                                                                    <td class="text-center">
+                                                                        {{ constant('AppBundle\\Entity\\Panier::FRAIS_LIVRAISON') | number_format(2, ",", " ") }}$
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{commande.calculTPS | number_format(2, ",", " ")}}$
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{commande.calculTVQ | number_format(2, ",", " ")}}$
+                                                                    </td>
+                                                                    <td class="text-center" colspan="2">
+                                                                        {{commande.calculSousTotal | number_format(2, ",", " ")}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <th class="text-center" colspan="6">Total</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="6" class="text-center">
+                                                                        {{commande.Total | number_format(2, ",", " ")}}$
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
                                                         </table>
                                                     </div>
                                                 </td>

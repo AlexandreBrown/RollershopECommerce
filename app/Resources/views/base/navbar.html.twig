@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li class="linkdown"> <!-- Options de compte -->
-                <a href="#">
+                <a href="{{ path('dossier') }}">
                     <i class="fa fa-user mr-5"></i>
                     <span class="hidden-xs">
                         {% if (app.user) %}{{ app.user.prenom }}{% else %}Mon Compte{% endif %} 

@@ -69,11 +69,13 @@ function stripeTokenHandler(token) {
   form.submit();
 }
 
+// Active ou désactive le bouton pour passer à la page de revue de la commande
 function enableButtonIfNotEmpty(){
   var name = document.getElementById('cc_name');
   if(name != ""){
-    document.getElementById('btnSubmitMethodePaiement').classList.remove("disabled");
+    document.getElementById('btnSubmitMethodePaiement').disabled = false;
   }else{
-    document.getElementById('btnSubmitMethodePaiement').classList.add("disabled");
-  }
+    document.getElementById('btnSubmitMethodePaiement').disabled = true;
+}
+
 }

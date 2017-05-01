@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class ClientController extends Controller 
 {
-    protected $MIN_LENGTH_PWD = 5;
-    protected $MAX_LENGTH_PWD = 33;
+    protected $MIN_LENGTH_PWD = 5;  // Effective size : 6 
+    protected $MAX_LENGTH_PWD = 33; // Effective size : 32
     /**
     * @Route("/dossier", name="dossier")
     */
@@ -199,6 +199,7 @@ class ClientController extends Controller
     private function retrieveCommandesClient($client)
     {
         $manager = $this->getDoctrine()->getManager();
+        // Retrouve toutes les commandes d'un client x
         $commandes = $manager->getRepository('AppBundle:Commande')->findBy(array('client' => $client));
         return $commandes;
     }

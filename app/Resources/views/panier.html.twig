@@ -114,8 +114,8 @@
                                             <input name="{{ 'qteCommande[' ~ unAchat.Produit.IdProduit ~ ']' }}" type="number" min="0" max="10" value="{{ unAchat.Quantite }}" class="form-control">
                                         </td>
                                         <td>
-                                            <a class="close" href="{{ path('panier.supprimer', {'idProduit':unAchat.Produit.IdProduit}) }}">×</a>
-                                            <span class="text-primary">{{unAchat.getPrixAchat}}$</span>                                         
+                                            <a class="close deleteObj" href="{{ path('panier.supprimer', {'idProduit':unAchat.Produit.IdProduit}) }}">×</a>
+                                            <span class="text-primary">{{unAchat.getTotalPrixAchatQuantite}}$</span>                                         
                                         </td>
                                     </tr>
                                     {% endfor %}<!-- endfor chaque achat -->

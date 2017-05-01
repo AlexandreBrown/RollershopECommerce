@@ -50,7 +50,7 @@ class Commande
     private $etat; // Length de 20 pour laisser la possibilitée de mettre autre chose qu'un seul caractère dans le futur. (Évite les problèmes de "truncate")
 
     /**
-     * Plusieurs commandes on un client
+     * Plusieurs commandes ont un client
      * @Doctrine\ManyToOne(targetEntity="Client", inversedBy="commandes")
      * @Doctrine\JoinColumn(name="idClient", referencedColumnName="idClient", nullable=false)
      */
@@ -130,28 +130,40 @@ class Commande
     public function getTotal()
     {
         $sousTotal = $this->calculSousTotal();
-        $coutTPS = $this->calculTaxes($this->getTauxTPS(),$sousTotal);
-        $coutTVQ = $this->calculTaxes($this->getTauxTVQ(),$sousTotal);
+        $coutTPS = $this->calculTPS();
+        $coutTVQ = $this->calculTVQ();
         return $sousTotal + Panier::FRAIS_LIVRAISON + $coutTPS + $coutTVQ;
     }
 
-    private function calculSousTotal()
+    public function calculSousTotal()
     {
         $sousTotal = 0;
         foreach ($this->achats as $achat) {
-            $sousTotal = ($sousTotal + $achat->getPrixAchat());
+            $sousTotal = ($sousTotal + ($achat->getPrixAchat() *$achat->getQuantite() ));
         }
         return $sousTotal;
+    }
+
+    public function calculTPS()
+    {
+        $sousTotal = $this->calculSousTotal();
+        $coutTPS = $this->calculTaxes($this->getTauxTPS(),$sousTotal);
+        return $coutTPS;
+    }
+
+    public function calculTVQ()
+    {
+        $sousTotal = $this->calculSousTotal();
+        $coutTVQ = $this->calculTaxes($this->getTauxTVQ(),$sousTotal);
+        return $coutTVQ;
     }
 
     private function calculTaxes($taux,$sousTotal)
     {
         return (Panier::FRAIS_LIVRAISON + $sousTotal) * $taux;
     }
-
-
-
 }
+
 abstract class Etat
 {
     const PENDING = "PEND";
