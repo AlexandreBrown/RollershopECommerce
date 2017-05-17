@@ -83,6 +83,7 @@ class Commande
     public function getTauxTVQ() { return $this->tauxTVQ; }
     public function getEtat() { return $this->etat; }
     public function getAchats() { return $this->achats; }
+    public function getClient() { return $this->client; }
 
 
     // Setters

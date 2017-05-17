@@ -107,6 +107,8 @@ class Client implements UserInterface
      */
     private $commandes;
 
+    private $role;
+
     // Constructeur
     public function __construct()
     {
