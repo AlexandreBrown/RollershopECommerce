@@ -39,4 +39,7 @@ class Categorie
     public function getIdCategorie() { return $this->idCategorie; }
     public function getNom() { return $this->nom; }
 
+    // Setters
+    public function setNom($newNom) { $this->nom = $newNom;return $this; }
+
 }

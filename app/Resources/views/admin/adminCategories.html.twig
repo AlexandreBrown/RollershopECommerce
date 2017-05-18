@@ -51,7 +51,7 @@
                             <a href="{{ path('admin.produit') }}" class="list-group-item">
                                 <i class="fa fa-glass" aria-hidden="true"></i> Produits
                             </a>
-                            <a href="{{ path('admin.categorie') }}" class="list-group-item active" style="background-color:#D8D8D8;border-style:none;color:black;">
+                            <a href="{{ path('admin.categorie.get') }}" class="list-group-item active" style="background-color:#D8D8D8;border-style:none;color:black;">
                                 <i class="fa fa-bars" aria-hidden="true"></i> Catégories
                             </a>
                             <a href="{{ path('admin.commande') }}" class="list-group-item">
@@ -80,17 +80,46 @@
                             </thead>
                             <tbody>
                                 {% for categorie in categories %}
+                                    {% if idCategorieSelectionnee is defined and idCategorieSelectionnee is not null and categorie.idCategorie == idCategorieSelectionnee %}
+                                        <form action="{{ path('admin.categorie.post') }}" method="POST">
+                                            <tr class="row">
+                                                <td class="col-lg-9">
+                                                    <input type="text" name="categorie[nom]" required="required" placeholder="Entrez le nom de la catégorie" value="{{categorie.nom}}" class="form-control">
+                                                </td>
+                                                <td class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <button type="submit" name="categorie[action]" value="sauvegarder" class="btn btn-primary red round">Sauvegarder</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </form>
+                                    {% else %}
+                                        <tr class="row">
+                                            <td class="col-lg-9">
+                                                {{categorie.nom}}
+                                            </td>
+                                            <td class="col-lg-3">
+                                                <a href="{{ path('admin.categorie.modifier', {'idCategorie':categorie.idCategorie}) }}" class="btn btn-info round btn-sm red">
+                                                  <span class="glyphicon glyphicon-pencil"></span> 
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if (idCategorieSelectionnee is defined and idCategorieSelectionnee is not null) == false %}
                                     <tr class="row">
+                                        <form action="{{ path('admin.categorie.post') }}" method="POST">
                                         <td class="col-lg-9">
-                                            {{categorie.nom}}
+                                            <input type="text" name="categorie[nom]" required="required" placeholder="Entrez le nom de la catégorie" class="form-control">
                                         </td>
                                         <td class="col-lg-3">
-                                            <a href="#" class="btn btn-info round btn-sm red">
-                                              <span class="glyphicon glyphicon-pencil"></span> 
-                                            </a>
+                                            <div class="form-group">
+                                                <button type="submit" name="categorie[action]" value="ajout" class="btn btn-primary red round">Ajouter</button>
+                                            </div>
                                         </td>
+                                        </form>
                                     </tr>
-                                {% endfor %}
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
