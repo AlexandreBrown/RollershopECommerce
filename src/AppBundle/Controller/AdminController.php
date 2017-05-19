@@ -33,45 +33,27 @@ class AdminController extends Controller
     */
     public function categorieAction(Request $request)
     {
-        $message = $this->getMessageFromSession($request);
-        // À la base , aucune catégorie n'est sélectionnée
-        // 
-        $formAjoutCategorie = $this->createForm(CategorieType::class);
+        $message = null;
+        $message = $this->getVariableFromFlashBag('messages',$request);
+        $categorie = new Categorie(array('idCategorie' => null,'nom' => null));
+        $formAjoutCategorie = $this->createForm(CategorieType::class,$categorie);
         $formAjoutCategorie->handleRequest($request);
         // Si le formulaire est soumis et valide
         if($formAjoutCategorie->isSubmitted() && $formAjoutCategorie->isValid()) {
             try {
-                $categorie = $formAjoutCategorie->getData();
-
-                if($this->categorieEstNouvelle($categorie['nom']))
-                {
-                    $this->ajouterCategorie($categorie['nom']);
+                    $categorie = $formAjoutCategorie->getData();
+                    $this->ajouterCategorie($categorie->getNom());
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été ajoutée avec succès!");
-                    $this->addFlash('messages',$message);
-                }else{
-                    $message = new Message(MessageType::WARNING,"La catégorie existe déjà!");
-                    $this->addFlash('messages',$message);
+                    // Si la catégorie a été ajoutée avec succès , on réinitialise la form
+                    $formAjoutCategorie = $this->createForm(CategorieType::class);
+                } catch(ORMException $e) {
+                    return $this->redirectToRoute('error500');
                 }
-
-            } catch(ORMException $e) {
-                return $this->redirectToRoute('error500');
-            }
         }
-
-
-
         $categories = $this->retrieveCategories();
 
         return $this->render('./admin/adminCategories.html.twig',array('categories' => $categories,'message' => $message,'formAjoutCategorie' => $formAjoutCategorie->createView()));
     }
-
-    private function trouverCategorieParID($idCategorie)
-    {
-        $manager = $this->getDoctrine()->getManager();
-        $categorie = $manager->getRepository('AppBundle:Categorie')->find($idCategorie);
-        return $categorie;
-    }
-
 
     /**
     * @Route("/categorie/{idCategorie}", name="admin.categorie.modifier")
@@ -87,16 +69,36 @@ class AdminController extends Controller
                 $categorie = $formModifCategorie->getData();
                 if($this->categorieEstNouvelle($categorie->getNom()))
                 {
-                    $this->modifierNomCategorie($categorie->getIdCategorie(),$categorie->getNom());
+                    $this->modifierNomCategorie($categorie,$categorie->getNom());
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été modifiée avec succès!");
                     $this->addFlash('messages',$message);
                 }
+                return $this->redirectToRoute('admin.categorie.index');
             } catch(ORMException $e) {
                 return $this->redirectToRoute('error500');
             }
         }
         $categories = $this->retrieveCategories();
         return $this->render('./admin/adminCategories.html.twig',array('categories' => $categories,'formModifCategorie' => $formModifCategorie->createView(),'idCategorieSelectionnee' => $idCategorie));
+    }
+
+    private function getVariableFromFlashBag($name,Request $request)
+    {
+        $session = $request->getSession(); // On récupère la session
+        
+        $flashBag = $session->getFlashBag()->get($name); // On récupère la variable de session demandée
+        $result = null;
+        if(isset($flashBag[0])){ // Si notre variable est définie
+            $result = $flashBag[0]; // On l'assigne à notre variable result
+        }
+        return $result; // le résultat est retourné
+    }
+
+    private function trouverCategorieParID($idCategorie)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $categorie = $manager->getRepository('AppBundle:Categorie')->find($idCategorie);
+        return $categorie;
     }
 
     private function categorieEstNouvelle($nomCategorie)
@@ -116,48 +118,10 @@ class AdminController extends Controller
         $manager->flush();
     }
 
-    private function categorieEstVide($nomCategorie)
-    {
-        return $nomCategorie === "";
-    }
-
-    private function getMessageFromSession(Request $request)
-    {
-        $session = $request->getSession(); // On récupère la session
-        
-        $messages = $session->getFlashBag()->get('messages'); // On récupère la variable de session messages
-        $message = null;
-        if(isset($messages[0])){ // Si notre variable contient un message
-            $message = $messages[0]; // On l'assigne à notre variable message
-        }
-        return $message;
-    }
-
-    private function getFlashByName(Request $request,$flashName)
-    {
-        $session = $request->getSession();
-        $flashResult = $session->getFlashBag()->get($flashName);
-        $flash = null;
-        if(isset($flashResult[0]))
-        {
-            $flash = $flashResult[0];
-        }
-        return $flash;
-    }
-
-    private function setFlashByName(Request $request,$flashName,$newValue)
-    {
-        $session = $request->getSession();
-        $session->getFlashBag()->set($flashName,$newValue);
-    }
-
-    private function modifierNomCategorie($idCategorie,$nomCategorie)
+    private function modifierNomCategorie($categorie,$newNom)
     {
         $manager = $this->getDoctrine()->getManager();
-        // On trouve la catégorie correspondante
-        $categorie = $manager->getRepository('AppBundle:Categorie')->find($idCategorie);
-        
-        $categorie->setNom($nomCategorie);
+        $categorie->setNom($newNom);
 
         $manager->flush();
     }

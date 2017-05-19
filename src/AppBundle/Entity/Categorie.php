@@ -3,11 +3,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as Doctrine;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
 * @Doctrine\Entity
 * @Doctrine\Table(name="Categories")
+* @UniqueEntity("nom",message="Le nom saisie existe déjà!")
 */
 class Categorie
 {
@@ -19,7 +21,9 @@ class Categorie
     */
     private $idCategorie;
     /**
-    * @Doctrine\Column(type="string", length=30)
+    * @Doctrine\Column(type="string", length=75,unique=true)
+    * @Assert\NotBlank(message="Le nom est obligatoire")
+    * @Assert\Length(min=2, minMessage="Le nom doit contenir un minimum de {{ limit }} caractères", max=75, maxMessage="Le nom doit contenir un maximum de {{ limit }} caractères")
     */
     private $nom;
      /**

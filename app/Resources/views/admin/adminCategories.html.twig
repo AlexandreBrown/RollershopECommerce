@@ -1,11 +1,5 @@
 {% extends 'base/base.html.twig' %}
 {% block content %}
-    {% if formAjoutCategorie is defined and formAjoutCategorie is not null %}
-        {% form_theme formAjoutCategorie 'bootstrap_3_horizontal_layout.html.twig' %}
-    {% endif %}
-    {% if formModifCategorie is defined and formModifCategorie is not null %}
-        {% form_theme formModifCategorie 'bootstrap_3_horizontal_layout.html.twig' %}
-    {% endif %}
 {% set listeSouhaits = app.session.get('listeSouhaits') %} <!-- On récupère notre variable de session listeSouhaits -->
 {% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
 <section class="section white-backgorund">
@@ -89,7 +83,7 @@
                                         <tr class="row">
                                             {% if (formModifCategorie is defined and formModifCategorie is not null) and (categorie.IdCategorie == idCategorieSelectionnee) %}
                                                 {{ form_start(formModifCategorie, { 'attr': { 'data-toggle':'validator' } }) }}
-                                                <td class="col-lg-9">{{ form_row(formModifCategorie.nom) }}</td>
+                                                <td class="col-lg-9">{{ form_row(formModifCategorie.nom,{'label':false,'attr':{'class' : 'roundLabel'}}) }}</td>
                                                 <td class="col-lg-3">{{ form_row(formModifCategorie.btnAction,{'label':'Sauvegarder', 'attr': {'class': 'btn btn-default round btn-md'}}) }}</td>
                                                 {{ form_end(formModifCategorie) }}
                                             {% else %}
@@ -107,7 +101,7 @@
                                 {% if (formAjoutCategorie is defined and formAjoutCategorie is not null) %}
                                     <tr class="row">
                                         {{ form_start(formAjoutCategorie, { 'attr': { 'data-toggle':'validator' } }) }}
-                                        <td class="col-lg-9">{{ form_row(formAjoutCategorie.nom) }}</td>
+                                        <td class="col-lg-9">{{ form_row(formAjoutCategorie.nom,{'label':false,'attr':{'class' : 'roundLabel'}}) }}</td>
                                         <td class="col-lg-3">{{ form_row(formAjoutCategorie.btnAction,{'label':'Ajouter', 'attr': {'class': 'btn btn-default round btn-md'}}) }}</td>
                                         {{ form_end(formAjoutCategorie) }}
                                     </tr>
@@ -121,4 +115,7 @@
     </div><!-- end container -->
 </section>
 <!-- end section -->
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js"></script>
 {% endblock %}
