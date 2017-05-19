@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use AppBundle\Entity\Categorie;
+use AppBundle\Form\CategorieType;
 use AppBundle\Entity\Message;
 use AppBundle\Entity\MessageType;
 
@@ -28,85 +29,74 @@ class AdminController extends Controller
     }
 
     /**
-    * @Route("/categorie", name="admin.categorie.get")
-    * @Method({"GET"})
+    * @Route("/categorie", name="admin.categorie.index")
     */
     public function categorieAction(Request $request)
     {
-        $categories = $this->retrieveCategories();
         $message = $this->getMessageFromSession($request);
         // À la base , aucune catégorie n'est sélectionnée
-        $idCategorieSelectionnee = null;
-        // On ne veut pas que la catégorie soit sélectionnée lorsqu'on rafraichit la page
-        // Si nous n'étions pas déjà entrain de modifier une catégorie
-        if($this->getFlashByName($request,'idCategorieEnModification') == null)
-        {
-            // On va chercher l'id de la catégorie que nous avons sélectioné (null est retourné si aucune catégorie n'a été sélectionnée)
-            $idCategorieSelectionnee = $this->getFlashByName($request,'idCategorieSelectionnee'); 
-        }
-        
-        // Dès que nous avons sélectionné une catégorie à modifier , nous tombons dans l'étape de modification
-        if($idCategorieSelectionnee != null)
-        {
-            $this->setFlashByName($request,'idCategorieEnModification',$idCategorieSelectionnee);
-        }
+        // 
+        $formAjoutCategorie = $this->createForm(CategorieType::class);
+        $formAjoutCategorie->handleRequest($request);
+        // Si le formulaire est soumis et valide
+        if($formAjoutCategorie->isSubmitted() && $formAjoutCategorie->isValid()) {
+            try {
+                $categorie = $formAjoutCategorie->getData();
 
-        return $this->render('./admin/adminCategories.html.twig',array('categories' => $categories,'message' => $message,'idCategorieSelectionnee' => $idCategorieSelectionnee ));
-    }
-
-    /**
-    * @Route("/categorie", name="admin.categorie.post")
-    * @Method({"POST"})
-    */
-    public function categorieAjoutAction(Request $request)
-    {
-        $post = $request->request->all();
-        $nomCategorie = $post['categorie']['nom'];
-        $action = $post['categorie']['action'];
-        if($action === "ajout"){
-            if($this->categorieEstVide($nomCategorie) == false)
-            {
-                if($this->categorieEstNouvelle($nomCategorie))
+                if($this->categorieEstNouvelle($categorie['nom']))
                 {
-                    $this->ajouterCategorie($nomCategorie);
+                    $this->ajouterCategorie($categorie['nom']);
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été ajoutée avec succès!");
                     $this->addFlash('messages',$message);
                 }else{
                     $message = new Message(MessageType::WARNING,"La catégorie existe déjà!");
                     $this->addFlash('messages',$message);
                 }
-            }else{
-                $message = new Message(MessageType::WARNING,"La catégorie ne doit pas être vide!");
-                $this->addFlash('messages',$message);
-            }
 
-        }else if($action == "sauvegarder")
-        {
-            $idCategorie = $this->getFlashByName($request,'idCategorieSelectionnee');
-            $this->get('session')->getFlashBag()->clear();
-            if($this->categorieEstVide($nomCategorie) == false)
-            {
-                if($this->categorieEstNouvelle($nomCategorie))
-                {
-                    $this->modifierNomCategorie($idCategorie,$nomCategorie);
-                    $message = new Message(MessageType::SUCCESS,"La catégorie a été modifiée avec succès!");
-                    $this->addFlash('messages',$message);
-                }
-            }else{
-                $message = new Message(MessageType::WARNING,"La catégorie ne doit pas être vide!");
-                $this->addFlash('messages',$message);
+            } catch(ORMException $e) {
+                return $this->redirectToRoute('error500');
             }
         }
-        return $this->redirectToRoute('admin.categorie.get');
+
+
+
+        $categories = $this->retrieveCategories();
+
+        return $this->render('./admin/adminCategories.html.twig',array('categories' => $categories,'message' => $message,'formAjoutCategorie' => $formAjoutCategorie->createView()));
     }
+
+    private function trouverCategorieParID($idCategorie)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $categorie = $manager->getRepository('AppBundle:Categorie')->find($idCategorie);
+        return $categorie;
+    }
+
 
     /**
     * @Route("/categorie/{idCategorie}", name="admin.categorie.modifier")
     */
     public function categorieModifierAction($idCategorie,Request $request)
     {
-        $this->addFlash('idCategorieSelectionnee',$idCategorie);
-        return $this->redirectToRoute('admin.categorie.get');
+        $categorie = $this->trouverCategorieParID($idCategorie);
+        $formModifCategorie = $this->createForm(CategorieType::class,$categorie);
+        $formModifCategorie->handleRequest($request);
+        // Si le formulaire est soumis et valide
+        if($formModifCategorie->isSubmitted() && $formModifCategorie->isValid()) {
+            try {
+                $categorie = $formModifCategorie->getData();
+                if($this->categorieEstNouvelle($categorie->getNom()))
+                {
+                    $this->modifierNomCategorie($categorie->getIdCategorie(),$categorie->getNom());
+                    $message = new Message(MessageType::SUCCESS,"La catégorie a été modifiée avec succès!");
+                    $this->addFlash('messages',$message);
+                }
+            } catch(ORMException $e) {
+                return $this->redirectToRoute('error500');
+            }
+        }
+        $categories = $this->retrieveCategories();
+        return $this->render('./admin/adminCategories.html.twig',array('categories' => $categories,'formModifCategorie' => $formModifCategorie->createView(),'idCategorieSelectionnee' => $idCategorie));
     }
 
     private function categorieEstNouvelle($nomCategorie)
