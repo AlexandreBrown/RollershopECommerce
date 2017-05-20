@@ -84,8 +84,6 @@ class Commande
     public function getEtat() { return $this->etat; }
     public function getAchats() { return $this->achats; }
     public function getClient() { return $this->client; }
-
-
     // Setters
     public function setIdCommande($newIdCommande) { $this->idCommande = $newIdCommande; return $this; }
     private function setDateCommande($newDateCommande) { $this->dateCommande = $newDateCommande; return $this; }
@@ -98,9 +96,9 @@ class Commande
     public function setClient($newClient) { $this->client = $newClient; return $this; }
 
     // Méthodes
-    public function EtatToVerbose()
+    public static function EtatToVerbose($etat)
     {
-        switch($this->getEtat())
+        switch($etat)
         {
             case Etat::PENDING :
                 return "En attente";
@@ -108,14 +106,11 @@ class Commande
             case Etat::PREPARING :
                 return "En préparation";
             break;
-            case Etat::DELIVERY :
-                return "En livraison";
+            case Etat::TRANSIT :
+                return "Envoyée";
             break;
-            case Etat::CANCEL :
-                return "Annulée";
-            break;
-            case Etat::DELIVERED :
-                return "Livrée avec succès";
+            case Etat::CLOSED :
+                return "Fermé";
             break;
             default:
                 return "Inconnu"; // Si l'utilisateur de la classe a mal défini l'état
@@ -169,7 +164,6 @@ abstract class Etat
 {
     const PENDING = "PEND";
     const PREPARING = "PREP";
-    const DELIVERY = "DELI";
-    const CANCEL = "CANC";
-    const DELIVERED = "DONE";
+    const TRANSIT = "SENT";
+    const CLOSED = "CLOS";
 }

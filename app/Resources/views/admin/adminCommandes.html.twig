@@ -34,7 +34,7 @@
                         <a href="{{ path('panier.index') }}" class="list-group-item">
                             <i class="fa fa-cart-plus"></i> Mon panier <span class="badge">{% if panier is not null %}{{panier.compteNbProduitsTotal}}{% else %}0{% endif %}</span>
                         </a>
-                        <a href="{{ path('commandes') }}" class="list-group-item">
+                        <a href="{{ path('commandes') }}" class="list-group-item ">
                             <i class="fa fa-list"></i> Mes commandes
                         </a>
                         <a href="{{ path('deconnexion') }}" class="list-group-item">
@@ -48,13 +48,13 @@
                             <span class="list-group-item active" style="background-color:#35404f">
                                 Administration
                             </span>
-                            <a href="{{ path('admin.produit') }}" class="list-group-item ">
+                            <a href="{{ path('admin.produit.index') }}" class="list-group-item">
                                 <i class="fa fa-glass" aria-hidden="true"></i> Produits
                             </a>
-                            <a href="{{ path('admin.categorie') }}" class="list-group-item">
+                            <a href="{{ path('admin.categorie.index') }}" class="list-group-item ">
                                 <i class="fa fa-bars" aria-hidden="true"></i> Catégories
                             </a>
-                            <a href="{{ path('admin.commande') }}" class="list-group-item active" style="background-color:#D8D8D8;border-style:none;color:black;">
+                            <a href="{{ path('admin.commande.index') }}" class="list-group-item active" style="background-color:#D8D8D8;border-style:none;color:black;">
                                 <i class="fa fa-archive"></i> Commandes
                             </a>
                         </div>
@@ -77,48 +77,41 @@
                                     <th class="col-lg-2">Commande</th>
                                     <th class="col-lg-3">Client</th>
                                     <th class="col-lg-3">Date</th>
-                                    <th class="col-lg-3">État</th>
+                                    <th class="col-lg-2">État</th>
                                     <th class="col-lg-2">Détail</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for commande in commandes %}
-                                    <tr class="row">
-                                        <td class="col-lg-2">
-                                            <strong>#{{commande.IdCommande}}</strong>
-                                        </td>
-                                        <td class="col-lg-3">
-                                            {{commande.Client.Nom}} , {{commande.Client.Prenom}}
-                                        </td>
-                                        <td class="col-lg-3">
-                                            {{commande.DateCommande|date("Y/m/d h:m")}}
-                                        </td>
-                                        <td class="col-lg-3">
-                                                {% if commande.Etat == constant('AppBundle\\Entity\\Etat::PENDING') %}
-                                                        <span class="label label-warning">{{commande.EtatToVerbose}}</span>
+                                        <tr class="row">
+                                            <td class="col-lg-2"><strong>#{{commande.idCommande}}</strong></td>
+                                            <td class="col-lg-3">{{commande.client.prenom}} , {{commande.client.nom}}</td>
+                                            <td class="col-lg-3">{{commande.DateCommande|date("Y/m/d h:m")}}</td>
+                                            <td class="col-lg-2">
+                                                    {% if commande.Etat == constant('AppBundle\\Entity\\Etat::PENDING') %}
+                                                        <span class="label label-warning">{{commande.Etat | etatToVerbose}}</span>
 
                                                     {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::PREPARING') %}
-                                                        <span class="label preparing">{{commande.EtatToVerbose}}</span>
+                                                        <span class="label preparing">{{commande.Etat | etatToVerbose}}</span>
 
                                                     {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERY') %}
-                                                        <span class="label label-default">{{commande.EtatToVerbose}}</span>
+                                                        <span class="label label-default">{{commande.Etat | etatToVerbose}}</span>
 
                                                     {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::CANCEL') %}
-                                                        <span class="label label-danger">{{commande.EtatToVerbose}}</span>
+                                                        <span class="label label-danger">{{commande.Etat | etatToVerbose}}</span>
 
                                                     {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERED') %}
-                                                        <span class="label label-success">{{commande.EtatToVerbose}}</span>
+                                                        <span class="label label-success">{{commande.Etat | etatToVerbose}}</span>
 
                                                     {% else %}
-                                                        <span class="label label-default">{{commande.EtatToVerbose}}</span>
+                                                        <span class="label label-default">{{commande.Etat | etatToVerbose}}</span>
                                                     {% endif %}
-                                        </td>
-                                        <td class="col-lg-2">
-                                            <a href="#" class="btn btn-info round btn-sm red">
-                                              <span class="glyphicon glyphicon-pencil"></span> 
-                                            </a>
-                                        </td>
-                                    </tr>
+                                                </td>
+                                                <td class="col-lg-2"><a href="{{ path('admin.commande.detail', {'idCommande':commande.IdCommande}) }}" class="btn btn-info round btn-sm red">
+                                                      <span class="glyphicon glyphicon-pencil"></span> 
+                                                    </a></td>
+                                            <td class="col-lg-2"></td>
+                                        </tr>
                                 {% endfor %}
                             </tbody>
                         </table>

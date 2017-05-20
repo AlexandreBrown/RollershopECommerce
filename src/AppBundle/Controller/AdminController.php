@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 use AppBundle\Entity\Categorie;
 use AppBundle\Form\CategorieType;
+use AppBundle\Entity\Produit;
+use AppBundle\Form\ProduitType;
+use AppBundle\Entity\Commande;
+use AppBundle\Form\CommandeType;
 use AppBundle\Entity\Message;
 use AppBundle\Entity\MessageType;
 
@@ -20,20 +24,67 @@ use Doctrine\ORM\ORMException as ORMException;
 class AdminController extends Controller 
 {
     /**
-    * @Route("/produit", name="admin.produit")
+    * @Route("/produit", name="admin.produit.index")
     */
     public function produitAction(Request $request)
     {
+        $message = $this->getVariableFromFlashBag('messages',$request);
         $produits = $this->retrieveProduits();
-        return $this->render('./admin/adminProduits.html.twig',array('produits' => $produits));
+        return $this->render('./admin/adminProduits.html.twig',array('produits' => $produits,'message' => $message));
     }
+
+    /**
+    * @Route("/produit/ajout", name="admin.produit.ajout")
+    */
+    public function produitAjoutAction(Request $request)
+    {
+        $categorie = $this->trouverCategorieParID(1);
+        $produit = new produit(array('idProduit' => null , 'nom' => null,'prix' => null,'qteStock' => null,'qteMinimale' => null,'descriptionCourte' => "" ,'description' => ""),$categorie);
+        $formAjoutProduit = $this->createForm(ProduitType::class,$produit);
+        $formAjoutProduit->handleRequest($request);
+        // Si le formulaire est soumis et valide
+        if($formAjoutProduit->isSubmitted() && $formAjoutProduit->isValid()) {
+            try {
+                    $produit = $formAjoutProduit->getData();
+                    $this->ajouterProduit($produit);
+                    $message = new Message(MessageType::SUCCESS,"Le produit a été ajouté avec succès!");
+                    $this->addFlash('messages',$message);
+                    return $this->redirectToRoute('admin.produit.index');
+                } catch(ORMException $e) {
+                    return $this->redirectToRoute('error500');
+                }
+        }
+        return $this->render('./admin/adminProduitAjoutModif.html.twig',array('formProduit' => $formAjoutProduit->createView()));
+    }
+
+    /**
+    * @Route("/produit/{idProduit}", name="admin.produit.modifier")
+    */
+    public function produitModifierAction($idProduit,Request $request)
+    {
+        $produit = $this->trouverProduitParID($idProduit);
+        $formModifProduit = $this->createForm(ProduitType::class,$produit);
+        $formModifProduit->handleRequest($request);
+        // Si le formulaire est soumis et valide
+        if($formModifProduit->isSubmitted() && $formModifProduit->isValid()) {
+            try {
+                    $this->appliquerChangementBD();
+                    $message = new Message(MessageType::SUCCESS,"Le produit a été modifié avec succès!");
+                    $this->addFlash('messages',$message);
+                    return $this->redirectToRoute('admin.produit.index');
+                } catch(ORMException $e) {
+                    return $this->redirectToRoute('error500');
+                }
+        }
+        return $this->render('./admin/adminProduitAjoutModif.html.twig',array('formProduit' => $formModifProduit->createView()));
+    }
+    
 
     /**
     * @Route("/categorie", name="admin.categorie.index")
     */
     public function categorieAction(Request $request)
     {
-        $message = null;
         $message = $this->getVariableFromFlashBag('messages',$request);
         $categorie = new Categorie(array('idCategorie' => null,'nom' => null));
         $formAjoutCategorie = $this->createForm(CategorieType::class,$categorie);
@@ -42,7 +93,7 @@ class AdminController extends Controller
         if($formAjoutCategorie->isSubmitted() && $formAjoutCategorie->isValid()) {
             try {
                     $categorie = $formAjoutCategorie->getData();
-                    $this->ajouterCategorie($categorie->getNom());
+                    $this->ajouterCategorie($categorie);
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été ajoutée avec succès!");
                     // Si la catégorie a été ajoutée avec succès , on réinitialise la form
                     $formAjoutCategorie = $this->createForm(CategorieType::class);
@@ -69,7 +120,7 @@ class AdminController extends Controller
                 $categorie = $formModifCategorie->getData();
                 if($this->categorieEstNouvelle($categorie->getNom()))
                 {
-                    $this->modifierNomCategorie($categorie,$categorie->getNom());
+                    $this->appliquerChangementBD();
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été modifiée avec succès!");
                     $this->addFlash('messages',$message);
                 }
@@ -94,11 +145,54 @@ class AdminController extends Controller
         return $result; // le résultat est retourné
     }
 
+    /**
+    * @Route("/commande", name="admin.commande.index")
+    */
+    public function commandeAction(Request $request)
+    {
+        $commandes = $this->retrieveCommandes();
+        return $this->render('./admin/adminCommandes.html.twig',array('commandes' => $commandes));
+    }
+
+    /**
+    * @Route("/commande/{idCommande}", name="admin.commande.detail")
+    */
+    public function commanDetailAction($idCommande,Request $request)
+    {
+        $commande = $this->trouverCommandeParId($idCommande);
+        $formModifCommande = $this->createForm(CommandeType::class,$commande);
+        $formModifCommande->handleRequest($request);
+        // Si le formulaire est soumis et valide
+        if($formModifCommande->isSubmitted() && $formModifCommande->isValid()) {
+            try {
+                $commande = $formModifCommande->getData();
+                return $this->redirectToRoute('admin.commande.index');
+            } catch(ORMException $e) {
+                return $this->redirectToRoute('error500');
+            }
+        }
+        return $this->render('./admin/adminCommandeDetail.html.twig',array('commande' => $commande,'formModifCommande' => $formModifCommande->createView()));
+    }
+
     private function trouverCategorieParID($idCategorie)
     {
         $manager = $this->getDoctrine()->getManager();
         $categorie = $manager->getRepository('AppBundle:Categorie')->find($idCategorie);
         return $categorie;
+    }
+
+    private function trouverProduitParID($idProduit)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $produit = $manager->getRepository('AppBundle:Produit')->find($idProduit);
+        return $produit;
+    }
+
+    private function trouverCommandeParId($idCommande)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $commande = $manager->getRepository('AppBundle:Commande')->find($idCommande);
+        return $commande;
     }
 
     private function categorieEstNouvelle($nomCategorie)
@@ -110,31 +204,26 @@ class AdminController extends Controller
         return $categorie === null;
     }
 
-    private function ajouterCategorie($nomCategorie)
+    private function ajouterCategorie($categorie)
     {
         $manager = $this->getDoctrine()->getManager();
-        $nouvelleCategorie = new Categorie(array('idCategorie' => null,'nom' => $nomCategorie));
-        $manager->persist($nouvelleCategorie);
+        $manager->persist($categorie);
         $manager->flush();
     }
 
-    private function modifierNomCategorie($categorie,$newNom)
+    private function appliquerChangementBD()
     {
         $manager = $this->getDoctrine()->getManager();
-        $categorie->setNom($newNom);
-
         $manager->flush();
     }
 
-    /**
-    * @Route("/commande", name="admin.commande")
-    */
-    public function commandeAction(Request $request)
-    {
-        $commandes = $this->retrieveCommandes();
-        return $this->render('./admin/adminCommandes.html.twig',array('commandes' => $commandes));
-    }
 
+    private function ajouterProduit($produit)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($produit);
+        $manager->flush();
+    }
 
     // Trouve toutes les catégories
     public function retrieveCategories()

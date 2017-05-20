@@ -1,54 +1,20 @@
-2017-05-20 1:11:29 Last error : exception 'PDOException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicata du champ 'test' pour la clef 'UK_Nom'' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOStatement.php:91
+2017-05-20 7:19:07 Last error : exception 'Twig_Error_Syntax' with message 'Unclosed "{".' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\app\Resources\views\admin\adminCommandeDetail.html.twig:91
 Stack trace:
-#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOStatement.php(91): PDOStatement->execute(NULL)
-#1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\Statement.php(168): Doctrine\DBAL\Driver\PDOStatement->execute(NULL)
-#2 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\Persisters\Entity\BasicEntityPersister.php(281): Doctrine\DBAL\Statement->execute()
-#3 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(1014): Doctrine\ORM\Persisters\Entity\BasicEntityPersister->executeInserts()
-#4 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(378): Doctrine\ORM\UnitOfWork->executeInserts(Object(Doctrine\ORM\Mapping\ClassMetadata))
-#5 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\EntityManager.php(356): Doctrine\ORM\UnitOfWork->commit(NULL)
-#6 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\AdminController.php(106): Doctrine\ORM\EntityManager->flush()
-#7 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\AdminController.php(45): AppBundle\Controller\AdminController->ajouterCategorie('test')
-#8 [internal function]: AppBundle\Controller\AdminController->categorieAction(Object(Symfony\Component\HttpFoundation\Request))
-#9 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4217): call_user_func_array(Array, Array)
-#10 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4172): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
-#11 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\HttpKernel\Kernel.php(168): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
-#12 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\web\app_dev.php(28): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
-#13 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): require('C:\\Users\\alinux...')
-#14 {main}
-
-Next exception 'Doctrine\DBAL\Driver\PDOException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicata du champ 'test' pour la clef 'UK_Nom'' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\PDOStatement.php:93
-Stack trace:
-#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\Statement.php(168): Doctrine\DBAL\Driver\PDOStatement->execute(NULL)
-#1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\Persisters\Entity\BasicEntityPersister.php(281): Doctrine\DBAL\Statement->execute()
-#2 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(1014): Doctrine\ORM\Persisters\Entity\BasicEntityPersister->executeInserts()
-#3 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(378): Doctrine\ORM\UnitOfWork->executeInserts(Object(Doctrine\ORM\Mapping\ClassMetadata))
-#4 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\EntityManager.php(356): Doctrine\ORM\UnitOfWork->commit(NULL)
-#5 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\AdminController.php(106): Doctrine\ORM\EntityManager->flush()
-#6 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\AdminController.php(45): AppBundle\Controller\AdminController->ajouterCategorie('test')
-#7 [internal function]: AppBundle\Controller\AdminController->categorieAction(Object(Symfony\Component\HttpFoundation\Request))
-#8 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4217): call_user_func_array(Array, Array)
-#9 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4172): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
-#10 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\HttpKernel\Kernel.php(168): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
-#11 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\web\app_dev.php(28): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
-#12 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): require('C:\\Users\\alinux...')
-#13 {main}
-
-Next exception 'Doctrine\DBAL\Exception\UniqueConstraintViolationException' with message 'An exception occurred while executing 'INSERT INTO Categories (nom) VALUES (?)' with params ["test"]:
-
-SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicata du champ 'test' pour la clef 'UK_Nom'' in C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\Driver\AbstractMySQLDriver.php:66
-Stack trace:
-#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\DBALException.php(128): Doctrine\DBAL\Driver\AbstractMySQLDriver->convertException('An exception oc...', Object(Doctrine\DBAL\Driver\PDOException))
-#1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\dbal\lib\Doctrine\DBAL\Statement.php(178): Doctrine\DBAL\DBALException::driverExceptionDuringQuery(Object(Doctrine\DBAL\Driver\PDOMySql\Driver), Object(Doctrine\DBAL\Driver\PDOException), 'INSERT INTO Cat...', Array)
-#2 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\Persisters\Entity\BasicEntityPersister.php(281): Doctrine\DBAL\Statement->execute()
-#3 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(1014): Doctrine\ORM\Persisters\Entity\BasicEntityPersister->executeInserts()
-#4 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\UnitOfWork.php(378): Doctrine\ORM\UnitOfWork->executeInserts(Object(Doctrine\ORM\Mapping\ClassMetadata))
-#5 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\doctrine\orm\lib\Doctrine\ORM\EntityManager.php(356): Doctrine\ORM\UnitOfWork->commit(NULL)
-#6 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\AdminController.php(106): Doctrine\ORM\EntityManager->flush()
-#7 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\AdminController.php(45): AppBundle\Controller\AdminController->ajouterCategorie('test')
-#8 [internal function]: AppBundle\Controller\AdminController->categorieAction(Object(Symfony\Component\HttpFoundation\Request))
-#9 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4217): call_user_func_array(Array, Array)
-#10 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4172): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
-#11 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\HttpKernel\Kernel.php(168): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
-#12 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\web\app_dev.php(28): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
-#13 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): require('C:\\Users\\alinux...')
-#14 {main}
+#0 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\twig\twig\lib\Twig\Lexer.php(227): Twig_Lexer->lexExpression()
+#1 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\twig\twig\lib\Twig\Lexer.php(126): Twig_Lexer->lexVar()
+#2 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(5352): Twig_Lexer->tokenize(Object(Twig_Source))
+#3 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(5399): Twig_Environment->tokenize(Object(Twig_Source))
+#4 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(5244): Twig_Environment->compileSource(Object(Twig_Source))
+#5 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bridge\Twig\TwigEngine.php(126): Twig_Environment->loadTemplate('./admin/adminCo...')
+#6 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bridge\Twig\TwigEngine.php(50): Symfony\Bridge\Twig\TwigEngine->load('./admin/adminCo...')
+#7 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\TwigBundle\TwigEngine.php(50): Symfony\Bridge\Twig\TwigEngine->render('./admin/adminCo...', Array)
+#8 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\TwigBundle\TwigEngine.php(77): Symfony\Bundle\TwigBundle\TwigEngine->render('./admin/adminCo...', Array)
+#9 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Controller\Controller.php(235): Symfony\Bundle\TwigBundle\TwigEngine->renderResponse('./admin/adminCo...', Array, NULL)
+#10 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\src\AppBundle\Controller\AdminController.php(174): Symfony\Bundle\FrameworkBundle\Controller\Controller->render('./admin/adminCo...', Array)
+#11 [internal function]: AppBundle\Controller\AdminController->commanDetailAction('87', Object(Symfony\Component\HttpFoundation\Request))
+#12 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4217): call_user_func_array(Array, Array)
+#13 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\var\cache\dev\classes.php(4172): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#14 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Component\HttpKernel\Kernel.php(168): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#15 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\web\app_dev.php(28): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#16 C:\Users\alinux\Documents\session4\progWeb\TP\cegep_session4_progWeb_TP\vendor\symfony\symfony\src\Symfony\Bundle\FrameworkBundle\Resources\config\router_dev.php(40): require('C:\\Users\\alinux...')
+#17 {main}

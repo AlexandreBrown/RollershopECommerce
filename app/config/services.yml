@@ -16,3 +16,8 @@ services:
             router: "@router"
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+    app.twig_extension:
+        class: AppBundle\Twig\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }
