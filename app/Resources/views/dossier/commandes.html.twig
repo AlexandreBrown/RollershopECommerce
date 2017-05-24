@@ -42,7 +42,7 @@
                         </a>
                     </div>
                 </div>
-                {% if is_granted('ROLE_ADMIN') == false %} <!-- TODO : REMOVE FALSE -->
+                {% if is_granted('ROLE_ADMIN') %}
                     <div class="row">
                         <div class="list-group">
                             <span class="list-group-item active" style="background-color:#35404f">
@@ -97,24 +97,7 @@
                                                     {{commande.Total | number_format(2, ",", " ")}}$
                                                 </td>
                                                 <td class="text-center">
-                                                    {% if commande.Etat == constant('AppBundle\\Entity\\Etat::PENDING') %}
-                                                        <span class="label label-warning">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::PREPARING') %}
-                                                        <span class="label preparing">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERY') %}
-                                                        <span class="label label-default">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::CANCEL') %}
-                                                        <span class="label label-danger">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERED') %}
-                                                        <span class="label label-success">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% else %}
-                                                        <span class="label label-default">{{commande.Etat | etatToVerbose}}</span>
-                                                    {% endif %}
+                                                    {{commande.etat | etatFormatVerboseHTML | raw }}
                                                 </td>
                                             </tr>
                                             <!-- Détails d'une commande -->
@@ -122,71 +105,78 @@
                                                 <td colspan="6">
                                                     <div id={{dataTarget}} class="collapse table-responsive table-bordered">
                                                         <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="text-center" colspan="2">Produit</th>
-                                                                        <th class="text-center">Quantité</th>
-                                                                        <th class="text-center">Prix unitaire</th>
-                                                                        <th class="text-center">Total</th>
-                                                                    </tr>
-                                                                </thead>
+                                                            <thead>
+                                                                <tr class="row">
+                                                                    <th class="col-lg-2 text-center">Produit</th>
+                                                                    <th class="col-lg-3 text-center"></th>
+                                                                    <th class="col-lg-2 text-center">Prix</th>
+                                                                    <th class="col-lg-2 text-center">Quantité</th>
+                                                                    <th class="col-lg-3 text-center">Total</th>
+                                                                </tr>
+                                                            </thead>
                                                             <tbody>
-                                                                {% for achat in commande.achats %}
-                                                                    <tr>
-                                                                        <td class="text-center">
-                                                                            <h6 class="regular">
-                                                                                <a href="{{ path('produit.popup', {'idProduit' :achat.produit.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
-                                                                                    <img width="60px" src="{{ asset_if('img/produits/' ~ achat.produit.categorie.idCategorie ~ '/' ~ achat.produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
-                                                                                </a>
-                                                                            </h6>
-                                                                            <a href="{{ path('homepage', {'categorie': achat.produit.Categorie.IdCategorie}) }}"><small>{{achat.produit.Categorie.Nom}}</small></a>
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            <a href="{{ path('produit.popup', {'idProduit' :achat.produit.idProduit }) }}" class="btnPopup" data-toggle="modal" data-target=".productQuickView">{{achat.produit.nom}}</a>
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            {{achat.quantite}}
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            {{achat.prixAchat | number_format(2, ",", " ")}}$
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            {{achat.totalPrixAchatQuantite | number_format(2, ",", " ")}}$
-                                                                        </td>
-                                                                    </tr>
-                                                                {% endfor %}
-                                                            </tbody>
-                                                            <tfoot>
-                                                                <thead>
-                                                                    <th class="text-center">Fraison de livraison</th>
-                                                                    <th class="text-center">TPS</th>
-                                                                    <th class="text-center">TVQ</th>
-                                                                    <th class="text-center" colspan="2">Sous-total</th>
-                                                                </thead>
-                                                                <tr>
-                                                                    <td class="text-center">
-                                                                        {{ constant('AppBundle\\Entity\\Panier::FRAIS_LIVRAISON') | number_format(2, ",", " ") }}$
+                                                                {% for unAchat in commande.Achats %}
+                                                                <tr class="row">
+                                                                    <td class="col-lg-2 text-center">
+                                                                        <h6 class="regular">
+                                                                            <a href="{{ path('produit.popup', {'idProduit' :unAchat.produit.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
+                                                                                <img width="60px" src="{{ asset_if('img/produits/' ~ unAchat.produit.categorie.idCategorie ~ '/' ~ unAchat.produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
+                                                                            </a>
+                                                                        </h6>
                                                                     </td>
-                                                                    <td class="text-center">
+                                                                    <td class="col-lg-3 text-center">
+                                                                        <h6 class="regular">
+                                                                                {{ unAchat.Produit.nom }}
+                                                                            </a>
+                                                                        </h6>
+                                                                    </td>
+                                                                    <td class="col-lg-2 text-center">
+                                                                        <span>{{unAchat.Produit.Prix | number_format(2, ",", " ")}}$</span>
+                                                                    </td>
+                                                                    <td class="col-lg-2 text-center">
+                                                                        <p>{{ unAchat.Quantite }}</p>
+                                                                    </td>
+                                                                    <td class="col-lg-3 text-center">
+                                                                        <span class="text-primary">{{unAchat.getTotalPrixAchatQuantite | number_format(2, ",", " ")}}$</span>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <table class="table table-striped">
+                                                            <tbody>
+                                                                <tr class="row">
+                                                                    <th class="col-lg-6 text-right">Sous-total</th>
+                                                                    <td class="col-lg-6 text-right">
+                                                                        {{commande.calculSousTotal | number_format(2, ",", " ")}}$
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="row">
+                                                                    <th class="col-lg-6 text-right">Frais de livraison</th>
+                                                                    <td class="col-lg-6 text-right">
+                                                                        {{constant('AppBundle\\Entity\\Panier::FRAIS_LIVRAISON') | number_format(2, ",", " ")}}$
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="row">
+                                                                    <th class="col-lg-6 text-right">TPS ({{commande.getTauxTPS*100}}%)</th>
+                                                                    <td class="col-lg-6 text-right">
                                                                         {{commande.calculTPS | number_format(2, ",", " ")}}$
                                                                     </td>
-                                                                    <td class="text-center">
+                                                                </tr>
+                                                                <tr class="row">
+                                                                    <th class="col-lg-6 text-right">TVQ ({{commande.getTauxTVQ*100}}%)</th>
+                                                                    <td class="col-lg-6 text-right">
                                                                         {{commande.calculTVQ | number_format(2, ",", " ")}}$
                                                                     </td>
-                                                                    <td class="text-center" colspan="2">
-                                                                        {{commande.calculSousTotal | number_format(2, ",", " ")}}
+                                                                </tr>
+                                                                <tr class="row">
+                                                                    <th class="col-lg-6 text-right">Total</th>
+                                                                    <td class="col-lg-6 text-right">
+                                                                        {{commande.getTotal | number_format(2, ",", " ")}}$
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                        <th class="text-center" colspan="6">Total</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="6" class="text-center">
-                                                                        {{commande.Total | number_format(2, ",", " ")}}$
-                                                                    </td>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
+                                                            </tbody>
+                                                    </table><!-- end table -->
                                                     </div>
                                                 </td>
                                             </tr>

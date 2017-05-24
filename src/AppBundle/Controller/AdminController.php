@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Entity\Categorie;
 use AppBundle\Form\CategorieType;
@@ -20,6 +21,7 @@ use AppBundle\Entity\MessageType;
 use Doctrine\ORM\ORMException as ORMException;
 /**
 * @Route("/admin")
+* @Security("has_role('ROLE_ADMIN')")
 */
 class AdminController extends Controller 
 {
@@ -159,19 +161,16 @@ class AdminController extends Controller
     */
     public function commanDetailAction($idCommande,Request $request)
     {
+        $post = $request->request->all();
         $commande = $this->trouverCommandeParId($idCommande);
-        $formModifCommande = $this->createForm(CommandeType::class,$commande);
-        $formModifCommande->handleRequest($request);
-        // Si le formulaire est soumis et valide
-        if($formModifCommande->isSubmitted() && $formModifCommande->isValid()) {
-            try {
-                $commande = $formModifCommande->getData();
-                return $this->redirectToRoute('admin.commande.index');
-            } catch(ORMException $e) {
-                return $this->redirectToRoute('error500');
-            }
+        if(isset($post['nouvelEtat']))
+        {
+            $commande->setEtat($post['nouvelEtat']);
+            $manager = $this->getDoctrine()->getManager();
+            $manager->flush();
+
         }
-        return $this->render('./admin/adminCommandeDetail.html.twig',array('commande' => $commande,'formModifCommande' => $formModifCommande->createView()));
+        return $this->render('./admin/adminCommandeDetail.html.twig',array('commande' => $commande));
     }
 
     private function trouverCategorieParID($idCategorie)

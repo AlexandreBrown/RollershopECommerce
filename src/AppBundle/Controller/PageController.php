@@ -95,6 +95,14 @@ class PageController extends Controller
     }
 
     /**
+     * @Route("/erreur403", name="error403")
+     */
+    public function accessDeniedAction(Request $request)
+    {
+        return $this->render('error403.html.twig');
+    }
+
+    /**
      * @Route("/erreur404", name="error404")
      */
     public function pageNotFoundAction(Request $request)

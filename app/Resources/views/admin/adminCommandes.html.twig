@@ -42,7 +42,7 @@
                         </a>
                     </div>
                 </div>
-                {% if is_granted('ROLE_ADMIN') == false %} <!-- TODO : REMOVE FALSE -->
+                {% if is_granted('ROLE_ADMIN') %} 
                     <div class="row">
                         <div class="list-group">
                             <span class="list-group-item active" style="background-color:#35404f">
@@ -87,26 +87,7 @@
                                             <td class="col-lg-2"><strong>#{{commande.idCommande}}</strong></td>
                                             <td class="col-lg-3">{{commande.client.prenom}} , {{commande.client.nom}}</td>
                                             <td class="col-lg-3">{{commande.DateCommande|date("Y/m/d h:m")}}</td>
-                                            <td class="col-lg-2">
-                                                    {% if commande.Etat == constant('AppBundle\\Entity\\Etat::PENDING') %}
-                                                        <span class="label label-warning">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::PREPARING') %}
-                                                        <span class="label preparing">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERY') %}
-                                                        <span class="label label-default">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::CANCEL') %}
-                                                        <span class="label label-danger">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% elseif commande.Etat == constant('AppBundle\\Entity\\Etat::DELIVERED') %}
-                                                        <span class="label label-success">{{commande.Etat | etatToVerbose}}</span>
-
-                                                    {% else %}
-                                                        <span class="label label-default">{{commande.Etat | etatToVerbose}}</span>
-                                                    {% endif %}
-                                                </td>
+                                            <td class="col-lg-2">{{commande.etat | etatFormatVerboseHTML | raw}}</td>
                                                 <td class="col-lg-2"><a href="{{ path('admin.commande.detail', {'idCommande':commande.IdCommande}) }}" class="btn btn-info round btn-sm red">
                                                       <span class="glyphicon glyphicon-pencil"></span> 
                                                     </a></td>

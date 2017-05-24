@@ -1,4 +1,7 @@
 {% extends 'base/base.html.twig' %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+{% endblock %}
 {% block content %}
 {% set listeSouhaits = app.session.get('listeSouhaits') %} <!-- On récupère notre variable de session listeSouhaits -->
 {% set panier = app.session.get('panier') %} <!-- On récupère notre variable de session panier -->
@@ -42,7 +45,7 @@
                         </a>
                     </div>
                 </div>
-                {% if is_granted('ROLE_ADMIN') == false %} <!-- TODO : REMOVE FALSE -->
+                {% if is_granted('ROLE_ADMIN') %}
                     <div class="row">
                         <div class="list-group">
                             <span class="list-group-item active" style="background-color:#35404f">
@@ -73,12 +76,9 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="table-responsive col-lg-12">
+                                <h4>Information</h4>
+                                <hr>
                                 <table class="table table-hover">
-                                    <thead>
-                                        <tr class="row">
-                                            <th class="col-lg-6">Information</th>
-                                        </tr>
-                                    </thead>
                                     <tbody>
                                         <tr class="row">
                                             <td class="col-lg-6"><strong>Date</strong></td>
@@ -87,9 +87,22 @@
                                         <tr class="row">
                                             <td class="col-lg-6"><strong>État</strong></td>
                                             <td class="col-lg-6">
-                                                {{ form_start(formModifCommande) }}
-                                                {{ form_row(formModifCommande.etat, {'label':false}) }}
-                                                {{ form_end(formModifCommande) }}
+                                                 <form action="{{ path('admin.commande.detail' , {'idCommande':commande.IdCommande}) }}" method="POST">
+                                                    <select name="nouvelEtat" onchange="this.form.submit()" class="form-control">
+                                                        <option value={{constant('AppBundle\\Entity\\Etat::PENDING')}}{% if (commande.etat == constant('AppBundle\\Entity\\Etat::PENDING')) %}selected="true"{% endif %}>
+                                                            {{ constant('AppBundle\\Entity\\Etat::PENDING')  | etatFormatVerboseHTML | raw }}
+                                                        </option>
+                                                        <option value={{constant('AppBundle\\Entity\\Etat::PREPARING')}} {% if (commande.etat == constant('AppBundle\\Entity\\Etat::PREPARING')) %}selected="true"{% endif %}>
+                                                            {{ constant('AppBundle\\Entity\\Etat::PREPARING')  | etatFormatVerboseHTML | raw }}
+                                                        </option>
+                                                        <option value={{constant('AppBundle\\Entity\\Etat::SENT')}} {% if (commande.etat == constant('AppBundle\\Entity\\Etat::SENT')) %}selected="true"{% endif %}>
+                                                            {{constant('AppBundle\\Entity\\Etat::SENT')  | etatFormatVerboseHTML | raw }}
+                                                        </option>
+                                                        <option value={{constant('AppBundle\\Entity\\Etat::CLOSED')}} {% if (commande.etat == constant('AppBundle\\Entity\\Etat::CLOSED')) %}selected="true"{% endif %}>
+                                                            {{ constant('AppBundle\\Entity\\Etat::CLOSED')  | etatFormatVerboseHTML | raw }}
+                                                        </option>
+                                                    </select>
+                                                </form>
                                             </td>
                                         </tr>
                                         <tr class="row">
@@ -102,6 +115,82 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <h4>Produits</h4>
+                                <hr>
+                               <table class="table table-striped">
+                                        <thead>
+                                            <tr class="row">
+                                                <th class="col-lg-2">Produit</th>
+                                                <th class="col-lg-3"></th>
+                                                <th class="col-lg-2">Prix</th>
+                                                <th class="col-lg-2">Quantité</th>
+                                                <th class="col-lg-3">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for unAchat in commande.Achats %}
+                                            <tr class="row">
+                                                <td class="col-lg-2">
+                                                    <h6 class="regular">
+                                                            <img width="60px" src="{{ asset_if('img/produits/' ~ unAchat.Produit.Categorie.IdCategorie ~ '/' ~ unAchat.Produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
+                                                        </a>
+                                                    </h6>
+                                                </td>
+                                                <td class="col-lg-3">
+                                                    <h6 class="regular">
+                                                            {{ unAchat.Produit.nom }}
+                                                        </a>
+                                                    </h6>
+                                                </td>
+                                                <td class="col-lg-2">
+                                                    <span>{{unAchat.Produit.Prix | number_format(2, ",", " ")}}$</span>
+                                                </td>
+                                                <td class="col-lg-2">
+                                                    <p>{{ unAchat.Quantite }}</p>
+                                                </td>
+                                                <td class="col-lg-3">
+                                                    <span class="text-primary">{{unAchat.getTotalPrixAchatQuantite | number_format(2, ",", " ")}}$</span>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}<!-- endfor chaque achat -->
+                                        </tbody>
+                                </table><!-- end table -->
+                                <h4>Totaux</h4>
+                                <hr>
+                                <table class="table table-striped">
+                                        <tbody>
+                                            <tr class="row">
+                                                <th class="col-lg-6 text-right">Sous-total</th>
+                                                <td class="col-lg-6 text-right">
+                                                    {{commande.calculSousTotal | number_format(2, ",", " ")}}$
+                                                </td>
+                                            </tr>
+                                            <tr class="row">
+                                                <th class="col-lg-6 text-right">Frais de livraison</th>
+                                                <td class="col-lg-6 text-right">
+                                                    {{constant('AppBundle\\Entity\\Panier::FRAIS_LIVRAISON') | number_format(2, ",", " ")}}$
+                                                </td>
+                                            </tr>
+                                            <tr class="row">
+                                                <th class="col-lg-6 text-right">TPS ({{commande.getTauxTPS*100}}%)</th>
+                                                <td class="col-lg-6 text-right">
+                                                    {{commande.calculTPS | number_format(2, ",", " ")}}$
+                                                </td>
+                                            </tr>
+                                            <tr class="row">
+                                                <th class="col-lg-6 text-right">TVQ ({{commande.getTauxTVQ*100}}%)</th>
+                                                <td class="col-lg-6 text-right">
+                                                    {{commande.calculTVQ | number_format(2, ",", " ")}}$
+                                                </td>
+                                            </tr>
+                                            <tr class="row">
+                                                <th class="col-lg-6 text-right">Total</th>
+                                                <td class="col-lg-6 text-right">
+                                                    {{commande.getTotal | number_format(2, ",", " ")}}$
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                </table><!-- end table -->
                             </div>
                         </div>
                     </div>

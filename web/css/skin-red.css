@@ -4257,15 +4257,17 @@ display: inline;
   padding: 20px 20px 20px 20px;
 }
 
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 100%; /* or 950px */
+}
+
 .well{
   background-color: #ffffff;
 }
 
-.container-fluid {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 70%; /* or 950px */
-}
+
 
 .deleteObj{
   position: relative;

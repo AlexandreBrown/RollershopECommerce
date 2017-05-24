@@ -39,7 +39,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th colspan="2">Produits</th>
+                                                <th colspan="2">Produit</th>
                                                 <th>Prix</th>
                                                 <th>Quantité</th>
                                                 <th colspan="2">Total</th>
@@ -67,7 +67,7 @@
                                                     <p>{{ unAchat.Quantite }}</p>
                                                 </td>
                                                 <td>
-                                                    <span class="text-primary">{{unAchat.getPrixAchat}}$</span>
+                                                    <span class="text-primary">{{unAchat.getTotalPrixAchatQuantite}}$</span>
                                                 </td>
                                             </tr>
                                             {% endfor %}<!-- endfor chaque achat -->

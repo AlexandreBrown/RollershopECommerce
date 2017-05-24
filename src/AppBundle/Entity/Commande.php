@@ -91,32 +91,11 @@ class Commande
     private function setStripeFingerprint($newStripeFingerprint) { $this->stripeFingerprint = $newStripeFingerprint; return $this; }
     private function setTauxTPS($newTauxTPS) {$this->tauxTPS = $newTauxTPS; return $this; }
     private function setTauxTVQ($newTauxTVQ) {$this->tauxTVQ = $newTauxTVQ; return $this; }
-    private function setEtat($newEtat) {$this->etat = $newEtat; return $this; }
+    public function setEtat($newEtat) {$this->etat = $newEtat; return $this; }
 
     public function setClient($newClient) { $this->client = $newClient; return $this; }
 
-    // Méthodes
-    public static function EtatToVerbose($etat)
-    {
-        switch($etat)
-        {
-            case Etat::PENDING :
-                return "En attente";
-            break;
-            case Etat::PREPARING :
-                return "En préparation";
-            break;
-            case Etat::TRANSIT :
-                return "Envoyée";
-            break;
-            case Etat::CLOSED :
-                return "Fermé";
-            break;
-            default:
-                return "Inconnu"; // Si l'utilisateur de la classe a mal défini l'état
-            break;
-        }
-    }
+    // Méthodes  
 
     public function ajoutAchat($achat)
     {
@@ -164,6 +143,6 @@ abstract class Etat
 {
     const PENDING = "PEND";
     const PREPARING = "PREP";
-    const TRANSIT = "SENT";
+    const SENT = "SENT";
     const CLOSED = "CLOS";
 }

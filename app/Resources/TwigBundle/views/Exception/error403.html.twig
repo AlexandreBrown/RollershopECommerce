@@ -1,0 +1,32 @@
+{% extends 'base/base.html.twig' %}
+{% block content %}
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul>
+                        <li><a href="{{path('homepage')}}">Accueil</a></li>
+                        <li class="active">Erreur 403</li>
+                    </ul><!-- end breadcrumb -->
+                </div><!-- end col -->    
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end breadcrumbs -->
+
+    <!-- start section -->
+    <section class="section white-backgorund fullscreen">
+        <div class="middle">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3 text-center">
+                        <h1 class="text-danger alt-font" style="font-size: 10em;">403</h1>
+                        <h2>Accès refusé!</h2>
+                        <p class="lead">Veuillez retourner à l'accueil.</p>
+                        <a href="{{path('homepage')}}" class="btn btn-default round btn-lg">Retourner à l'accueil</a> <!-- Lien qui redirige l'utilisateur vers la page d'accueil -->
+                    </div><!-- end col -->    
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div><!-- end middle -->
+    </section>
+<!-- end section -->
+{% endblock %}

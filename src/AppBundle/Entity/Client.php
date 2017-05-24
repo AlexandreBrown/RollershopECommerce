@@ -130,7 +130,14 @@ class Client implements UserInterface
     public function getTelephone() { return $this->telephone; }
 
     //Méthodes membres de l'interface UserInterface
-    public function getRoles() { return array('ROLE_USER'); } //TODO: Sera à modifier lors de l'ES
+    public function getRoles() 
+    { 
+        if($this->role == "U")
+            return array('ROLE_USER');
+        else if ($this->role == "A")
+            return array('ROLE_ADMIN');
+        return array('ROLE_ADMIN');
+    }
     public function getPassword() { return $this->getMotPasse(); }
     public function getSalt() { return $this->salt; }
     public function getUsername() { return $this->getCourriel(); }
