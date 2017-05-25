@@ -25,7 +25,6 @@ class ConditionalAssetExtension extends \Twig_Extension
     {
          return array(
             'asset_if' => new \Twig_SimpleFunction('asset_if', function($path, $fallbackPath) {
-
                 // Define the path to look for
                 $pathToCheck = realpath($this->container->get('kernel')->getRootDir() . '/../web/') . '/' . $path;
 

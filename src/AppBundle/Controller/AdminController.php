@@ -41,14 +41,15 @@ class AdminController extends Controller
     public function produitAjoutAction(Request $request)
     {
         $categorie = $this->trouverCategorieParID(1);
-        $produit = new produit(array('idProduit' => null , 'nom' => null,'prix' => null,'qteStock' => null,'qteMinimale' => null,'descriptionCourte' => "" ,'description' => ""),$categorie);
+        $produit = new produit(array('idProduit' => null , 'nom' => null,'prix' => null,'qteStock' => null,'qteMinimale' => null,'descriptionCourte' => "" ,'description' => "",'image' => null),$categorie);
         $formAjoutProduit = $this->createForm(ProduitType::class,$produit);
         $formAjoutProduit->handleRequest($request);
         // Si le formulaire est soumis et valide
         if($formAjoutProduit->isSubmitted() && $formAjoutProduit->isValid()) {
             try {
-                    $produit = $formAjoutProduit->getData();
-                    $this->ajouterProduit($produit);
+                    $this->setImageProduit($produit);
+                    $this->persistEntity($produit);
+                    $this->appliquerChangementsBD();
                     $message = new Message(MessageType::SUCCESS,"Le produit a été ajouté avec succès!");
                     $this->addFlash('messages',$message);
                     return $this->redirectToRoute('admin.produit.index');
@@ -56,7 +57,7 @@ class AdminController extends Controller
                     return $this->redirectToRoute('error500');
                 }
         }
-        return $this->render('./admin/adminProduitAjoutModif.html.twig',array('formProduit' => $formAjoutProduit->createView()));
+        return $this->render('./admin/adminProduitAjoutModif.html.twig',array('formProduit' => $formAjoutProduit->createView(),'produit' => $produit));
     }
 
     /**
@@ -70,15 +71,16 @@ class AdminController extends Controller
         // Si le formulaire est soumis et valide
         if($formModifProduit->isSubmitted() && $formModifProduit->isValid()) {
             try {
-                    $this->appliquerChangementBD();
-                    $message = new Message(MessageType::SUCCESS,"Le produit a été modifié avec succès!");
+                    $this->modifierImage($produit);
+                    $this->appliquerChangementsBD();
+                    $message = new Message(MessageType::SUCCESS,"Le produit a été mis à jour avec succès!");
                     $this->addFlash('messages',$message);
                     return $this->redirectToRoute('admin.produit.index');
                 } catch(ORMException $e) {
                     return $this->redirectToRoute('error500');
                 }
         }
-        return $this->render('./admin/adminProduitAjoutModif.html.twig',array('formProduit' => $formModifProduit->createView()));
+        return $this->render('./admin/adminProduitAjoutModif.html.twig',array('formProduit' => $formModifProduit->createView(),'produit' => $produit));
     }
     
 
@@ -95,7 +97,8 @@ class AdminController extends Controller
         if($formAjoutCategorie->isSubmitted() && $formAjoutCategorie->isValid()) {
             try {
                     $categorie = $formAjoutCategorie->getData();
-                    $this->ajouterCategorie($categorie);
+                    $this->persistEntity($categorie);
+                    $this->appliquerChangementsBD();
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été ajoutée avec succès!");
                     // Si la catégorie a été ajoutée avec succès , on réinitialise la form
                     $formAjoutCategorie = $this->createForm(CategorieType::class);
@@ -122,7 +125,7 @@ class AdminController extends Controller
                 $categorie = $formModifCategorie->getData();
                 if($this->categorieEstNouvelle($categorie->getNom()))
                 {
-                    $this->appliquerChangementBD();
+                    $this->appliquerChangementsBD();
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été modifiée avec succès!");
                     $this->addFlash('messages',$message);
                 }
@@ -173,6 +176,47 @@ class AdminController extends Controller
         return $this->render('./admin/adminCommandeDetail.html.twig',array('commande' => $commande));
     }
 
+    private function modifierImage($produit)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $uow = $manager->getUnitOfWork();
+        $uow->computeChangeSets();
+        $changements = $uow->getEntityChangeSet($produit); // On obtient les changements sur le produit actuel
+        $changementImage = $changements['image']; // Tableau de string représentant :
+                                                    // [0] => image avant les modificatiosn,
+                                                    // [1] => image venant du formulaire envoyé
+        if($changementImage[1] !== null) // Si l'administrateur a envoyé une nouvelle image
+        {
+            $this->setHashedImage($produit); // On stock le hash de celle-ci
+        }else{
+            // Si l'administrateur n'a pas sélectionné d'image alors on remet l'ancienne image au lieu de l'écraser par NULL
+            $produit->setImage($changementImage[0]);
+            
+        }
+    }
+
+    private function setHashedImage($produit)
+    {
+        $extension = $produit->getImage()->guessExtension();
+        $fileDIR = $this->get('kernel')->getRootDir() . '/../web/img/produits/'.$produit->getCategorie()->getIdCategorie();
+        $fileName = hash('md5',uniqid()).'.'.$extension;
+        $produit->getImage()->move(
+            $fileDIR,
+            $fileName
+        );
+        $produit->setImage($fileName);
+    }
+
+    private function setImageProduit($produit)
+    {
+        if($produit->getImage() !== null)
+        {
+            $this->setHashedImage($produit);
+        }else{
+            $produit->setImage("NULL"); // Étant donné que le nom de l'image est vérifier dans nos vues , on se doit de mettre un champ ,car sinon asset_if() ne pourra pas faire sa vérification
+        }
+    }
+
     private function trouverCategorieParID($idCategorie)
     {
         $manager = $this->getDoctrine()->getManager();
@@ -203,26 +247,19 @@ class AdminController extends Controller
         return $categorie === null;
     }
 
-    private function ajouterCategorie($categorie)
-    {
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($categorie);
-        $manager->flush();
-    }
-
-    private function appliquerChangementBD()
+    private function appliquerChangementsBD()
     {
         $manager = $this->getDoctrine()->getManager();
         $manager->flush();
     }
 
-
-    private function ajouterProduit($produit)
+    private function persistEntity($entity)
     {
         $manager = $this->getDoctrine()->getManager();
-        $manager->persist($produit);
+        $manager->persist($entity);
         $manager->flush();
     }
+
 
     // Trouve toutes les catégories
     public function retrieveCategories()

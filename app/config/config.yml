@@ -7,7 +7,6 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-
 framework:
     #esi:             ~
     #translator:      { fallbacks: ["%locale%"] }
@@ -70,3 +69,4 @@ swiftmailer:
     spool: "%spool%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
+    

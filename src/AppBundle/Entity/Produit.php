@@ -59,6 +59,17 @@ class Produit
      */
     private $achats;
 
+   /**
+    * @Doctrine\Column(type="text",length=128)
+    * @Assert\File(
+    *     maxSize = "5M",
+    *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+    *     maxSizeMessage = "La taille maximale allouée est de 5MB.",
+    *     mimeTypesMessage = "Seulement des fichiers d'images sont autorisés."
+    * )
+    */
+    private $image;
+
     // Constructeur
     public function __construct($tab,$categorie)
     {
@@ -71,6 +82,12 @@ class Produit
         $this->descriptionCourte = $tab['descriptionCourte'];
         $this->description = $tab['description'];
         $this->achats = new ArrayCollection();
+        if(isset($tab['image']) and $tab['image'] !== null)
+        {
+            $this->image = $tab['image'];
+        }else{
+            $this->image = "NULL";
+        }
     }
 
     // Getters
@@ -82,6 +99,7 @@ class Produit
     public function getQteMinimale() { return $this->qteMinimale; }
     public function getDescriptionCourte() { return $this->descriptionCourte; }
     public function getDescription() { return $this->description; }
+    public function getImage() { return $this->image; }
 
     // Setters
     public function setNom($newNom) { $this->nom = $newNom; return $this; }
@@ -91,5 +109,6 @@ class Produit
     public function setDescription($newDesc) { $this->description = $newDesc; return $this; }
     public function setQteStock($newQte) { $this->qteStock = $newQte; return $this; }
     public function setCategorie($categorie) { $this->categorie = $categorie; return $this; }
+    public function setImage($newImage) { $this->image = $newImage; return $this; }
     
 }

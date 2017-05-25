@@ -124,8 +124,8 @@
                                 <div class="thumbnail store style1">
                                     <div class="header">
                                         <figure class="layer">
-                                                <img class="front" src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}">
-                                                <img class="back" src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}">
+                                                <img class="front"  src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.image,'img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}">
+                                                <img class="back"   src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.image,'img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}">
                                         </figure>
                                         <div class="icons">
                                             <a class="heartQuickView icon semi-circle" href="{{ path('listeSouhaits.ajout', {'idProduit':produit.idProduit}) }}"><i class="fa fa-heart-o"></i></a> <!-- Ajout à la liste de souhaits -->

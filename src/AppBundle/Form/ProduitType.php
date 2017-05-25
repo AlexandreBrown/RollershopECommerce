@@ -8,9 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType; 
 use Symfony\Component\Form\FormBuilderInterface;
+
 
 class ProduitType extends AbstractType
 {
@@ -29,7 +31,9 @@ class ProduitType extends AbstractType
             ->add('qteMinimale', IntegerType::class,array('attr' => array('label' => 'Qte minimale')))
             ->add('descriptionCourte', TextareaType::class,array('attr' => array('label' => 'Description courte'),'required' => false))
             ->add('description', TextareaType::class, array('attr' => array('label' => 'Description'),'required' => false))
+            ->add('image',FileType::class,array('attr' => array('label' => 'Image du produit')
+                ,'data_class' => null
+                ,'required' => false))
             ->add('btnAction', SubmitType::class);
-
     }
 }

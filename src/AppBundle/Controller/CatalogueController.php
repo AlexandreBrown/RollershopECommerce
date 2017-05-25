@@ -103,7 +103,7 @@ class CatalogueController extends Controller
     public function retrieveProduits($connexion,$recherche,$priceMin,$priceMax)
     {
         // Requête SQL
-        $requete = "SELECT P.idProduit,P.idCategorie,P.nom,P.prix,P.qteStock,P.qteMinimale,P.descriptionCourte,P.description ";
+        $requete = "SELECT P.idProduit,P.idCategorie,P.nom,P.prix,P.qteStock,P.qteMinimale,P.descriptionCourte,P.description,P.image ";
         $requete .= "FROM Produits P INNER JOIN Categories C ON C.idCategorie = P.idCategorie "; // .= -> +=
         
         // Obtenir les produits

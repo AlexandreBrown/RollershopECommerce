@@ -4300,3 +4300,8 @@ display: inline;
     padding: 5px;
     text-align: left;
 }
+
+.img-preview{
+  height: 128px;
+  width: 128px;
+}

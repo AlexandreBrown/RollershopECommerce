@@ -9,7 +9,7 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="box">
-                                <h2 class="title text-center">Ajout d'un produit</h2>
+                                <h2 class="title text-center">Produit</h2>
                                 {% if message is defined and message is not null %}
                                     <div class="alert {{ message.getType }} text-center">
                                         {{ message.getTexte | raw  }}
@@ -79,6 +79,15 @@
                             {{ form_row(formProduit.qteMinimale) }}
                             {{ form_row(formProduit.descriptionCourte) }}
                             {{ form_row(formProduit.description) }}
+                            {{ form_row(formProduit.image) }}
+                            <div class="form-group">
+                                    <label class="col-sm-2 control-label text-right">
+                                        Image actuelle
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <image src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.image,'img/produits/nonDispo.png')}}" class="img-responsive img-preview" alt="{{produit.nom}}" />
+                                    </div>
+                                </div>
                             {{ form_row(formProduit.btnAction,{'label':'Sauvegarder', 'attr': {'class': 'btn btn-default round btn-md'}}) }}
                         {{ form_end(formProduit) }}
                 </div>
