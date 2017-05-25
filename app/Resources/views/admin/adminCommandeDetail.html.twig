@@ -132,7 +132,7 @@
                                             <tr class="row">
                                                 <td class="col-lg-2">
                                                     <h6 class="regular">
-                                                            <img width="60px" src="{{ asset_if('img/produits/' ~ unAchat.Produit.Categorie.IdCategorie ~ '/' ~ unAchat.Produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
+                                                            <img width="60px" src="{{asset_if('img/produits/' ~ unAchat.produit.Categorie.idCategorie ~ '/' ~ unAchat.produit.image,'img/produits/nonDispo.png')}}" class="img-responsive" alt="{{unAchat.produit.nom}}">
                                                         </a>
                                                     </h6>
                                                 </td>

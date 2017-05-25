@@ -137,6 +137,7 @@ class Client implements UserInterface
     //Méthodes membres de l'interface UserInterface
     public function getRoles() 
     { 
+        // Renvoie le role selon les données en BD
         if($this->role == "U")
             return array('ROLE_USER');
         else if ($this->role == "A")

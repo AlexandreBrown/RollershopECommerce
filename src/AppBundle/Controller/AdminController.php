@@ -40,16 +40,26 @@ class AdminController extends Controller
     */
     public function produitAjoutAction(Request $request)
     {
+        // Valeur fictive qui vont se faire override par le formulaire
         $categorie = $this->trouverCategorieParID(1);
         $produit = new produit(array('idProduit' => null , 'nom' => null,'prix' => null,'qteStock' => null,'qteMinimale' => null,'descriptionCourte' => "" ,'description' => "",'image' => null),$categorie);
+        //--------------------------------------------------------------
         $formAjoutProduit = $this->createForm(ProduitType::class,$produit);
         $formAjoutProduit->handleRequest($request);
         // Si le formulaire est soumis et valide
         if($formAjoutProduit->isSubmitted() && $formAjoutProduit->isValid()) {
             try {
-                    $this->setImageProduit($produit);
+                    // Si l'administrateur n'a pas envoyé d'image
+                    if($produit->getImage() === null)
+                    {
+                        // On met "NULL" pour l'image
+                        $produit->setImage("NULL");
+                    }else{
+                        // Sinon on met le nom hashé de l'image
+                        $produit->setImage($this->getHashFileName($produit));
+                    }
+                    // On persist en BD le produit
                     $this->persistEntity($produit);
-                    $this->appliquerChangementsBD();
                     $message = new Message(MessageType::SUCCESS,"Le produit a été ajouté avec succès!");
                     $this->addFlash('messages',$message);
                     return $this->redirectToRoute('admin.produit.index');
@@ -65,14 +75,28 @@ class AdminController extends Controller
     */
     public function produitModifierAction($idProduit,Request $request)
     {
+        // On stock le produit
         $produit = $this->trouverProduitParID($idProduit);
+        // On stock l'image dans son état actuel
+        $ancienneImage = $produit->getImage();
         $formModifProduit = $this->createForm(ProduitType::class,$produit);
         $formModifProduit->handleRequest($request);
         // Si le formulaire est soumis et valide
         if($formModifProduit->isSubmitted() && $formModifProduit->isValid()) {
             try {
-                    $this->modifierImage($produit);
-                    $this->appliquerChangementsBD();
+                    $manager = $this->getDoctrine()->getManager();
+                    // Si l'administrateur n'a pas envoyé d'image
+                    if($produit->getImage() === null)
+                    {
+                        // On remet l'ancienne image
+                        $produit->setImage($ancienneImage);
+                    }else{
+                        // Si l'administrateur a envoyé une image
+                        // On met à jour l'image du produit pour le nom hashé de l'image envoyé
+                        $produit->setImage($this->getHashFileName($produit));
+                    }
+                    // On met à jour la BD
+                    $manager->flush();
                     $message = new Message(MessageType::SUCCESS,"Le produit a été mis à jour avec succès!");
                     $this->addFlash('messages',$message);
                     return $this->redirectToRoute('admin.produit.index');
@@ -90,15 +114,15 @@ class AdminController extends Controller
     public function categorieAction(Request $request)
     {
         $message = $this->getVariableFromFlashBag('messages',$request);
+        // Valeur fictive qui vont se faire override par le formulaire
         $categorie = new Categorie(array('idCategorie' => null,'nom' => null));
+        // ---------------------------------------------------------------
         $formAjoutCategorie = $this->createForm(CategorieType::class,$categorie);
         $formAjoutCategorie->handleRequest($request);
         // Si le formulaire est soumis et valide
         if($formAjoutCategorie->isSubmitted() && $formAjoutCategorie->isValid()) {
             try {
-                    $categorie = $formAjoutCategorie->getData();
                     $this->persistEntity($categorie);
-                    $this->appliquerChangementsBD();
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été ajoutée avec succès!");
                     // Si la catégorie a été ajoutée avec succès , on réinitialise la form
                     $formAjoutCategorie = $this->createForm(CategorieType::class);
@@ -116,16 +140,17 @@ class AdminController extends Controller
     */
     public function categorieModifierAction($idCategorie,Request $request)
     {
+        // On stock la catégorie
         $categorie = $this->trouverCategorieParID($idCategorie);
         $formModifCategorie = $this->createForm(CategorieType::class,$categorie);
         $formModifCategorie->handleRequest($request);
         // Si le formulaire est soumis et valide
         if($formModifCategorie->isSubmitted() && $formModifCategorie->isValid()) {
             try {
-                $categorie = $formModifCategorie->getData();
                 if($this->categorieEstNouvelle($categorie->getNom()))
                 {
-                    $this->appliquerChangementsBD();
+                    $manager = $this->getDoctrine()->getManager();
+                    $manager->flush();
                     $message = new Message(MessageType::SUCCESS,"La catégorie a été modifiée avec succès!");
                     $this->addFlash('messages',$message);
                 }
@@ -176,81 +201,69 @@ class AdminController extends Controller
         return $this->render('./admin/adminCommandeDetail.html.twig',array('commande' => $commande));
     }
 
-    private function modifierImage($produit)
-    {
-        $manager = $this->getDoctrine()->getManager();
-        $uow = $manager->getUnitOfWork();
-        $uow->computeChangeSets();
-        $changements = $uow->getEntityChangeSet($produit); // On obtient les changements sur le produit actuel
-        $changementImage = $changements['image']; // Tableau de string représentant :
-                                                    // [0] => image avant les modificatiosn,
-                                                    // [1] => image venant du formulaire envoyé
-        if($changementImage[1] !== null) // Si l'administrateur a envoyé une nouvelle image
-        {
-            $this->setHashedImage($produit); // On stock le hash de celle-ci
-        }else{
-            // Si l'administrateur n'a pas sélectionné d'image alors on remet l'ancienne image au lieu de l'écraser par NULL
-            $produit->setImage($changementImage[0]);
-            
-        }
-    }
-
-    private function setHashedImage($produit)
-    {
-        $extension = $produit->getImage()->guessExtension();
-        $fileDIR = $this->get('kernel')->getRootDir() . '/../web/img/produits/'.$produit->getCategorie()->getIdCategorie();
-        $fileName = hash('md5',uniqid()).'.'.$extension;
-        $produit->getImage()->move(
-            $fileDIR,
-            $fileName
-        );
-        $produit->setImage($fileName);
-    }
-
-    private function setImageProduit($produit)
+    private function getHashFileName($produit)
     {
         if($produit->getImage() !== null)
         {
-            $this->setHashedImage($produit);
-        }else{
-            $produit->setImage("NULL"); // Étant donné que le nom de l'image est vérifier dans nos vues , on se doit de mettre un champ ,car sinon asset_if() ne pourra pas faire sa vérification
+            $extension = $produit->getImage()->guessExtension();
+            $fileDIR = $this->get('kernel')->getRootDir() . '/../web/img/produits/'.$produit->getCategorie()->getIdCategorie();
+            $fileName = hash('md5',uniqid()).'.'.$extension;
+            $produit->getImage()->move(
+                $fileDIR,
+                $fileName
+            );
+            return $fileName;
         }
     }
 
     private function trouverCategorieParID($idCategorie)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $categorie = $manager->getRepository('AppBundle:Categorie')->find($idCategorie);
-        return $categorie;
+        try{
+            $manager = $this->getDoctrine()->getManager();
+            $categorie = $manager->getRepository('AppBundle:Categorie')->find($idCategorie);
+            return $categorie;
+        }catch(\Exception $e)
+        {
+            return $this->redirectToRoute('error500');
+        }
     }
 
     private function trouverProduitParID($idProduit)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $produit = $manager->getRepository('AppBundle:Produit')->find($idProduit);
-        return $produit;
+        try{
+            $manager = $this->getDoctrine()->getManager();
+            $produit = $manager->getRepository('AppBundle:Produit')->find($idProduit);
+            return $produit;
+        }catch(\Exception $e)
+        {
+             return $this->redirectToRoute('error500');
+        }
     }
 
     private function trouverCommandeParId($idCommande)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $commande = $manager->getRepository('AppBundle:Commande')->find($idCommande);
-        return $commande;
+        try{
+            $manager = $this->getDoctrine()->getManager();
+            $commande = $manager->getRepository('AppBundle:Commande')->find($idCommande);
+            return $commande;
+        }catch(\Exception $e)
+        {
+            return $this->redirectToRoute('error500');
+        }
     }
 
     private function categorieEstNouvelle($nomCategorie)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $categorie = $manager->getRepository('AppBundle:Categorie')->findOneBy(
-            array('nom' => $nomCategorie)
-            );
-        return $categorie === null;
-    }
-
-    private function appliquerChangementsBD()
-    {
-        $manager = $this->getDoctrine()->getManager();
-        $manager->flush();
+        try{
+            $manager = $this->getDoctrine()->getManager();
+            $categorie = $manager->getRepository('AppBundle:Categorie')->findOneBy(
+                array('nom' => $nomCategorie)
+                );
+            return $categorie === null;
+        }catch(\Exception $e)
+        {
+            return $this->redirectToRoute('error500');
+        }
     }
 
     private function persistEntity($entity)
@@ -264,27 +277,42 @@ class AdminController extends Controller
     // Trouve toutes les catégories
     public function retrieveCategories()
     {
-        $manager = $this->getDoctrine()->getManager();
-        // On trouve la catégorie correspondante
-        $categories = $manager->getRepository('AppBundle:Categorie')->findAll();
-        return $categories;
+        try{
+            $manager = $this->getDoctrine()->getManager();
+            // On trouve la catégorie correspondante
+            $categories = $manager->getRepository('AppBundle:Categorie')->findAll();
+            return $categories;
+        }catch(\Exception $e)
+        {
+            return $this->redirectToRoute('error500');
+        }
     }
 
     // Trouve toutes les produits
     public function retrieveProduits()
     {
-        $manager = $this->getDoctrine()->getManager();
-        // On trouve les catégories correspondantes
-        $produits = $manager->getRepository('AppBundle:Produit')->findAll();
-        return $produits;
+        try{
+            $manager = $this->getDoctrine()->getManager();
+            // On trouve les catégories correspondantes
+            $produits = $manager->getRepository('AppBundle:Produit')->findAll();
+            return $produits;
+        }catch(\Exception $e)
+        {
+            return $this->redirectToRoute('error500');
+        }
     }
 
     // Trouve toutes les commandes
     public function retrieveCommandes()
     {
-        $manager = $this->getDoctrine()->getManager();
-        // On trouve la catégorie correspondante
-        $commandes = $manager->getRepository('AppBundle:Commande')->findAll();
-        return $commandes;
+        try{
+            $manager = $this->getDoctrine()->getManager();
+            // On trouve la catégorie correspondante
+            $commandes = $manager->getRepository('AppBundle:Commande')->findAll();
+            return $commandes;
+        }catch(\Exception $e)
+        {
+            return $this->redirectToRoute('error500');
+        }
     }
 }
