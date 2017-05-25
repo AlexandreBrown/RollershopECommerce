@@ -128,7 +128,7 @@ class PanierController extends Controller
     private function retrieveProduit($connexion,$idProduit)
     {
         // Requête SQL
-        $requete = "SELECT P.idProduit,P.idCategorie,P.nom,P.prix,P.qteStock,P.qteMinimale,P.descriptionCourte,P.description ";
+        $requete = "SELECT P.idProduit,P.idCategorie,P.nom,P.prix,P.qteStock,P.qteMinimale,P.descriptionCourte,P.description,P.image ";
         $requete .= "FROM Produits P INNER JOIN Categories C ON C.idCategorie = P.idCategorie "; // .= -> +=
         $requete .= "WHERE P.idProduit = :idProduit";
 

@@ -120,7 +120,8 @@
                                                                     <td class="col-lg-2 text-center">
                                                                         <h6 class="regular">
                                                                             <a href="{{ path('produit.popup', {'idProduit' :unAchat.produit.idProduit }) }}" class="btn btn-light semi-circle btn-sm btnPopup" data-toggle="modal" data-target=".productQuickView">
-                                                                                <img width="60px" src="{{ asset_if('img/produits/' ~ unAchat.produit.categorie.idCategorie ~ '/' ~ unAchat.produit.idProduit ~ '.jpg','img/produits/nonDispo.png')}}">
+                                                                                <img width="60px" src="{{asset_if('img/produits/' ~ unAchat.produit.Categorie.idCategorie ~ '/' ~ unAchat.produit.image,'img/produits/nonDispo.png')}}" class="img-responsive" alt="{{unAchat.produit.nom}}">
+                                                                                
                                                                             </a>
                                                                         </h6>
                                                                     </td>

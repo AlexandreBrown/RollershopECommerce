@@ -107,6 +107,10 @@ class Client implements UserInterface
      */
     private $commandes;
 
+    /**
+    * @Doctrine\Column(name="role", type="string", length=1)
+    * @Assert\NotBlank()
+    */
     private $role;
 
     // Constructeur
@@ -114,6 +118,7 @@ class Client implements UserInterface
     {
         $this->setSalt(md5(uniqid(null, true)));
         $this->commandes = new ArrayCollection();
+        $this->role = "U";
     }
 
     // Getters
@@ -155,5 +160,6 @@ class Client implements UserInterface
     public function setTelephone($telephone) { $this->telephone = $telephone; return $this; }
     public function setMotPasse($motPasse) { $this->motPasse = $motPasse; return $this; }
     public function setSalt($salt) { $this->salt = $salt; return $this; }
+    public function setRole($role) { $this->role = $role; return $this; }
 
 }

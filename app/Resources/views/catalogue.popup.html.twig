@@ -11,7 +11,7 @@
 				<div class='carousel-inner'>
 					<div class='item active'>
 						<figure>
-							<img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' />
+							<img src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.image,'img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}">
 						</figure>
 					</div><!-- end item -->
 					<div class='item'>
@@ -41,7 +41,7 @@
 
 				<!-- thumbs -->
 				<ol class='carousel-indicators mCustomScrollbar meartlab'>
-					<li data-target='.product-slider' data-slide-to='0' class='active'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
+					<li data-target='.product-slider' data-slide-to='0' class='active'><img src="{{asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.image,'img/produits/nonDispo.png')}}" class="img-responsive" alt="{{produit.nom}}"></li>
 					<li data-target='.product-slider' data-slide-to='1'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_1.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
 					<li data-target='.product-slider' data-slide-to='2'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_2.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
 					<li data-target='.product-slider' data-slide-to='3'><img src="{{ asset_if('img/produits/' ~ produit.Categorie.idCategorie ~ '/' ~ produit.idProduit ~ '_3.jpg', 'img/produits/nonDispo.png') }}" alt='{{produit.nom}}' /></li>
