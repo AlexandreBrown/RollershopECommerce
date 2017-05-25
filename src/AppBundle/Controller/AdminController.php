@@ -308,7 +308,7 @@ class AdminController extends Controller
         try{
             $manager = $this->getDoctrine()->getManager();
             // On trouve la catégorie correspondante
-            $commandes = $manager->getRepository('AppBundle:Commande')->findAll();
+            $commandes = $this->getDoctrine()->getRepository('AppBundle:Commande')->findBy([], ['dateCommande' => 'DESC']);
             return $commandes;
         }catch(\Exception $e)
         {
